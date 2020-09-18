@@ -13,17 +13,21 @@
  *  implied.  See the License for the specific language governing
  *  permissions and limitations under the License.
  */
-package fr.esieaproject.poneyclub.PoneyClub;
+package fr.esieaproject.poneyclub;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+@RestController
+public class HomeController {
 
-@SpringBootApplication
-public class App {
+    @Value("${welcome}")
+    private String welcome;
 
-    public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
+    @GetMapping(value = "/")
+    public String ipaddress() throws Exception {
+        return "Reply: " + welcome;
     }
-
+    
 }
