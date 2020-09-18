@@ -1,28 +1,28 @@
-<nb-layout center>
-  <nb-layout-header fixed>{{title}}</nb-layout-header>
-
+<nb-layout>
+  <nb-layout-header fixed>
+    <div class="col-sm-8">{{title}}</div>
+    <div class="col-sm-4" align="right">
+      <button nbButton routerLink="/home" routerLinkActive="activebutton"><nb-icon icon="home"></nb-icon></button>
+    </div>
+  </nb-layout-header>
   <nb-layout-column>
-    <nb-card>
-      <nb-card-header>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-4">
-              <button nbButton routerLink="/home" routerLinkActive="activebutton">Home</button>
+        <nb-card>
+          <nb-card-header>
+            <div class="container">
+              <div class="row">
+                <div class="col-sm-4">
+                  <button nbButton routerLink="/signup" routerLinkActive="activebutton">Sign up</button>
+                </div>
+                <div class="col-sm-4">
+                  <button nbButton routerLink="/login" routerLinkActive="activebutton">Login</button>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-4">
-              <button nbButton routerLink="/signup" routerLinkActive="activebutton">Sign up</button>
-            </div>
-            <div class="col-sm-4">
-              <button nbButton routerLink="/login" routerLinkActive="activebutton">Login</button>
-            </div>
-          </div>
-        </div>
-      </nb-card-header>
-      <nb-card-body >
-        <router-outlet></router-outlet>
-      </nb-card-body>
-
-    </nb-card>
+          </nb-card-header>
+          <nb-card-body >
+            <router-outlet></router-outlet>
+          </nb-card-body>
+        </nb-card>
   </nb-layout-column>
 
   <nb-layout-footer>
