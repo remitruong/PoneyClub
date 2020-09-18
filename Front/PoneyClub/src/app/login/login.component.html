@@ -1,22 +1,31 @@
-<h1>LOGIN PAGE</h1>
-<p>Welcome to login page !</p>
+<nb-layout>
+  <nb-layout-column>
+    <div class="row">
+      <div class="col-md-12">
+        <nb-card>
+          <nb-card-header>Login form</nb-card-header>
+          <nb-card-body>
+            <form>
+              <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="username" class="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter Username">
+              </div>
+              <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+              </div>
+              <div>
+                <button nbButton routerLink="/signup" routerLinkActive="activebutton">Sign up</button>
+              </div>
+              <br>
+              <div>
+                <button type="submit" nbButton >Submit</button>
+              </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-layout-column>
+</nb-layout>
 
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-
-  <div>
-    <label for="name">
-      username
-    </label>
-    <input id="name" type="text" formControlName="name">
-  </div>
-
-  <div>
-    <label for="address">
-      password
-    </label>
-    <input id="address" type="text" formControlName="address">
-  </div>
-
-  <button class="button" type="login">Login</button>
-
-</form>

@@ -1,15 +1,28 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+
 import { HomeComponent } from './home/home.component';
-import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { SignupComponent } from './signup/signup.component';
+
+import { NbEvaIconsModule } from '@nebular/eva-icons';
+
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbIconModule,
+  NbLayoutModule,
+  NbSidebarModule,
+  NbThemeModule,
+} from '@nebular/theme';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,15 +30,24 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     HomeComponent,
     SignupComponent,
     LoginComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
+    NbThemeModule.forRoot({name: 'dark'}),
+    NbLayoutModule,
+    NbSidebarModule.forRoot(),
+    NbButtonModule,
+    NbIconModule,
+    NbEvaIconsModule,
+    NbButtonModule,
+    NbCardModule,
+    NgbModule,
+    NgbPaginationModule,
+    NgbAlertModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
