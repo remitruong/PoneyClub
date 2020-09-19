@@ -1,5 +1,6 @@
 package fr.esieaproject.poneyclub.beans;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,21 +14,22 @@ public class User {
 	private Long id;
 	private String name;
 	private String lastName;
+	@Column(unique = true)
 	private String mail;
 	private String password;
+	@Column(unique = true)
 	private String mobile;
-	private String role;
+	private String role = "rider";
 	
 	public User() {}
 	
-	public User(String name, String lastName, String mail, String password, String mobile, String role) {
+	public User(String name, String lastName, String mail, String password, String mobile) {
 		super();
 		this.name = name;
 		this.lastName = lastName;
 		this.mail = mail;
 		this.password = password;
 		this.mobile = mobile;
-		this.role = role;
 	}
 
 	public Long getId() {
