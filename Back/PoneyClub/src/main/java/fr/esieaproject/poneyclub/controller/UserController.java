@@ -1,11 +1,13 @@
 package fr.esieaproject.poneyclub.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,16 +28,12 @@ public class UserController {
 	@Value("${welcome}")
 	private String welcome;
 
-	
+	@Autowired
 	private UserRepository userRepo;
-	public UserController(final UserRepository userRepository) {
-		this.userRepo = userRepository;
-	}
 
 	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean createRider(@RequestBody User user) { 
 		
-		user.setRole("rider");
     	
 		try {
 	    	userRepo.save(user);
