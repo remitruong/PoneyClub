@@ -1,5 +1,6 @@
 package fr.esieaproject.poneyclub.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,16 +32,19 @@ public class UserController {
 		this.userRepo = userRepository;
 	}
 
-	@PostMapping(value = "/create-user", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean createRider(@RequestBody User user) {  
+	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public boolean createRider(@RequestBody User user) { 
+		
+		user.setRole("rider");
     	
-    	try {
+		try {
 	    	userRepo.save(user);
 	    	return true;
-    	} catch(Exception e) {
-    		logger.error(" --- " + e);
-    		return false;
-    	}
+		} catch (Exception e) {
+			logger.error("" + e);
+			return false;
+		}
+    	
     }
 	
 	@PostMapping(value = "/update-user/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -54,6 +58,11 @@ public class UserController {
 		
 		user.setId(gUser.get().getId());
 		
+		if (!user.getRole().equals("Rider")) {
+			logger.error("Only rider can update his own profile");
+			return false;
+		}
+		
     	try {
 	    	userRepo.save(user);
 	    	return true;
@@ -64,9 +73,8 @@ public class UserController {
     }
 	
 
-	@GetMapping(value = "/connect/{mail}/{password}")
-	public User getUserByMail(@PathVariable String mail, @PathVariable String password) {
-		
+	@PostMapping(value = "/connect/{mail}/{password}")
+	public User connectUser(@RequestBody String mail, @RequestBody String password) {
 		Optional<User> user = userRepo.findByMail(mail);
 		
 		if (user.isEmpty()) {
@@ -77,7 +85,7 @@ public class UserController {
 		user = userRepo.connect(mail, password);
 		
 		if (user.isEmpty()) {
-			logger.error(" --- " + mail + "Does not exist");
+			logger.error(" --- " + mail + "Wrong password");
 			return null;
 		}
 		
@@ -87,7 +95,95 @@ public class UserController {
 			logger.error(" --- " + e);
 			return null;
 		}
-
+	}
+	
+	@GetMapping(value = "/get-rider/mail/{mail}/{adminMail}")
+	public User getRiderByMail(@PathVariable String mail, @PathVariable String adminMail) {
+		
+		
+		Optional<User> admin = userRepo.findByMail(adminMail);
+		if (admin.isEmpty()) {
+			logger.error("User not found");
+			return null;
+		}
+		
+		if (admin.get().getStatut().equals("User")) {
+			logger.error("Only Admin access");
+			return null;
+		}
+		
+		Optional<User> rider = userRepo.findByMail(mail);
+		if (rider.isEmpty() || !rider.get().getRole().contentEquals("Rider")) {
+			logger.error("No users for this mobile");
+			return null;
+		}
+		
+		return rider.get();
+	}
+	
+	@GetMapping(value = "/get-rider/mobile/{mobile}/{adminMail}")
+	public User getRiderByMobile(@PathVariable String mobile, @PathVariable String adminMail) {
+		
+		
+		Optional<User> admin = userRepo.findByMail(adminMail);
+		if (admin.isEmpty()) {
+			logger.error("User not found");
+			return null;
+		}
+		
+		if (admin.get().getStatut().equals("User")) {
+			logger.error("Only Admin access");
+			return null;
+		}
+		
+		Optional<User> rider = userRepo.findByMail(mobile);
+		
+		
+		if (rider.isEmpty() || !rider.get().getRole().contentEquals("Rider")) {
+			logger.error("No users for this mobile");
+			return null;
+		}
+		
+		return rider.get();
+	}
+	
+	@GetMapping(value ="/get-riders/{adminMail}")
+	public List<User> getRiders(@PathVariable String adminMail) {
+		
+		Optional<User> admin = userRepo.findByMail(adminMail);
+		if (admin.isEmpty()) {
+			logger.error("User not found");
+			return null;
+		}
+		
+		if (admin.get().getStatut().equals("User")) {
+			logger.error("Only Admin access");
+			return null;
+		}
+		
+		List<User> userList = userRepo.findByRole("Rider");
+		
+		return userList;
+	}
+	
+	@PostMapping(value ="/create-teacher/{adminMail}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public boolean createTeacher(@RequestBody User user, @PathVariable String adminMail) {
+		
+		Optional<User> admin = userRepo.findByMail(adminMail);
+		if (admin.isEmpty()) {
+			logger.error("User not found");
+			return false;
+		}
+		
+		if (admin.get().getStatut().equals("User")) {
+			logger.error("Only Admin access");
+			return false;
+		}
+		
+		user.setRole("Teacher");
+		userRepo.save(user);
+		return true;
+		
 	}
 	
 	
