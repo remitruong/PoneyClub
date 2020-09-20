@@ -19,7 +19,8 @@ public class User {
 	private String password;
 	@Column(unique = true)
 	private String mobile;
-	private String role = "rider";
+	private String role;
+	private String statut = "User";
 	
 	public User() {}
 	
@@ -59,6 +60,10 @@ public class User {
 	public String getRole() {
 		return role;
 	}
+	
+	public String getStatut() {
+		return statut;
+	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -87,11 +92,15 @@ public class User {
 	public void setRole(String role) {
 		this.role=role;
 	}
+	
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", mail=" + mail + ", password="
-				+ password + ", mobile=" + mobile + ", role=" + role + "]";
+				+ password + ", mobile=" + mobile + ", role=" + role + ", statut=" + statut+ "]";
 	}
 	
 }
