@@ -1,12 +1,14 @@
 package fr.esieaproject.poneyclub.beans;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Embeddable
 public class User {
 	
 	@Id
@@ -18,7 +20,7 @@ public class User {
 	private String mail;
 	private String password;
 	@Column(unique = true)
-	private String mobile;
+	private String mobile; 
 	private String role;
 	private String statut = "User";
 	
