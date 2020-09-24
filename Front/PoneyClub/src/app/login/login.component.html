@@ -12,13 +12,19 @@
               </div>
 
               <div class="form-group">
-                <div>
+                <span class="label-with-link">
                   <label for="inputPassword">Password</label>
-                  <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-                </div>
+                  <a routerLink="/forgotPassword" routerLinkActive="activebutton" for="inputPassword">Forgot Password ?</a>
+                </span>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
-                <button nbButton routerLink="/signup" routerLinkActive="activebutton">Sign up</button>
-                <button type="submit" class="mx-2" nbButton >Login</button>
+              <section class="button-with-link">
+                <button type="submit" nbButton >Login</button>
+                <span>
+                  Don't have account ?
+                  <a routerLink="/signup" routerLinkActive="activebutton" >Sign up</a>
+                </span>
+              </section>
             </form>
           </nb-card-body>
         </nb-card>

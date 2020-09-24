@@ -23,6 +23,7 @@ import {
   NbThemeModule,
 } from '@nebular/theme';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SignupComponent,
     LoginComponent,
     PageNotFoundComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

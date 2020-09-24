@@ -30,7 +30,13 @@
                 <label for="inputLicenceNumber">Licence Number</label>
                 <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)">
               </div>
-              <button type="submit" nbButton >Sign up</button>
+              <section class="button-with-link">
+                <button type="submit" nbButton >Sign up</button>
+                <span>
+                  Already have an account ?
+                  <a routerLink="/login" routerLinkActive="activebutton" >Log in</a>
+                </span>
+              </section>
             </form>
           </nb-card-body>
         </nb-card>
