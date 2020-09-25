@@ -25,14 +25,16 @@ public class Planning {
     @ManyToOne
     @JoinColumn(name = "idRider")
 	private User rider;
+    private int maxStudent = 4;
 	
 	public Planning() {}
 	
-	public Planning(String startDateTime, String endDateTime, Horse horse, User rider) {
+	public Planning(String startDateTime, String endDateTime, Horse horse, User rider, int maxStudent) {
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
 		this.horse = horse;
 		this.rider = rider;		
+		this.maxStudent = maxStudent;
 	}
 
 	public Long getId() {
@@ -54,6 +56,10 @@ public class Planning {
 	public User getRider() {
 		return rider;
 	}
+	
+	public int getMaxStudent() {
+		return maxStudent;
+	}
 
 	public void setStartDateTime(String startDateTime) {
 		this.startDateTime = startDateTime;
@@ -70,11 +76,15 @@ public class Planning {
 	public void setRider(User rider) {
 		this.rider = rider;
 	}
+	
+	public void setMaxStudent(int maxStudent) {
+		this.maxStudent = maxStudent;
+	}
 
 	@Override
 	public String toString() {
 		return "Planning [id=" + id + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", horse="
-				+ horse + ", rider=" + rider + "]";
+				+ horse + ", rider=" + rider +  ", maxStudent= " + maxStudent+"]";
 	}
 
 }

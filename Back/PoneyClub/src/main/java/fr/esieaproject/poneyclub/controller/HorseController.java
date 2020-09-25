@@ -45,18 +45,12 @@ public class HorseController {
 	@PostMapping(value = "/create-horse/{name}/{idAdmin}")
 	public boolean createHorse(@PathVariable String name, @PathVariable Long idAdmin) {
 
-		Optional<User> user = userRepo.findById(idAdmin);
-
-		if (user.isEmpty()) {
-			logger.error("Admin not found ");
+		Optional<User> admin = userRepo.findById(idAdmin);
+		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
+			logger.error("Error while retrieving admin");
 			return false;
 		}
 		
-		if (!user.get().getStatut().equals("Admin")) {
-			logger.error("Only Admin can create horse");
-			return false;
-		}
-			
 
 		try {
 			horseRepo.save(new Horse(name));
@@ -71,12 +65,12 @@ public class HorseController {
 	@PostMapping(value = "/update-horse/{idHorse}/{name}/{idAdmin}")
 	public boolean updateHorse(@PathVariable Long idHorse, @PathVariable String name, @PathVariable Long idAdmin) {
 
-		Optional<User> user = userRepo.findById(idAdmin);
-
-		if (user.isEmpty() || !user.get().getStatut().equals("User")) {
-			logger.error("Only Admin can update horse");
+		Optional<User> admin = userRepo.findById(idAdmin);
+		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
+			logger.error("Error while retrieving admin");
 			return false;
 		}
+		
 
 		Optional<Horse> horse = horseRepo.findById(idHorse);
 
@@ -98,13 +92,12 @@ public class HorseController {
 	@DeleteMapping(value = "/delete-horse/{idHorse}/{idAdmin}")
 	public boolean deleteHorse(@PathVariable Long idHorse, @PathVariable Long idAdmin) {
 
-		Optional<User> user = userRepo.findById(idAdmin);
-
-		if (user.isEmpty() || !user.get().getStatut().equals("User")) {
-			logger.error("Only Admin can delete horse");
+		Optional<User> admin = userRepo.findById(idAdmin);
+		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
+			logger.error("Error while retrieving admin");
 			return false;
 		}
-
+		
 		try {
 			horseRepo.deleteById(idHorse);
 			return true;
@@ -118,12 +111,12 @@ public class HorseController {
 	@GetMapping(value = "/list-horse/{idAdmin}")
 	public Iterable<Horse> getListHorse(@PathVariable Long idAdmin) {
 
-		Optional<User> user = userRepo.findById(idAdmin);
-
-		if (user.isEmpty() || !user.get().getStatut().equals("User")) {
-			logger.error("Only Admin can get list horses");
+		Optional<User> admin = userRepo.findById(idAdmin);
+		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
+			logger.error("Error while retrieving admin");
 			return null;
 		}
+		
 		
 		try {
 		Iterable<Horse> listHorse = horseRepo.findAll();
