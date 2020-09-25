@@ -1,14 +1,13 @@
 package fr.esieaproject.poneyclub.beans;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Embeddable
 public class User {
 	
 	@Id
@@ -21,6 +20,8 @@ public class User {
 	private String password;
 	@Column(unique = true)
 	private String mobile; 
+	@Column(unique = true)
+	private String licenceNum;
 	private String role;
 	private String statut = "User";
 	
@@ -33,6 +34,16 @@ public class User {
 		this.mail = mail;
 		this.password = password;
 		this.mobile = mobile;
+	}
+	
+	public User(String name, String lastName, String mail, String password, String mobile, String licenceNum) {
+		super();
+		this.name = name;
+		this.lastName = lastName;
+		this.mail = mail;
+		this.password = password;
+		this.mobile = mobile;
+		this.licenceNum = licenceNum;
 	}
 
 	public Long getId() {
@@ -57,6 +68,9 @@ public class User {
 
 	public String getMobile() {
 		return mobile;
+	}
+	 public String getLicenceNum() {
+		return licenceNum;
 	}
 	
 	public String getRole() {
@@ -91,6 +105,10 @@ public class User {
 		this.mobile = mobile;
 	}
 	
+	public void setLicenceNum(String licenceNum) {
+		this.licenceNum = licenceNum;
+	}
+	
 	public void setRole(String role) {
 		this.role=role;
 	}
@@ -102,7 +120,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", mail=" + mail + ", password="
-				+ password + ", mobile=" + mobile + ", role=" + role + ", statut=" + statut+ "]";
+				+ password + ", mobile=" + mobile +", licenceNum= "+ licenceNum+ ", role=" + role + ", statut=" + statut+ "]";
 	}
 	
 }
