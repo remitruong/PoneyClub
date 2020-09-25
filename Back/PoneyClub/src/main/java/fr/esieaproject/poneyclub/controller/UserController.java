@@ -31,7 +31,8 @@ public class UserController {
 
 	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean createRider(@RequestBody User user) { 
-    	
+		
+		user.setRole("Rider");
 		try {
 	    	userRepo.save(user);
 	    	return true;
@@ -63,22 +64,22 @@ public class UserController {
     }
 	
 
-	@PostMapping(value = "/connect")
-	public User connectUser(@RequestBody String mailOrNumber, @RequestBody String password) {
-		Optional<User> user = userRepo.findByMail(mailOrNumber);
+	@PostMapping(value = "/connect", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public User connectUser(@RequestBody User user) {
+		Optional<User> existingUser = userRepo.findByMail(user.getMail());
 		
-		if (user.isEmpty()) {
-			user = userRepo.findByMobile(mailOrNumber);
-			if (user.isEmpty()) {
+		if (existingUser.isEmpty()) {
+			existingUser = userRepo.findByMobile(user.getMobile());
+			if (existingUser.isEmpty()) {
 				logger.error("No user found");
 				return null;
 			}
 		}
 		
-		if (user.get().getPassword().equals(password)) {
-			return user.get();
+		if (existingUser.get().getPassword().equals(user.getPassword())) {
+			return existingUser.get();
 		} else {
-			logger.error(" --- " + mailOrNumber+" : " + "Wrong password");
+			logger.error(" ---   Wrong password");
 			return null;
 		}
 	}
@@ -109,7 +110,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value ="/get-users/{adminMail}")
-	public List<User> getRiders(@PathVariable String adminMail) {
+	public Iterable<User> getRiders(@PathVariable String adminMail) {
 		
 		Optional<User> admin = userRepo.findByMail(adminMail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
@@ -118,7 +119,7 @@ public class UserController {
 		}
 		
 		
-		List<User> userList = userRepo.findByRole("Rider");
+		Iterable<User> userList = userRepo.findAll();
 		
 		return userList;
 	}

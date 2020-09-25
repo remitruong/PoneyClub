@@ -45,6 +45,12 @@ public class User {
 		this.mobile = mobile;
 		this.licenceNum = licenceNum;
 	}
+	
+	public User(String mail, String password) {
+		super();
+		this.mail = mail;
+		this.password = password;
+	}
 
 	public Long getId() {
 		return id;

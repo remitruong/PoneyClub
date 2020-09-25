@@ -1,12 +1,15 @@
 package fr.esieaproject.poneyclub.beans;
 
-import javax.persistence.Entity;
+import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 
 @Entity
@@ -15,6 +18,7 @@ public class Planning {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private String title;
 	private String startDateTime;
 	private String endDateTime;
 
@@ -24,21 +28,34 @@ public class Planning {
     
     @ManyToOne
     @JoinColumn(name = "idRider")
-	private User rider;
+	private List<User> rider;
+    @Min(value=1) @Max(value=8)
+    private int levelStudying;
     private int maxStudent = 4;
 	
 	public Planning() {}
 	
-	public Planning(String startDateTime, String endDateTime, Horse horse, User rider, int maxStudent) {
+	public Planning(String title, String startDateTime, String endDateTime, int levelStudying ,int maxStudent) {
+		this.title = title;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
-		this.horse = horse;
-		this.rider = rider;		
+		this.levelStudying = levelStudying;
+		this.maxStudent = maxStudent;
+	}
+	
+	public Planning(String startDateTime, String endDateTime, int levelStudying ,int maxStudent) {
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+		this.levelStudying = levelStudying;
 		this.maxStudent = maxStudent;
 	}
 
 	public Long getId() {
 		return id;
+	}
+	
+	public String getTitle() {
+		return title;
 	}
 
 	public String getStartDateTime() {
@@ -53,14 +70,22 @@ public class Planning {
 		return horse;
 	}
 
-	public User getRider() {
+	public List<User> getRider() {
 		return rider;
+	}
+	
+	public int getLevelStudying() {
+		return levelStudying;
 	}
 	
 	public int getMaxStudent() {
 		return maxStudent;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 	public void setStartDateTime(String startDateTime) {
 		this.startDateTime = startDateTime;
 	}
@@ -73,8 +98,12 @@ public class Planning {
 		this.horse = horse;
 	}
 
-	public void setRider(User rider) {
+	public void setRider(List<User> rider) {
 		this.rider = rider;
+	}
+	
+	public void setLevelStudying(int levelStudying) {
+		this.levelStudying = levelStudying;
 	}
 	
 	public void setMaxStudent(int maxStudent) {
@@ -83,8 +112,9 @@ public class Planning {
 
 	@Override
 	public String toString() {
-		return "Planning [id=" + id + ", startDateTime=" + startDateTime + ", endDateTime=" + endDateTime + ", horse="
-				+ horse + ", rider=" + rider +  ", maxStudent= " + maxStudent+"]";
+		return "Planning [id=" + id + ", title=" + title + ", startDateTime=" + startDateTime + ", endDateTime="
+				+ endDateTime + ", horse=" + horse + ", rider=" + rider + ", levelStudying=" + levelStudying
+				+ ", maxStudent=" + maxStudent + "]";
 	}
 
 }

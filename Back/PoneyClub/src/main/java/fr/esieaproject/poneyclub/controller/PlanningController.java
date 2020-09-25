@@ -42,22 +42,30 @@ public class PlanningController {
 		
 	}
 	
-	@GetMapping(value = "/horse-planning/{id}")
-	public List<Planning> getHorsePlanning(@PathVariable Long id) {
+	@GetMapping(value = "/horse-planning/{name}")
+	public List<Planning> getHorsePlanning(@PathVariable String name) {
 		
-		Optional<Horse> horse = horseRepo.findById(id);
+		Optional<Horse> horse = horseRepo.findByName(name);
 		
 		List<Planning> horsePlanning = planningRepo.findByHorse(horse.get());
 		return horsePlanning;
 		
 	}
 	
-	@GetMapping(value = "/user-planning/{id}")
-	public List<Planning> getUserPlanning(@PathVariable Long id) {
+	@GetMapping(value = "/user-planning/{mailOrNumber}")
+	public List<Planning> getUserPlanning(@PathVariable String mailOrNumber) {
 		
-		Optional<User> user = userRepo.findById(id);
+		Optional<User> existingUser = userRepo.findByMail(mailOrNumber);
+		if (existingUser.isEmpty()) {
+			existingUser = userRepo.findByMobile(mailOrNumber);
+			if (existingUser.isEmpty()) {
+				logger.error("No user found");
+				return null;
+			}
+		}
 		
-		List<Planning> userPlanning = planningRepo.findByRider(user.get());
+		
+		List<Planning> userPlanning = planningRepo.findByRider(existingUser.get());
 		return userPlanning;
 		
 	}
@@ -68,22 +76,8 @@ public class PlanningController {
 		
 		Optional<User> user = userRepo.findById(idTeacher);
 
-		if (user.isEmpty()) {
-			logger.error("Admin not found ");
-			return false;
-		}
-		
-		if (!user.get().getRole().equals("Rider")) {
-			logger.error("Only Teacher can plan anything");
-			return false;
-		}
-		
-		
-		Optional<Horse> horse = horseRepo.findByName(planning.getHorse().getName());
-		Optional<User> rider = userRepo.findByMail(planning.getRider().getMail());
-		
-		if ( horse.isEmpty() || rider.isEmpty()) {
-			logger.error("You need a horse and a user to plan something");
+		if (user.isEmpty() || !user.get().getRole().equals("Teacher")) {
+			logger.error("Issue while retrieving teacher");
 			return false;
 		}
 		
