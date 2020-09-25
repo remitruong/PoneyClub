@@ -24,7 +24,7 @@ public class Planning {
 
     @ManyToOne
     @JoinColumn(name = "idHorse")
-	private Horse horse;
+	private List<Horse> horse;
     
     @ManyToOne
     @JoinColumn(name = "idRider")
@@ -66,7 +66,7 @@ public class Planning {
 		return endDateTime;
 	}
 
-	public Horse getHorse() {
+	public List<Horse> getHorse() {
 		return horse;
 	}
 
@@ -94,12 +94,12 @@ public class Planning {
 		this.endDateTime = endDateTime;
 	}
 
-	public void setHorse(Horse horse) {
-		this.horse = horse;
+	public void addHorse(Horse horse) {
+		this.horse.add(horse);
 	}
 
-	public void setRider(List<User> rider) {
-		this.rider = rider;
+	public void addRider(User rider) {
+		this.rider.add(rider);
 	}
 	
 	public void setLevelStudying(int levelStudying) {
