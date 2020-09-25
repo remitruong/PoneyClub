@@ -7,14 +7,36 @@
           <nb-card-body>
             <form>
               <div class="form-group">
-                <label for="inputUsername">Username</label>
-                <input type="username" class="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter Username">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
               </div>
               <div class="form-group">
                 <label for="inputPassword">Password</label>
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
-              <button type="submit" nbButton >Sign up</button>
+              <div class="form-group">
+                <label for="inputFirstName">First Name</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name">
+              </div>
+              <div class="form-group">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name">
+              </div>
+              <div class="form-group">
+                <label for="inputPhoneNumber">Telephone</label>
+                  <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number">
+              </div>
+              <div class="form-group">
+                <label for="inputLicenceNumber">Licence Number</label>
+                <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)">
+              </div>
+              <section class="button-with-link">
+                <button type="submit" nbButton >Sign up</button>
+                <span>
+                  Already have an account ?
+                  <a routerLink="/login" routerLinkActive="activebutton" >Log in</a>
+                </span>
+              </section>
             </form>
           </nb-card-body>
         </nb-card>

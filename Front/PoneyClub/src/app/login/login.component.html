@@ -7,20 +7,24 @@
           <nb-card-body>
             <form>
               <div class="form-group">
-                <label for="inputUsername">Username</label>
-                <input type="username" class="form-control" id="inputUsername" aria-describedby="emailHelp" placeholder="Enter Username">
+                <label for="inputEmail">Email/Phone Number</label>
+                <input type="text" class="form-control" id="inputEmail" placeholder="Enter email or phone number">
               </div>
+
               <div class="form-group">
-                <label for="inputPassword">Password</label>
+                <span class="label-with-link">
+                  <label for="inputPassword">Password</label>
+                  <a routerLink="/forgotPassword" routerLinkActive="activebutton" for="inputPassword">Forgot Password ?</a>
+                </span>
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
-              <div>
-                <button nbButton routerLink="/signup" routerLinkActive="activebutton">Sign up</button>
-              </div>
-              <br>
-              <div>
-                <button type="submit" nbButton >Submit</button>
-              </div>
+              <section class="button-with-link">
+                <button type="submit" nbButton >Login</button>
+                <span>
+                  Don't have account ?
+                  <a routerLink="/signup" routerLinkActive="activebutton" >Sign up</a>
+                </span>
+              </section>
             </form>
           </nb-card-body>
         </nb-card>
