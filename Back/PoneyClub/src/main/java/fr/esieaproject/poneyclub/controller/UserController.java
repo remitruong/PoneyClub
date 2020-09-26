@@ -46,14 +46,6 @@ public class UserController {
 	@PostMapping(value = "/update-user/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public boolean updateRider(@PathVariable Long id, @RequestBody User user) {  
     	
-		Optional<User> gUser = userRepo.findById(id);
-		if (gUser.isEmpty()) {
-			logger.error(" User not find ");
-			return false;
-		} 
-		
-		user.setId(gUser.get().getId());
-		
     	try {
 	    	userRepo.save(user);
 	    	return true;
