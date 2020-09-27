@@ -13,7 +13,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public signup(user:User):Observable<any> {
+  public signup(user: User): Observable<any> {
     return this.http.post(this.signupUrl, user);
   }
 }
