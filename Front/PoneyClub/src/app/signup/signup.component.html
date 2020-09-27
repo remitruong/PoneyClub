@@ -5,33 +5,33 @@
         <nb-card>
           <nb-card-header>Signup form</nb-card-header>
           <nb-card-body>
-            <form>
+            <form (submit)="register()">
               <div class="form-group">
                 <label for="inputEmail">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+                <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" [(ngModel)]="user.mail">
               </div>
               <div class="form-group">
                 <label for="inputPassword">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" [(ngModel)]="user.password">
               </div>
               <div class="form-group">
                 <label for="inputFirstName">First Name</label>
-                <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name">
+                <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name" [(ngModel)]="user.name">
               </div>
               <div class="form-group">
                 <label for="inputLastName">Last Name</label>
-                <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name">
+                <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name" [(ngModel)]="user.lastname">
               </div>
               <div class="form-group">
-                <label for="inputPhoneNumber">Telephone</label>
-                  <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number">
+                <label for="inputPhoneNumber">Mobile</label>
+                  <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number" [(ngModel)]="user.mobile">
               </div>
               <div class="form-group">
                 <label for="inputLicenceNumber">Licence Number</label>
-                <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)">
+                <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)"  [(ngModel)]="user.licencenum">
               </div>
               <section class="button-with-link">
-                <button type="submit" nbButton >Sign up</button>
+                <button type="submit" nbButton>Sign up</button>utton>
                 <span>
                   Already have an account ?
                   <a routerLink="/login" routerLinkActive="activebutton" >Log in</a>

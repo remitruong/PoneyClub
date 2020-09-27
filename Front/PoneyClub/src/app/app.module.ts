@@ -1,4 +1,6 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
@@ -10,6 +12,7 @@ import {NgbAlertModule, NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import {ApiService} from './services/api/api.service';
 import { SignupComponent } from './signup/signup.component';
 
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -48,6 +51,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     NgbModule,
     NgbPaginationModule,
     NgbAlertModule,
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
