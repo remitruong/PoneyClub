@@ -1,7 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { User } from '../classes/user';
-import { ApiService } from '../services/api/api.service';
-import {NbAuthComponent} from "@nebular/auth";
+import { UserService } from '../services/api/user.service';
+import {Router} from "@angular/router";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-signup',
@@ -18,19 +19,20 @@ export class SignupComponent implements OnInit{
     licencenum: ''
   }
 
-  constructor(private apiService: ApiService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
-  public register(): void {
-    this.apiService.signup(this.user).subscribe(
-      res => {
-        alert(res)
+  public onSubmit(): void {
+    this.userService.signup(this.user).pipe(first()).subscribe(
+      data => {
+        alert(data);
+        this.router.navigate(['/login']);
       },
-      err => {
-
+      error => {
+        alert('error')
       }
     );
   }

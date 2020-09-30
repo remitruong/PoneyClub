@@ -1,8 +1,9 @@
 <h1 id="title" class="title">Sign up</h1>
 <p class="sub-title">Create your account</p>
 
-<form (submit)="register()">
-  <div class="form-control-group">
+<div class="container-fluid col-md-4 justify-content-center">
+<form (submit)="onSubmit()">
+  <div class="form-group">
     <label for="inputEmail">Email</label>
     <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" [(ngModel)]="user.mail" name="mail">
   </div>
@@ -29,9 +30,9 @@
   <section class="button-with-link">
     <button type="submit" nbButton>Sign up</button>
     <span>
-      Already have an account ? <a class="text-link" routerLink="/auth/login" routerLinkActive="activebutton" >Log in</a>
+      Already have an account ? <a class="text-link" routerLink="/login" routerLinkActive="activebutton" >Log in</a>
     </span>
   </section>
 </form>
-
+</div>
 

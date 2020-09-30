@@ -1,5 +1,6 @@
 package fr.esieaproject.poneyclub.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,17 +29,28 @@ public class UserController {
 	private UserRepository userRepo;
 
 	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean createRider(@RequestBody User user) { 
-		
-		user.setRole("Rider");
-		try {
-	    	userRepo.save(user);
-	    	return true;
-		} catch (Exception e) {
+    public boolean createRider(@RequestBody User user) {
+		Iterable<User> userList = userRepo.findAll();
+		try{
+			for (User u: userList) {
+				if(u.getName().equals(user.getName())){
+					return true;
+					//TODO A faire avec la requete HTTP pour envoyer l'erreur
+
+					//					return error('Username or password is incorrect');
+
+				}else
+				{
+					user.setRole("Rider");
+					userRepo.save(user);
+				}
+			}
+			return false;
+		}catch(Exception e){
 			logger.error("" + e);
 			return false;
 		}
-    	
+
     }
 	
 	@PostMapping(value = "/update-user/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -146,4 +158,5 @@ public class UserController {
 		return true;
 		
 	}
+
 }
