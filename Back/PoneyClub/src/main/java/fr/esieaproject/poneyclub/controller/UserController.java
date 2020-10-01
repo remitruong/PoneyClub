@@ -52,10 +52,10 @@ public class UserController {
 		}
 
     }
-	
+
 	@PostMapping(value = "/update-user/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean updateRider(@PathVariable Long id, @RequestBody User user) {  
-    	
+    public boolean updateRider(@PathVariable Long id, @RequestBody User user) {
+
     	try {
 	    	userRepo.save(user);
 	    	return true;
@@ -64,12 +64,12 @@ public class UserController {
     		return false;
     	}
     }
-	
+
 
 	@PostMapping(value = "/connect", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public User connectUser(@RequestBody User user) {
 		Optional<User> existingUser = userRepo.findByMail(user.getMail());
-		
+
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(user.getMobile());
 			if (existingUser.isEmpty()) {
@@ -77,7 +77,7 @@ public class UserController {
 				return null;
 			}
 		}
-		
+
 		if (existingUser.get().getPassword().equals(user.getPassword())) {
 			return existingUser.get();
 		} else {
@@ -85,10 +85,10 @@ public class UserController {
 			return null;
 		}
 	}
-	
+
 	@GetMapping(value = "/get-user/{mailOrNumber}/{adminMail}")
 	public User getRiderByMail(@PathVariable String mailOrNumber, @PathVariable String adminMail) {
-		
+
 		Optional<User> admin = userRepo.findByMail(adminMail);
 		if (admin.isEmpty()) {
 			logger.error("User not found");
@@ -98,7 +98,7 @@ public class UserController {
 			logger.error("Only Admin access");
 			return null;
 		}
-		
+
 		Optional<User> user = userRepo.findByMail(mailOrNumber);
 		if (user.isEmpty()) {
 			user = userRepo.findByMobile(mailOrNumber);
@@ -107,56 +107,56 @@ public class UserController {
 				return null;
 			}
 		}
-		
+
 		return user.get();
 	}
-	
+
 	@GetMapping(value ="/get-users/{adminMail}")
 	public Iterable<User> getRiders(@PathVariable String adminMail) {
-		
+
 		Optional<User> admin = userRepo.findByMail(adminMail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			logger.error("Error while retrieving admin");
 			return null;
 		}
-		
-		
+
+
 		Iterable<User> userList = userRepo.findAll();
-		
+
 		return userList;
 	}
-	
+
 	@PostMapping(value ="/create-teacher/{adminMail}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public boolean createTeacher(@RequestBody User user, @PathVariable String adminMail) {
-		
+
 		Optional<User> admin = userRepo.findByMail(adminMail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			logger.error("Error while retrieving admin");
 			return false;
 		}
-		
-		
+
+
 		user.setRole("Teacher");
 		userRepo.save(user);
 		return true;
-		
+
 	}
-	
+
 	@PostMapping(value ="/create-admin/{adminMail}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public boolean createAdmin(@RequestBody User user, @PathVariable String adminMail) {
-		
+
 		Optional<User> admin = userRepo.findByMail(adminMail);
-		
+
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			logger.error("Error while retrieving admin");
 			return false;
 		}
-		
-		
+
+
 		user.setRole("Teacher");
 		userRepo.save(user);
 		return true;
-		
+
 	}
 
 }

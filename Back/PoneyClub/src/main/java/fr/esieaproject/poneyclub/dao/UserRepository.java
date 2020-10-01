@@ -14,6 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	Optional<User> findByMail(String mail);
 	Optional<User> findByMobile(String mobile);
+	Optional<User> findByName(String name);
 	List<User> findByRole(String role);
 	
 	@Query("SELECT u FROM User u WHERE LOWER(u.mail) = LOWER(:mail) and u.password = :password")
