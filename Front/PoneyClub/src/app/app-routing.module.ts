@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
-  {path: 'forgotPassword', component: ForgotPasswordComponent},
+  {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'home', component: HomeComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
