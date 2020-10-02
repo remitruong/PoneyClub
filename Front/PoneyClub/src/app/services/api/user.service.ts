@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/classes/user';
+import { User } from 'src/app/_classes/user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class UserService {
 
   private BASE_URL = 'http://localhost:8081';
   private signupUrl = `${this.BASE_URL}/user/create-rider`;
@@ -16,4 +16,6 @@ export class ApiService {
   public signup(user: User): Observable<any> {
     return this.http.post(this.signupUrl, user);
   }
+
+
 }
