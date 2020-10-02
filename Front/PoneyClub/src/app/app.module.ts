@@ -23,6 +23,7 @@ import {
 import {LoginComponent} from "./login/login.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {SignupComponent} from "./signup/signup.component";
+// import {AlertComponent} from "./_alert";
 
 @NgModule({
   declarations: [
@@ -32,18 +33,18 @@ import {SignupComponent} from "./signup/signup.component";
     SignupComponent,
     HomeComponent,
     PageNotFoundComponent,
+    // AlertComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NbThemeModule.forRoot({name: 'dark'}),
     NbLayoutModule,
-    NbButtonModule,
     NbIconModule,
     NbEvaIconsModule,
-    NbButtonModule,
     NbCardModule,
     NgbModule,
+    NbButtonModule,
     NgbPaginationModule,
     NgbAlertModule,
     HttpClientModule,

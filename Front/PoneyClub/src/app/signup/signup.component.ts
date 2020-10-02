@@ -1,8 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { User } from '../classes/user';
-import { ApiService } from '../services/api/api.service';
-import {NbAuthComponent} from "@nebular/auth";
+import {Component, OnInit} from '@angular/core';
+import { User } from '../_classes/user';
+import { UserService } from '../services/api/user.service';
 import {Router} from "@angular/router";
+import {first} from "rxjs/operators";
+import {AlertService} from "../services/alert.service";
 
 @Component({
   selector: 'app-signup',
@@ -19,20 +20,23 @@ export class SignupComponent implements OnInit{
     licencenum: ''
   }
 
-  constructor(private apiService: ApiService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private alertService: AlertService) {
   }
 
   ngOnInit(): void {
   }
 
-  public register(): void {
-    this.apiService.signup(this.user).subscribe(
+  public onSubmit(): void {
+    this.userService.signup(this.user).pipe(first()).subscribe(
       data => {
+        // this.alertService.success('Sign up successful', true);
         alert(data);
+        //Permet de rediriger si inscription
         this.router.navigate(['/login']);
       },
       error => {
-        alert('error');
+        alert('error')
+        // this.alertService.error('');
       }
     );
   }
