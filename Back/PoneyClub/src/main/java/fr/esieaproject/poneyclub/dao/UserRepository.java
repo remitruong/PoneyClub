@@ -12,12 +12,11 @@ import fr.esieaproject.poneyclub.beans.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-	Optional<User> findByMail(String mail);
+	Optional<User> findByEmail(String email);
 	Optional<User> findByMobile(String mobile);
-	Optional<User> findByName(String name);
 	List<User> findByRole(String role);
-	
-	@Query("SELECT u FROM User u WHERE LOWER(u.mail) = LOWER(:mail) and u.password = :password")
+
+	@Query("SELECT u FROM User u WHERE LOWER(u.email) = LOWER(:mail) and u.password = :password")
     Optional<User> connect(@Param("mail") String lastName, @Param("password") String password);
 	
 }

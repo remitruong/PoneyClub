@@ -44,7 +44,7 @@ public class UserService {
 	}
 	
 	public User connect(User user) throws NoUserFoundException, WrongPasswordException {
-		Optional<User> existingUser = userRepo.findByMail(user.getMail());
+		Optional<User> existingUser = userRepo.findByEmail(user.getEmail());
 		
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(user.getMobile());
@@ -61,9 +61,9 @@ public class UserService {
 		}
 	}
 	
-	public User getRiderByMail(String mailOrNumber, String adminMail) throws NoUserFoundException, UnauthorizeAccessException {
+	public User getRiderByMail(String emailOrNumber, String adminEmail) throws NoUserFoundException, UnauthorizeAccessException {
 
-		Optional<User> admin = userRepo.findByMail(adminMail);
+		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty()) {
 			logger.error("Admin not found");
 			throw new NoUserFoundException("No user found");
@@ -73,9 +73,9 @@ public class UserService {
 			throw new UnauthorizeAccessException("Access denied");
 		}
 		
-		Optional<User> user = userRepo.findByMail(mailOrNumber);
+		Optional<User> user = userRepo.findByEmail(emailOrNumber);
 		if (user.isEmpty()) {
-			user = userRepo.findByMobile(mailOrNumber);
+			user = userRepo.findByMobile(emailOrNumber);
 			if (user.isEmpty()) {
 				logger.error("No user found");
 				throw new NoUserFoundException("No user found");
@@ -84,8 +84,8 @@ public class UserService {
 		return user.get();
 	}
 	
-	public Iterable<User> getRiders(String adminMail) throws NoUserFoundException {
-		Optional<User> admin = userRepo.findByMail(adminMail);
+	public Iterable<User> getRiders(String adminEmail) throws NoUserFoundException {
+		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
@@ -93,8 +93,8 @@ public class UserService {
 		return userList;
 	}
 	
-	public boolean createTeacher(User teacher, String adminMail) throws NoUserFoundException {
-		Optional<User> admin = userRepo.findByMail(adminMail);
+	public boolean createTeacher(User teacher, String adminEmail) throws NoUserFoundException {
+		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
@@ -103,8 +103,8 @@ public class UserService {
 		return true;
 	}
 	
-	public boolean changeUserToAdmin(User user, String adminMail) throws NoUserFoundException {
-		Optional<User> admin = userRepo.findByMail(adminMail);
+	public boolean changeUserToAdmin(User user, String adminEmail) throws NoUserFoundException {
+		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}

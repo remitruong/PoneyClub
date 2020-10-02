@@ -2,33 +2,51 @@
 <p class="sub-title">Create your account</p>
 
 <div class="container-fluid col-md-4 justify-content-center">
-  <form (submit)="onSubmit()">
-    <div class="form-control-group">
-      <label for="inputEmail">Email</label>
-      <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" [(ngModel)]="user.mail" name="mail">
+  <form [formGroup]="signUpForm" (submit)="onSubmit()">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" formControlName="firstName" placeholder="Enter your First Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+        <div *ngIf="f.firstName.errors.required">First Name is required</div>
+      </div>
     </div>
     <div class="form-group">
-      <label for="inputPassword">Password</label>
-      <input type="password" class="form-control" id="inputPassword" placeholder="Password" [(ngModel)]="user.password" name="pasword">
+      <label>Last Name</label>
+      <input type="text" formControlName="lastName" class="form-control" placeholder="Enter your Last Name" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+      <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+        <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+      </div>
     </div>
     <div class="form-group">
-      <label for="inputFirstName">First Name</label>
-      <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name" [(ngModel)]="user.name" name="name">
+      <label>Password</label>
+      <input type="password" formControlName="password" class="form-control"placeholder="Enter your password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+        <div *ngIf="f.password.errors.required">Password is required</div>
+      </div>
     </div>
     <div class="form-group">
-      <label for="inputLastName">Last Name</label>
-      <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name" [(ngModel)]="user.lastname" name="lastname">
+      <label>Email</label>
+      <input type="email" formControlName="email" class="form-control" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+        <div *ngIf="f.email.errors.required">Email is required</div>
+        <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+      </div>
     </div>
     <div class="form-group">
-      <label for="inputPhoneNumber">Mobile</label>
-      <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number" [(ngModel)]="user.mobile" name="mobile">
+      <label>Mobile</label>
+      <input type="tel" formControlName="mobile" class="form-control" placeholder="Enter your phone number" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }">
+      <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+        <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+      </div>
     </div>
     <div class="form-group">
-      <label for="inputLicenceNumber">Licence Number</label>
-      <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)"  [(ngModel)]="user.licencenum" name="licencenum">
+      <label>Licence Number</label>
+      <input type="text" formControlName="licenceNum" class="form-control" placeholder="Enter your licence number (optional)" >
+
     </div>
     <section class="button-with-link">
       <button type="submit" nbButton>Sign up</button>
+      <button type="reset" (click)="onReset()" nbButton>Reset</button>
       <span>
       Already have an account ? <a class="text-link" routerLink="/login" routerLinkActive="activebutton" >Log in</a>
     </span>
