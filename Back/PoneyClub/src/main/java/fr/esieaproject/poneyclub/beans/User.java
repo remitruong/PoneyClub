@@ -1,15 +1,10 @@
 package fr.esieaproject.poneyclub.beans;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -17,10 +12,10 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idUser;
-	private String name;
+	private String firstName;
 	private String lastName;
 	@Column(unique = true)
-	private String mail;
+	private String email;
 	private String password;
 	@Column(unique = true)
 	private String mobile;
@@ -32,28 +27,28 @@ public class User {
 	public User() {
 	}
 
-	public User(String name, String lastName, String mail, String password, String mobile) {
+	public User(String firstName, String lastName, String email, String password, String mobile) {
 		super();
-		this.name = name;
+		this.firstName = firstName;
 		this.lastName = lastName;
-		this.mail = mail;
+		this.email = email;
 		this.password = password;
 		this.mobile = mobile;
 	}
 
-	public User(String name, String lastName, String mail, String password, String mobile, String licenceNum) {
+	public User(String firstName, String lastName, String email, String password, String mobile, String licenceNum) {
 		super();
-		this.name = name;
+		this.firstName = firstName;
 		this.lastName = lastName;
-		this.mail = mail;
+		this.email = email;
 		this.password = password;
 		this.mobile = mobile;
 		this.licenceNum = licenceNum;
 	}
 
-	public User(String mail, String password) {
+	public User(String email, String password) {
 		super();
-		this.mail = mail;
+		this.email = email;
 		this.password = password;
 	}
 
@@ -61,16 +56,16 @@ public class User {
 		return idUser;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
 	public String getLastName() {
 		return lastName;
 	}
 
-	public String getMail() {
-		return mail;
+	public String getEmail() {
+		return email;
 	}
 
 	public String getPassword() {
@@ -93,16 +88,16 @@ public class User {
 		return statut;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String name) {
+		this.firstName = name;
 	}
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setMail(String email) {
+		this.email = email;
 	}
 
 	public void setPassword(String password) {
@@ -127,7 +122,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + idUser + ", name=" + name + ", lastName=" + lastName + ", mail=" + mail + ", password="
+		return "User [id=" + idUser + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", password="
 				+ password + ", mobile=" + mobile + ", licenceNum=" + licenceNum + ", role=" + role + ", statut="
 				+ statut + "]";
 	}

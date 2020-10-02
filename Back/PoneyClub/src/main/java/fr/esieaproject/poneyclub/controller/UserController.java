@@ -32,9 +32,9 @@ public class UserController {
 	public ResponseEntity<Boolean> createRider(@RequestBody User user) {
 		boolean bool = userService.createUser(user);
 		if (bool) {
-			return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Boolean>(bool, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -43,9 +43,9 @@ public class UserController {
 	public ResponseEntity<Boolean> updateRider(@RequestBody User user) {
 		boolean bool = userService.updateUser(user);
 		if (bool) {
-			return new ResponseEntity<Boolean>(bool, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Boolean>(bool, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -55,9 +55,9 @@ public class UserController {
 	public ResponseEntity<?> connectUser(@RequestBody User user) {
 		try {
 			user = userService.connect(user);
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (NoUserFoundException | WrongPasswordException e) {
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -65,9 +65,9 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getRiderByMail(@PathVariable String mailOrNumber, @PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<User>(userService.getRiderByMail(mailOrNumber, adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.getRiderByMail(mailOrNumber, adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException | UnauthorizeAccessException e) {
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -75,9 +75,9 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getRiders(@PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<Iterable<User>>(userService.getRiders(adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.getRiders(adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException e) {
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -85,9 +85,9 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createTeacher(@RequestBody User teacher, @PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<Boolean>(userService.createTeacher(teacher, adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.createTeacher(teacher, adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException e) {
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -95,9 +95,9 @@ public class UserController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> createAdmin(@RequestBody User user, @PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<Boolean>(userService.changeUserToAdmin(user, adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.changeUserToAdmin(user, adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException e) {
-			return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 }

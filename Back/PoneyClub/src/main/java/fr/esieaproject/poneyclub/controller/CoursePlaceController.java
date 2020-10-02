@@ -61,7 +61,7 @@ public class CoursePlaceController {
 	@GetMapping(value = "/user-planning/{mailOrNumber}")
 	public List<CoursePlace> getUserPlanning(@PathVariable String mailOrNumber) {
 		
-		Optional<User> existingUser = userRepo.findByMail(mailOrNumber);
+		Optional<User> existingUser = userRepo.findByEmail(mailOrNumber);
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(mailOrNumber);
 			if (existingUser.isEmpty()) {

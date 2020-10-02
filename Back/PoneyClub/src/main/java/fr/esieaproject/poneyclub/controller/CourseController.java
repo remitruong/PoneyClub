@@ -82,7 +82,7 @@ public class CourseController {
 			logger.error("Unable to retrieve course");
 			return false;
 		}
-		Optional<User> rider = userRepo.findByMail(user.getMail());
+		Optional<User> rider = userRepo.findByEmail(user.getEmail());
 		CoursePlace planning = new CoursePlace(rider.get());
 		coursePlaceRepo.save(planning);
 		return true;
