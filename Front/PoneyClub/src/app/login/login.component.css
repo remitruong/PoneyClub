@@ -1,8 +1,10 @@
-.button-with-link
+.button-with-link,
+.label-with-link
 {
   display: flex;
   justify-content: space-between;
 }
+
 .sub-title,
 .title
 {
@@ -13,3 +15,4 @@
   display: flex;
   justify-content: space-between;
 }
+

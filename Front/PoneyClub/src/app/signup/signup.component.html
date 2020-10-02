@@ -1,37 +1,38 @@
 <h1 id="title" class="title">Sign up</h1>
 <p class="sub-title">Create your account</p>
 
-<form (submit)="register()">
-  <div class="form-control-group">
-    <label for="inputEmail">Email</label>
-    <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" [(ngModel)]="user.mail" name="mail">
-  </div>
-  <div class="form-group">
-    <label for="inputPassword">Password</label>
-    <input type="password" class="form-control" id="inputPassword" placeholder="Password" [(ngModel)]="user.password" name="pasword">
-  </div>
-  <div class="form-group">
-    <label for="inputFirstName">First Name</label>
-    <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name" [(ngModel)]="user.name" name="name">
-  </div>
-  <div class="form-group">
-    <label for="inputLastName">Last Name</label>
-    <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name" [(ngModel)]="user.lastname" name="lastname">
-  </div>
-  <div class="form-group">
-    <label for="inputPhoneNumber">Mobile</label>
-    <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number" [(ngModel)]="user.mobile" name="mobile">
-  </div>
-  <div class="form-group">
-    <label for="inputLicenceNumber">Licence Number</label>
-    <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)"  [(ngModel)]="user.licencenum" name="licencenum">
-  </div>
-  <section class="button-with-link">
-    <button type="submit" nbButton>Sign up</button>
-    <span>
-      Already have an account ? <a class="text-link" routerLink="/auth/login" routerLinkActive="activebutton" >Log in</a>
+<div class="container-fluid col-md-4 justify-content-center">
+  <form (submit)="register()">
+    <div class="form-control-group">
+      <label for="inputEmail">Email</label>
+      <input type="email" class="form-control" id="inputEmail" placeholder="Enter email" [(ngModel)]="user.mail" name="mail">
+    </div>
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input type="password" class="form-control" id="inputPassword" placeholder="Password" [(ngModel)]="user.password" name="pasword">
+    </div>
+    <div class="form-group">
+      <label for="inputFirstName">First Name</label>
+      <input type="text" class="form-control" id="inputFirstName" placeholder="Enter your First Name" [(ngModel)]="user.name" name="name">
+    </div>
+    <div class="form-group">
+      <label for="inputLastName">Last Name</label>
+      <input type="text" class="form-control" id="inputLastName" placeholder="Enter your Last Name" [(ngModel)]="user.lastname" name="lastname">
+    </div>
+    <div class="form-group">
+      <label for="inputPhoneNumber">Mobile</label>
+      <input type="tel" class="form-control" id="inputPhoneNumber" placeholder="Enter your phone number" [(ngModel)]="user.mobile" name="mobile">
+    </div>
+    <div class="form-group">
+      <label for="inputLicenceNumber">Licence Number</label>
+      <input type="text" class="form-control" id="inputLicenceNumber" placeholder="Enter your licence number (optional)"  [(ngModel)]="user.licencenum" name="licencenum">
+    </div>
+    <section class="button-with-link">
+      <button type="submit" nbButton>Sign up</button>
+      <span>
+      Already have an account ? <a class="text-link" routerLink="/login" routerLinkActive="activebutton" >Log in</a>
     </span>
-  </section>
-</form>
-
+    </section>
+  </form>
+</div>
 

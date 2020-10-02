@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { User } from '../classes/user';
 import { ApiService } from '../services/api/api.service';
 import {NbAuthComponent} from "@nebular/auth";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,7 @@ export class SignupComponent implements OnInit{
     licencenum: ''
   }
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -26,11 +27,12 @@ export class SignupComponent implements OnInit{
 
   public register(): void {
     this.apiService.signup(this.user).subscribe(
-      res => {
-        alert(res)
+      data => {
+        alert(data);
+        this.router.navigate(['/login']);
       },
-      err => {
-
+      error => {
+        alert('error');
       }
     );
   }

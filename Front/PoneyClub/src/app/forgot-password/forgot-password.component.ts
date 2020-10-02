@@ -6,7 +6,7 @@ import {NbResetPasswordComponent} from "@nebular/auth";
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent extends NbResetPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit(): void {
   }
