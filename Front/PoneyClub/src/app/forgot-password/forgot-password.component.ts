@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {NbResetPasswordComponent} from "@nebular/auth";
 
 @Component({
   selector: 'app-forgot-password',
