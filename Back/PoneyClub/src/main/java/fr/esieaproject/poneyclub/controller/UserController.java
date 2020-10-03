@@ -29,12 +29,12 @@ public class UserController {
 
 	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> createRider(@RequestBody User user) {
+	public ResponseEntity<Object> createRider(@RequestBody User user) {
 		boolean bool = userService.createUser(user);
 		if (bool) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Email or phone already taken", HttpStatus.BAD_REQUEST);
 		}
 	}
 

@@ -23,14 +23,16 @@ public class UserService {
 	private UserRepository userRepo;
 	
 	public boolean createUser(User user) {
+		Optional<User> existingUser = userRepo.findByEmail(user.getEmail());
 		user.setRole("Rider");
-		try {
-	    	userRepo.save(user);
-	    	return true;
-		} catch (Exception e) {
-			logger.error("" + e);
-			return false;
+		if (existingUser.isEmpty()) {
+			existingUser = userRepo.findByMobile(user.getMobile());
+			if (existingUser.isEmpty()) {
+					userRepo.save(user);
+					return true;
+			}
 		}
+		return false;
 	}
 	
 	public boolean updateUser(User user) {

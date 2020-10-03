@@ -23,7 +23,7 @@ import {
 import {LoginComponent} from "./login/login.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {SignupComponent} from "./signup/signup.component";
-// import {AlertComponent} from "./_alert";
+import {AlertComponent} from "./_alert/alert.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ import {SignupComponent} from "./signup/signup.component";
     SignupComponent,
     HomeComponent,
     PageNotFoundComponent,
-    // AlertComponent,
+    AlertComponent,
   ],
     imports: [
         BrowserModule,
