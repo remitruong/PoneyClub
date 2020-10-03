@@ -1,5 +1,7 @@
 package fr.esieaproject.poneyclub.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.esieaproject.poneyclub.beans.User;
+import fr.esieaproject.poneyclub.exception.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.ExceptionResponse;
+import fr.esieaproject.poneyclub.exception.MobileNotAvailableException;
 import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 import fr.esieaproject.poneyclub.exception.UnauthorizeAccessException;
+import fr.esieaproject.poneyclub.exception.WrongMobileOrEmailFormat;
 import fr.esieaproject.poneyclub.exception.WrongPasswordException;
 import fr.esieaproject.poneyclub.services.UserService;
 
@@ -26,15 +31,18 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	private final Logger logger = LogManager.getLogger(UserController.class);
 
 	@PostMapping(value = "/create-rider", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> createRider(@RequestBody User user) {
-		boolean bool = userService.createUser(user);
-		if (bool) {
+	public ResponseEntity createRider(@RequestBody User user) {
+		try {
+			userService.createUser(user);
 			return new ResponseEntity<>(true, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>("Email or phone already taken", HttpStatus.BAD_REQUEST);
+		} catch (MobileNotAvailableException | EmailNotAvailableException | WrongMobileOrEmailFormat e) {
+			logger.error("" + e);
+			return new ResponseEntity(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
 

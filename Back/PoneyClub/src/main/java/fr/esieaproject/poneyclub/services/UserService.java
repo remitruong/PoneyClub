@@ -1,6 +1,7 @@
 package fr.esieaproject.poneyclub.services;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import fr.esieaproject.poneyclub.beans.User;
 import fr.esieaproject.poneyclub.dao.UserRepository;
+import fr.esieaproject.poneyclub.exception.EmailNotAvailableException;
+import fr.esieaproject.poneyclub.exception.MobileNotAvailableException;
 import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 import fr.esieaproject.poneyclub.exception.UnauthorizeAccessException;
+import fr.esieaproject.poneyclub.exception.WrongMobileOrEmailFormat;
 import fr.esieaproject.poneyclub.exception.WrongPasswordException;
 
 
@@ -22,17 +26,22 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepo;
 	
-	public boolean createUser(User user) {
-		Optional<User> existingUser = userRepo.findByEmail(user.getEmail());
-		user.setRole("Rider");
-		if (existingUser.isEmpty()) {
-			existingUser = userRepo.findByMobile(user.getMobile());
-			if (existingUser.isEmpty()) {
-					userRepo.save(user);
-					return true;
+	public boolean createUser(User user) throws MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {		
+		if (emailAvailable(user.getEmail())) {
+			if (mobileAvailable(user.getMobile())) {
+				if (isEmailValid(user.getEmail()) && isMobileValid(user.getMobile())) {
+				user.setRole("Rider");
+				userRepo.save(user);
+				return true;
+				} else {
+					throw new WrongMobileOrEmailFormat("Email or number is wrong");
+				}
+			} else {
+				throw new MobileNotAvailableException("This mobile number is already used");
 			}
+		} else {
+			throw new EmailNotAvailableException("This email is already used");
 		}
-		return false;
 	}
 	
 	public boolean updateUser(User user) {
@@ -113,6 +122,28 @@ public class UserService {
 		user.setStatut("Admin");
 		userRepo.save(user);
 		return true;
+	}
+	
+	private boolean isEmailValid(String email) {
+		 Pattern pattern = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+		 return pattern.matcher(email).matches();
+	}
+	
+	private boolean isMobileValid(String mobile) {
+		Pattern pattern = Pattern.compile("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$");
+		return pattern.matcher(mobile).matches();
+	}
+	
+	private boolean emailAvailable(String email) {
+		Optional<User> existingUser = userRepo.findByEmail(email);
+		if (existingUser.isEmpty()) return true;
+		else return false;
+	}
+	
+	private boolean mobileAvailable(String mobile) {
+		Optional<User> existingUser = userRepo.findByEmail(mobile);
+		if (existingUser.isEmpty()) return true;
+		else return false;
 	}
 
 }

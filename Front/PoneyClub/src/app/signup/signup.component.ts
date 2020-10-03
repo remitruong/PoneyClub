@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {first} from "rxjs/operators";
 import {AlertService} from "../services/alert.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { IError } from '../_classes/ierror';
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class SignupComponent implements OnInit{
   signUpForm: FormGroup;
   submitted = false;
+  localError:IError;
 
   user: User = {
     firstName: '',
@@ -63,7 +65,8 @@ export class SignupComponent implements OnInit{
         this.router.navigate(['/login']);
       },
       error => {
-        alert(error)
+        this.localError = error as IError;
+        alert(this.localError.error.response);
         this.alertService.error('Email or phone already taken');
       }
     );
