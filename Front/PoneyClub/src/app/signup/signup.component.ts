@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class SignupComponent implements OnInit{
   signUpForm: FormGroup;
   submitted = false;
@@ -40,7 +41,6 @@ export class SignupComponent implements OnInit{
 
   get f() { return this.signUpForm.controls; }
 
-
   public onSubmit(): void {
     this.submitted = true;
 
@@ -58,14 +58,13 @@ export class SignupComponent implements OnInit{
 
     this.userService.signup(this.user).pipe(first()).subscribe(
       data => {
-        // this.alertService.success('Sign up successful', true);
         alert(data);
-        //Permet de rediriger si inscription
+        this.alertService.success('Sign up successful', true);
         this.router.navigate(['/login']);
       },
       error => {
-        alert('error')
-        // this.alertService.error('');
+        alert(error.toString())
+        this.alertService.error(error.toString());
       }
     );
   }
