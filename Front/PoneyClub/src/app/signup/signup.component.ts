@@ -19,6 +19,7 @@ export class SignupComponent implements OnInit{
   localError:IError;
 
   user: User = {
+    id: '',
     firstName: '',
     lastName:  '',
     email: '',
@@ -60,7 +61,6 @@ export class SignupComponent implements OnInit{
 
     this.userService.signup(this.user).pipe(first()).subscribe(
       data => {
-        alert(data);
         this.alertService.success('Sign up successful', true);
         this.router.navigate(['/login']);
       },

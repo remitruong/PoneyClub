@@ -66,6 +66,7 @@ public class UserController {
 			user = userService.connect(user);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (NoUserFoundException | WrongPasswordException | MaxTrialConnectionAttempException e) {
+			logger.error(e);
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
+import { User } from "../_classes/user";
+import { ObjectService } from '../services/object.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,23 @@ import {Component, OnInit} from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  user : User = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    mobile: '',
+    licenceNum: ''
+  }
+
+  isConnected = false;
+
+  constructor(private objectService : ObjectService) { }
 
   ngOnInit(): void {
+    this.user = this.objectService.user;
+    if (this.user != null) { this.isConnected = true;}
   }
 
 }
