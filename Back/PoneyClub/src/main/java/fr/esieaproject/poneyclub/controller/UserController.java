@@ -22,6 +22,7 @@ import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 import fr.esieaproject.poneyclub.exception.UnauthorizeAccessException;
 import fr.esieaproject.poneyclub.exception.WrongMobileOrEmailFormat;
 import fr.esieaproject.poneyclub.exception.WrongPasswordException;
+import fr.esieaproject.poneyclub.exception.MaxTrialConnectionAttempException;
 import fr.esieaproject.poneyclub.services.UserService;
 
 @RestController
@@ -64,7 +65,8 @@ public class UserController {
 		try {
 			user = userService.connect(user);
 			return new ResponseEntity<>(user, HttpStatus.OK);
-		} catch (NoUserFoundException | WrongPasswordException e) {
+		} catch (NoUserFoundException | WrongPasswordException | MaxTrialConnectionAttempException e) {
+			logger.error(e);
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}

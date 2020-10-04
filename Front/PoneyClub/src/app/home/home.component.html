@@ -1,2 +1,7 @@
-<h1>HOME PAGE</h1>
-<p>Welcome to the home page</p>
+<div container>
+	<div *ngIf="isConnected">
+		<p>Hello {{user.firstName}} {{user.lastName}}</p>
+	</div>
+
+
+</div>

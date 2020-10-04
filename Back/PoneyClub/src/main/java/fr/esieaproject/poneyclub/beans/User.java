@@ -23,6 +23,7 @@ public class User {
 	private String licenceNum;
 	private String role;
 	private String statut = "User";
+	private int trialConnection = 0;
 	
 	public User() {
 	}
@@ -87,6 +88,10 @@ public class User {
 	public String getStatut() {
 		return statut;
 	}
+	
+	public int getTrialConnection() {
+		return trialConnection;
+	}
 
 	public void setFirstName(String name) {
 		this.firstName = name;
@@ -118,6 +123,10 @@ public class User {
 
 	public void setStatut(String statut) {
 		this.statut = statut;
+	}
+	
+	public void setTrialConnection(int trialConnection) {
+		this.trialConnection = trialConnection;
 	}
 
 	@Override

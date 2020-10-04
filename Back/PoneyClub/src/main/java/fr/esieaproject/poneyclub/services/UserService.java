@@ -16,23 +16,24 @@ import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 import fr.esieaproject.poneyclub.exception.UnauthorizeAccessException;
 import fr.esieaproject.poneyclub.exception.WrongMobileOrEmailFormat;
 import fr.esieaproject.poneyclub.exception.WrongPasswordException;
-
+import fr.esieaproject.poneyclub.exception.MaxTrialConnectionAttempException;
 
 @Service
 public class UserService {
-	
+
 	private Logger logger = LogManager.getLogger(UserService.class);
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
-	public boolean createUser(User user) throws MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {		
+
+	public boolean createUser(User user)
+			throws MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {
 		if (emailAvailable(user.getEmail())) {
 			if (mobileAvailable(user.getMobile())) {
 				if (isEmailValid(user.getEmail()) && isMobileValid(user.getMobile())) {
-				user.setRole("Rider");
-				userRepo.save(user);
-				return true;
+					user.setRole("Rider");
+					userRepo.save(user);
+					return true;
 				} else {
 					throw new WrongMobileOrEmailFormat("Email or number is wrong");
 				}
@@ -43,36 +44,46 @@ public class UserService {
 			throw new EmailNotAvailableException("This email is already used");
 		}
 	}
-	
+
 	public boolean updateUser(User user) {
 		try {
-	    	userRepo.save(user);
-	    	return true;
-    	} catch(Exception e) {
-    		logger.error("" + e);
-    		return false;
-    	}
+			userRepo.save(user);
+			return true;
+		} catch (Exception e) {
+			logger.error("" + e);
+			return false;
+		}
 	}
 	
-	public User connect(User user) throws NoUserFoundException, WrongPasswordException {
+	//TODO
+	public User connect(User user) throws NoUserFoundException, WrongPasswordException, MaxTrialConnectionAttempException {
 		Optional<User> existingUser = userRepo.findByEmail(user.getEmail());
-		
+
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(user.getMobile());
 			if (existingUser.isEmpty()) {
 				throw new NoUserFoundException("No user found");
 			}
 		}
-		
-		if (existingUser.get().getPassword().equals(user.getPassword())) {
-			return existingUser.get();
+
+		int trialConnection = existingUser.get().getTrialConnection();
+		if (trialConnection < 4) {
+			if (existingUser.get().getPassword().equals(user.getPassword())) {
+				return existingUser.get();
+			} else {
+				logger.error("Wrong password");
+				trialConnection++;
+				existingUser.get().setTrialConnection(trialConnection);
+				userRepo.save(existingUser.get());
+				throw new WrongPasswordException("Wrong password");
+			}
 		} else {
-			logger.error("Wrong password");
-			throw new WrongPasswordException("Wrong password");
+			throw new MaxTrialConnectionAttempException("You already had fail 3 attempt to connect");
 		}
 	}
-	
-	public User getRiderByMail(String emailOrNumber, String adminEmail) throws NoUserFoundException, UnauthorizeAccessException {
+
+	public User getRiderByMail(String emailOrNumber, String adminEmail)
+			throws NoUserFoundException, UnauthorizeAccessException {
 
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty()) {
@@ -83,7 +94,7 @@ public class UserService {
 			logger.error("Only Admin access");
 			throw new UnauthorizeAccessException("Access denied");
 		}
-		
+
 		Optional<User> user = userRepo.findByEmail(emailOrNumber);
 		if (user.isEmpty()) {
 			user = userRepo.findByMobile(emailOrNumber);
@@ -94,7 +105,7 @@ public class UserService {
 		}
 		return user.get();
 	}
-	
+
 	public Iterable<User> getRiders(String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
@@ -103,7 +114,7 @@ public class UserService {
 		Iterable<User> userList = userRepo.findAll();
 		return userList;
 	}
-	
+
 	public boolean createTeacher(User teacher, String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
@@ -113,7 +124,7 @@ public class UserService {
 		userRepo.save(teacher);
 		return true;
 	}
-	
+
 	public boolean changeUserToAdmin(User user, String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
@@ -123,27 +134,33 @@ public class UserService {
 		userRepo.save(user);
 		return true;
 	}
-	
+
 	private boolean isEmailValid(String email) {
-		 Pattern pattern = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
-		 return pattern.matcher(email).matches();
+		Pattern pattern = Pattern.compile(
+				"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+				Pattern.CASE_INSENSITIVE);
+		return pattern.matcher(email).matches();
 	}
-	
+
 	private boolean isMobileValid(String mobile) {
 		Pattern pattern = Pattern.compile("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$");
 		return pattern.matcher(mobile).matches();
 	}
-	
+
 	private boolean emailAvailable(String email) {
 		Optional<User> existingUser = userRepo.findByEmail(email);
-		if (existingUser.isEmpty()) return true;
-		else return false;
+		if (existingUser.isEmpty())
+			return true;
+		else
+			return false;
 	}
-	
+
 	private boolean mobileAvailable(String mobile) {
 		Optional<User> existingUser = userRepo.findByEmail(mobile);
-		if (existingUser.isEmpty()) return true;
-		else return false;
+		if (existingUser.isEmpty())
+			return true;
+		else
+			return false;
 	}
 
 }
