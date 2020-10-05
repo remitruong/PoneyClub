@@ -35,7 +35,7 @@ public class UserService {
 					userRepo.save(user);
 					return true;
 				} else {
-					throw new WrongMobileOrEmailFormat("Email or number is wrong");
+					throw new WrongMobileOrEmailFormat("Email or Mobile is wrong");
 				}
 			} else {
 				throw new MobileNotAvailableException("This mobile number is already used");
@@ -55,13 +55,13 @@ public class UserService {
 		}
 	}
 	
-	//TODO
+	//TODO Gérer l'exception No value present (quand aucun champs n'est rempli)
 	public User connect(User user) throws NoUserFoundException, WrongPasswordException, MaxTrialConnectionAttempException {
 		Optional<User> existingUser = userRepo.findByEmail(user.getEmail());
 
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(user.getMobile());
-			if (existingUser.isEmpty()) {
+			if (existingUser.isEmpty() && user.getId()!=null) {
 				throw new NoUserFoundException("No user found");
 			}
 		}

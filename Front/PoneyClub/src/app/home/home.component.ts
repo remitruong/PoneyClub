@@ -1,6 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import { User } from "../_classes/user";
 import { ObjectService } from '../services/object.service';
+import {AuthenticationService} from "../services/authentification.service";
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { ObjectService } from '../services/object.service';
 export class HomeComponent implements OnInit {
 
   user : User = {
-    id: '',
+    emailOrPhone: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -19,13 +20,13 @@ export class HomeComponent implements OnInit {
     licenceNum: ''
   }
 
-  isConnected = false;
+  currentUser: User;
 
-  constructor(private objectService : ObjectService) { }
+  constructor(private authenticationService: AuthenticationService) {
+    this.currentUser = this.authenticationService.currentUserValue;
+  }
 
   ngOnInit(): void {
-    this.user = this.objectService.user;
-    if (this.user != null) { this.isConnected = true;}
   }
 
 }
