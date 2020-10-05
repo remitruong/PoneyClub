@@ -7,7 +7,7 @@ import { User } from '../_classes/user';
 export class ObjectService {
 
   private currentUser:User = {
-    id: '',
+    emailOrPhone: '',
     firstName: '',
     lastName: '',
     email: '',

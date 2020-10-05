@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit{
   localError:IError;
 
   user: User = {
-    id: '',
+    emailOrPhone: '',
     firstName: '',
     lastName:  '',
     email: '',
@@ -66,8 +66,7 @@ export class SignupComponent implements OnInit{
       },
       error => {
         this.localError = error as IError;
-        alert(this.localError.error.response);
-        this.alertService.error('Email or phone already taken');
+        this.alertService.error(this.localError.error.response);
       }
     );
   }

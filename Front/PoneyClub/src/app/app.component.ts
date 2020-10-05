@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { User } from './_classes';
 import { ObjectService } from './services/object.service';
+import {AuthenticationService} from "./services/authentification.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -8,34 +10,18 @@ import { ObjectService } from './services/object.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  currentUser: User;
 
-  user:User = {
-    id: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    mobile: '',
-    licenceNum: ''
-  };
-
-  isConnected:boolean = true;
-
-  constructor(private objectService : ObjectService) {}
+  constructor(private authenticationService: AuthenticationService, private router: Router) {
+    this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  }
 
   ngOnInit(): void {
-    this.user = this.objectService.user;
-    console.log(this.isConnected);
-    if (this.user.id != null) {
-      this.isConnected = true;
-    }
   }
 
   disconnect() {
-    console.log(this.user);
-    this.user = null;
-    this.isConnected = false;
-    this.objectService.shUser(null);
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

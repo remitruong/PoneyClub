@@ -1,7 +1,5 @@
 <div container>
-	<div *ngIf="isConnected">
-		<p>Hello {{user.firstName}} {{user.lastName}}</p>
+	<div *ngIf="currentUser">
+		<p>Hello {{currentUser.firstName}} {{currentUser.lastName}}</p>
 	</div>
-
-
 </div>
