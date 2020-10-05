@@ -6,7 +6,7 @@
       <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser" (click)="disconnect()">Disconnect</button>
     </div>
     <div class="col-lg-2 col-xl-1 col-md-1 col-sm-1 col-2">
-      <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser"><nb-icon icon="home"></nb-icon></button>
+      <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser" (click)="backToHome()"><nb-icon icon="home"></nb-icon></button>
     </div>
   </nb-layout-header>
 

@@ -24,5 +24,10 @@ export class AppComponent {
     this.router.navigate(['/login']);
   }
 
+  backToHome(){
+    window.location.reload();
+    this.router.navigate(['/home']);
+  }
+
 }
 
