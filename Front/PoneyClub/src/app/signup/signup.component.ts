@@ -19,13 +19,15 @@ export class SignupComponent implements OnInit{
   localError:IError;
 
   user: User = {
-    emailOrPhone: '',
+    id: '',
     firstName: '',
     lastName:  '',
     email: '',
     password: '',
     mobile: '',
-    licenceNum: ''
+    licenceNum: '',
+    role:'', 
+    statut:''
   }
 
   constructor(private userService: UserService, private router: Router, private alertService: AlertService, private formBuilder: FormBuilder) {
