@@ -46,6 +46,7 @@ public class UserService {
 	}
 
 	public boolean updateUser(User user) {
+		logger.info("" + user.toString());
 		try {
 			userRepo.save(user);
 			return true;
@@ -61,7 +62,7 @@ public class UserService {
 
 		if (existingUser.isEmpty()) {
 			existingUser = userRepo.findByMobile(user.getMobile());
-			if (existingUser.isEmpty() && user.getId()!=null) {
+			if (existingUser.isEmpty()) {
 				throw new NoUserFoundException("No user found");
 			}
 		}
@@ -106,12 +107,15 @@ public class UserService {
 		return user.get();
 	}
 
-	public Iterable<User> getRiders(String adminEmail) throws NoUserFoundException {
+	public Iterable<User> getUsers(String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
 		Iterable<User> userList = userRepo.findAll();
+		for (User user : userList) {
+			user.setPassword("");
+		}
 		return userList;
 	}
 

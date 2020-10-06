@@ -1,0 +1,21 @@
+<div class="card" style="background-color: cornflowerblue;">
+	<div class="card-body">
+		<div *ngIf="userSelected">
+			<input type="text" [(ngModel)]="userSelected.firstName">
+			<input type="text" [(ngModel)]="userSelected.lastName">
+			<input type="text" [(ngModel)]="userSelected.email">
+			<input type="text" [(ngModel)]="userSelected.mobile">
+			<label for="statut">Statut : </label>
+			<select id="statut">
+				<option>Admin</option>
+				<option>User</option>
+			</select>
+			<label for="role">Role : </label>
+			<select id="role">
+				<option>Teacher</option>
+				<option>Rider</option>
+			</select>
+			<button (click)="updateUser()">Update User</button>
+		</div>
+	</div>
+</div>

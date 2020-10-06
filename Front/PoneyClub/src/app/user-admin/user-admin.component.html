@@ -1,0 +1,22 @@
+<div class="container">
+	
+		<div class="col-md-5" style="border: 1px solid #CBD3E1; background-color: #8194BC;">
+		<table class="table table-dark" style="background-color: transparent; border: none;">
+			<tbody>
+				<div *ngFor="let user of users">
+					<a (click)="selectedUser = user">
+						<tr>
+							<th scope="row">{{user.id}}</th>
+							<th scope="row">{{user.firstName}}</th>
+							<th scope="row">{{user.lastName}}</th>
+							<th scope="row">{{user.email}}</th>
+						</tr>
+					</a>
+				</div>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-8">
+		<app-user-details [userSelected]="selectedUser" (userUpdated)="updateUser($event)"></app-user-details>
+	</div>
+</div>

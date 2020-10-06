@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import { User } from "../_classes/user";
-import { ObjectService } from '../services/object.service';
 import {AuthenticationService} from "../services/authentification.service";
 
 @Component({
@@ -10,15 +9,6 @@ import {AuthenticationService} from "../services/authentification.service";
 })
 export class HomeComponent implements OnInit {
 
-  user : User = {
-    emailOrPhone: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    mobile: '',
-    licenceNum: ''
-  }
 
   currentUser: User;
 

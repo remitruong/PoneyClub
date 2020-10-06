@@ -24,6 +24,8 @@ import {LoginComponent} from "./login/login.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import {SignupComponent} from "./signup/signup.component";
 import {AlertComponent} from "./_alert/alert.component";
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { UserDetailsComponent } from './user-admin/user-details/user-details.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import {AlertComponent} from "./_alert/alert.component";
     HomeComponent,
     PageNotFoundComponent,
     AlertComponent,
+    UserAdminComponent,
+    UserDetailsComponent,
   ],
     imports: [
         BrowserModule,

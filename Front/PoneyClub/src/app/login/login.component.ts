@@ -5,7 +5,6 @@ import { Router} from "@angular/router";
 import { UserService } from '../services/api/user.service';
 import { AlertService } from '../services/alert.service';
 import { IError } from '../_classes/ierror';
-import { ObjectService } from '../services/object.service';
 import {AuthenticationService} from "../services/authentification.service";
 import {first} from "rxjs/operators";
 
@@ -19,20 +18,21 @@ export class LoginComponent  {
   @Output() userConnected: EventEmitter<User> = new EventEmitter<User>();
 
   user:User = {
-    emailOrPhone: '',
+    id: '',
     firstName: '',
     lastName:  '',
     email: '',
     password: '',
     mobile: '',
-    licenceNum: ''
+    licenceNum: '',
+    role:'',
+    statut:''
   }
   localError:IError;
   submitted = false;
   connectForm: FormGroup;
 
-  constructor(private userService:UserService,private authenticationService: AuthenticationService, private alertService: AlertService, private router: Router, private formBuilder: FormBuilder,
-    private objectService: ObjectService){
+  constructor(private userService:UserService,private authenticationService: AuthenticationService, private alertService: AlertService, private router: Router, private formBuilder: FormBuilder){
 
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -51,6 +51,10 @@ export class LoginComponent  {
 
   public onSubmit():void {
     this.submitted = true;
+
+    if (this.connectForm.invalid) {
+      return;
+    }
 
     this.user.email = this.connectForm.get('emailOrPhone').value;
     this.user.mobile = this.connectForm.get('emailOrPhone').value;

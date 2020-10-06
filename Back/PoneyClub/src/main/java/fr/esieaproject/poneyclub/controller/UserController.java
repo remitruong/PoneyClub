@@ -66,7 +66,7 @@ public class UserController {
 			user = userService.connect(user);
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} catch (NoUserFoundException | WrongPasswordException | MaxTrialConnectionAttempException e) {
-			logger.error(e);
+			logger.error("" + e);
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -83,9 +83,9 @@ public class UserController {
 
 	@GetMapping(value ="/get-users/{adminMail}",
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getRiders(@PathVariable String adminMail) {
+	public ResponseEntity<?> getUsers(@PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<>(userService.getRiders(adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.getUsers(adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException e) {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
