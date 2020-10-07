@@ -12,6 +12,17 @@ import { AuthenticationService } from '../services/authentification.service';
 })
 export class UserAdminComponent implements OnInit {
 
+  newUser: User = {
+    id: 0,
+    firstName: '',
+    lastName:  '',
+    email: '',
+    password: '',
+    mobile: '',
+    licenceNum: '',
+    role:'', 
+    statut:''
+  };
   users: User[] = [];
   localError : IError;
   selectedUser: User;
@@ -26,6 +37,7 @@ export class UserAdminComponent implements OnInit {
   getAllUsers() {
     this.userService.getUsers(this.authenticationService.currentUserValue.email).subscribe(
       data => {
+        console.log(data);
         this.users = data;
       },
       error => {
@@ -36,18 +48,55 @@ export class UserAdminComponent implements OnInit {
   }
 
   updateUser(user: User) {
-    this.userService.updateUser(user).subscribe(
+    console.log(user.id);
+    this.userService.updateUser(user.id, user).subscribe(
       data => {
         console.log("user update successfull");
       },
       error => {
-        console.log("error occured while update user");
+        console.log("error occured while update user" + error);
+      }
+    )
+  }
+
+  createTeacher(user: User) {
+    this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
+      data => {
+        this.newUser = data;
+        this.users.push(this.newUser);
+        this.newUser = null;
+      },
+      error => {
+        console.log("error occured while adding user");
+      }
+
+    )
+  }
+
+  userToAdmin(user: User) {
+    this.userService.createAdmin(user, this.authenticationService.currentUserValue.email).subscribe(
+      data => {
+        console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !")
+      },
+      error => {
+        console.log("Error while setting selected user to admin");
       }
     )
   }
 
   selectUser(user: User) {
-    this.selectedUser = user;
+   this.selectedUser = user;
+  }
+
+  addTeacher() {
+    this.newUser.email='';
+    this.newUser.firstName='';
+    this.newUser.lastName='';
+    this.newUser.mobile='';
+    this.newUser.password='';
+    this.newUser.role='';
+    this.newUser.statut='';
+    this.selectedUser=this.newUser;
   }
 
 }

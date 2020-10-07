@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.esieaproject.poneyclub.beans.Course;
-import fr.esieaproject.poneyclub.beans.CoursePlace;
-import fr.esieaproject.poneyclub.beans.User;
 import fr.esieaproject.poneyclub.dao.CoursePlaceRepository;
 import fr.esieaproject.poneyclub.dao.CourseRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
+import fr.esieaproject.poneyclub.entity.Course;
+import fr.esieaproject.poneyclub.entity.CoursePlace;
+import fr.esieaproject.poneyclub.entity.User;
 
 
 @RestController

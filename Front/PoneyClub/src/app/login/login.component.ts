@@ -18,7 +18,7 @@ export class LoginComponent  {
   @Output() userConnected: EventEmitter<User> = new EventEmitter<User>();
 
   user:User = {
-    id: '',
+    id: 0,
     firstName: '',
     lastName:  '',
     email: '',

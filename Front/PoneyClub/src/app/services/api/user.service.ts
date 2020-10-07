@@ -24,20 +24,16 @@ export class UserService {
     return this.http.post(this.signupUrl, user);
   }
 
-  public connect(user: User): Observable<User> {
-    return this.http.post<User>(this.connectUrl, user);
-  }
-
-  public updateUser(user:User): Observable<any> {
-    return this.http.post(this.updateUsertUrl, user);
+  public updateUser(idUser: number, user:User): Observable<any> {
+    return this.http.post(this.updateUsertUrl+'/'+idUser, user);
   }
 
   public createAdmin(user:User, adminMail:string): Observable<any> {
     return this.http.post(this.createAdmintUrl + '/' + adminMail, user);
   }
 
-  public creatTeacher(user:User, adminMail:string): Observable<any> {
-    return this.http.post(this.creatTeacher + '/' + adminMail, user);
+  public createTeacher(user:User, adminMail:string): Observable<any> {
+    return this.http.post(this.createTeachertUrl + '/' + adminMail, user);
   }
 
   public getUsers(adminMail:string): Observable<User[]> {

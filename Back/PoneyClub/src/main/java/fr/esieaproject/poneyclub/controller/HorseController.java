@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.esieaproject.poneyclub.beans.Horse;
-import fr.esieaproject.poneyclub.beans.User;
 import fr.esieaproject.poneyclub.dao.HorseRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
+import fr.esieaproject.poneyclub.entity.Horse;
+import fr.esieaproject.poneyclub.entity.User;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")

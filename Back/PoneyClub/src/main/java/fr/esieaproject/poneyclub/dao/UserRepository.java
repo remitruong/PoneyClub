@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import fr.esieaproject.poneyclub.beans.User;
+import fr.esieaproject.poneyclub.entity.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 

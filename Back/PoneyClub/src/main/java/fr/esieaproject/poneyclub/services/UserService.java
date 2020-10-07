@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.esieaproject.poneyclub.beans.User;
 import fr.esieaproject.poneyclub.dao.UserRepository;
+import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.MobileNotAvailableException;
 import fr.esieaproject.poneyclub.exception.NoUserFoundException;
@@ -32,6 +32,7 @@ public class UserService {
 			if (mobileAvailable(user.getMobile())) {
 				if (isEmailValid(user.getEmail()) && isMobileValid(user.getMobile())) {
 					user.setRole("Rider");
+					user.setStatut("User");
 					userRepo.save(user);
 					return true;
 				} else {
@@ -45,8 +46,10 @@ public class UserService {
 		}
 	}
 
-	public boolean updateUser(User user) {
-		logger.info("" + user.toString());
+	public boolean updateUser(long idUser, User user) {
+		Optional<User> userToUpdate = userRepo.findById(idUser);
+		user.setIdUser(idUser);
+		
 		try {
 			userRepo.save(user);
 			return true;
@@ -115,18 +118,20 @@ public class UserService {
 		Iterable<User> userList = userRepo.findAll();
 		for (User user : userList) {
 			user.setPassword("");
+			logger.info("user list :" + user.toString());
 		}
 		return userList;
 	}
 
-	public boolean createTeacher(User teacher, String adminEmail) throws NoUserFoundException {
+	public User createTeacher(User teacher, String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
 		teacher.setRole("Teacher");
-		userRepo.save(teacher);
-		return true;
+		teacher.setTrialConnection(0);
+		teacher = userRepo.save(teacher);
+		return teacher;
 	}
 
 	public boolean changeUserToAdmin(User user, String adminEmail) throws NoUserFoundException {
@@ -138,6 +143,8 @@ public class UserService {
 		userRepo.save(user);
 		return true;
 	}
+	
+	
 
 	private boolean isEmailValid(String email) {
 		Pattern pattern = Pattern.compile(

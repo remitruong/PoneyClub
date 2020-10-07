@@ -12,6 +12,9 @@ export class UserDetailsComponent implements OnInit {
   @Input() userSelected:User;
   @Output() userUpdated: EventEmitter<User> = new EventEmitter<User>();
   @Output() userDeleted: EventEmitter<User> = new EventEmitter<User>();
+  @Output() userAdded: EventEmitter<User> = new EventEmitter<User>();
+  @Output() userToAdmin: EventEmitter<User> = new EventEmitter<User>();
+
 
   constructor() { }
 
@@ -26,4 +29,11 @@ export class UserDetailsComponent implements OnInit {
     this.userDeleted.emit(this.userSelected);
   }
 
+  addUser() {
+    this.userAdded.emit(this.userSelected);
+  }
+
+  changetoAdmin() {
+    this.userToAdmin.emit(this.userSelected);
+  }
 }
