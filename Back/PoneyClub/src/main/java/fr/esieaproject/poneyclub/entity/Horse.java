@@ -1,4 +1,4 @@
-package fr.esieaproject.poneyclub.beans;
+package fr.esieaproject.poneyclub.entity;
 
 import java.util.ArrayList;
 import java.util.List;

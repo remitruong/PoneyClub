@@ -1,4 +1,4 @@
-package fr.esieaproject.poneyclub.beans;
+package fr.esieaproject.poneyclub.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

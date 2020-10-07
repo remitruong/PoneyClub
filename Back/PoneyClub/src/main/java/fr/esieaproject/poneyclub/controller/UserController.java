@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.esieaproject.poneyclub.beans.User;
+import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.ExceptionResponse;
 import fr.esieaproject.poneyclub.exception.MobileNotAvailableException;
@@ -47,10 +47,11 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(value = "/update-user", consumes = MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(value = "/update-user/{idUser}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> updateRider(@RequestBody User user) {
-		boolean bool = userService.updateUser(user);
+	public ResponseEntity<Boolean> updateRider(@PathVariable long idUser, @RequestBody User user) {
+		System.out.println(user.toString());
+		boolean bool = userService.updateUser(idUser, user);
 		if (bool) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
 		} else {

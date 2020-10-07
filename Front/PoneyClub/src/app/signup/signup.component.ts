@@ -19,7 +19,7 @@ export class SignupComponent implements OnInit{
   localError:IError;
 
   user: User = {
-    id: '',
+    id: 0,
     firstName: '',
     lastName:  '',
     email: '',

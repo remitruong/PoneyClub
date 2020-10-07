@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import fr.esieaproject.poneyclub.beans.Course;
+import fr.esieaproject.poneyclub.entity.Course;
 
 public interface CourseRepository extends CrudRepository<Course,Long> {
 

@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import fr.esieaproject.poneyclub.beans.CoursePlace;
-import fr.esieaproject.poneyclub.beans.Horse;
-import fr.esieaproject.poneyclub.beans.User;
+import fr.esieaproject.poneyclub.entity.CoursePlace;
+import fr.esieaproject.poneyclub.entity.Horse;
+import fr.esieaproject.poneyclub.entity.User;
 
 @Repository
 public interface CoursePlaceRepository extends CrudRepository<CoursePlace, Long> {

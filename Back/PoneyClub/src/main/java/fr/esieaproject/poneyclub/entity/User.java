@@ -1,4 +1,4 @@
-package fr.esieaproject.poneyclub.beans;
+package fr.esieaproject.poneyclub.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idUser;
+	private long idUser;
 	private String firstName;
 	private String lastName;
 	@Column(unique = true)
@@ -91,6 +91,10 @@ public class User {
 	
 	public int getTrialConnection() {
 		return trialConnection;
+	}
+	
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
 	public void setFirstName(String name) {

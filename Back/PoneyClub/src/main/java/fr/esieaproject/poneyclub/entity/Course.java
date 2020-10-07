@@ -1,4 +1,4 @@
-package fr.esieaproject.poneyclub.beans;
+package fr.esieaproject.poneyclub.entity;
 
 import java.sql.Timestamp;
 import java.util.Date;
