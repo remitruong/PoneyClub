@@ -102,11 +102,10 @@ public class UserController {
 		}
 	}
 
-	@PostMapping(value ="/create-admin/{adminMail}", consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> createAdmin(@RequestBody User user, @PathVariable String adminMail) {
+	@PostMapping(value ="/convert-to-admin/{idUser}/{adminMail}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> convertToAdmin(@PathVariable long idUser, @PathVariable String adminMail) {
 		try {
-			return new ResponseEntity<>(userService.changeUserToAdmin(user, adminMail), HttpStatus.OK);
+			return new ResponseEntity<>(userService.changeUserToAdmin(idUser, adminMail), HttpStatus.OK);
 		} catch (NoUserFoundException e) {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}

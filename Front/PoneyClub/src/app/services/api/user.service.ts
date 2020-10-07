@@ -12,7 +12,7 @@ export class UserService {
   private signupUrl = `${this.BASE_URL}/user/create-rider`;
   private connectUrl = `${this.BASE_URL}/user/connect`;
   private updateUsertUrl = `${this.BASE_URL}/user/update-user`;
-  private createAdmintUrl = `${this.BASE_URL}/user/create-admin`;
+  private changeToAdminUrl = `${this.BASE_URL}/user/convert-to-admin`;
   private getUsersUrl = `${this.BASE_URL}/user/get-users`;  
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
   private createTeachertUrl = `${this.BASE_URL}/user/create-teacher`;
@@ -28,8 +28,8 @@ export class UserService {
     return this.http.post(this.updateUsertUrl+'/'+idUser, user);
   }
 
-  public createAdmin(user:User, adminMail:string): Observable<any> {
-    return this.http.post(this.createAdmintUrl + '/' + adminMail, user);
+  public changeToAdmin(idUser: number, adminMail:string): Observable<any> {
+    return this.http.post(this.changeToAdminUrl + '/'+ idUser + '/' + adminMail, null);
   }
 
   public createTeacher(user:User, adminMail:string): Observable<any> {

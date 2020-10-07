@@ -128,19 +128,24 @@ public class UserService {
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
+		teacher.setStatut("User");
 		teacher.setRole("Teacher");
 		teacher.setTrialConnection(0);
 		teacher = userRepo.save(teacher);
 		return teacher;
 	}
 
-	public boolean changeUserToAdmin(User user, String adminEmail) throws NoUserFoundException {
+	public boolean changeUserToAdmin(long idUser, String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
-		user.setStatut("Admin");
-		userRepo.save(user);
+		Optional<User> user = userRepo.findById(idUser);
+		if (user.isEmpty() || user.get().getStatut().equals("Admin")) {
+			throw new NoUserFoundException("admin not found");
+		}
+		user.get().setStatut("Admin");
+		userRepo.save(user.get());
 		return true;
 	}
 	

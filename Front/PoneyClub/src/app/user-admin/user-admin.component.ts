@@ -62,9 +62,8 @@ export class UserAdminComponent implements OnInit {
   createTeacher(user: User) {
     this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
       data => {
-        this.newUser = data;
-        this.users.push(this.newUser);
-        this.newUser = null;
+        this.selectedUser = data;
+        this.users.push(this.selectedUser);
       },
       error => {
         console.log("error occured while adding user");
@@ -74,9 +73,10 @@ export class UserAdminComponent implements OnInit {
   }
 
   userToAdmin(user: User) {
-    this.userService.createAdmin(user, this.authenticationService.currentUserValue.email).subscribe(
+    this.userService.changeToAdmin(user.id, this.authenticationService.currentUserValue.email).subscribe(
       data => {
-        console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !")
+        this.selectedUser.statut='Admin';
+        console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
       },
       error => {
         console.log("Error while setting selected user to admin");
