@@ -27,6 +27,8 @@ import {SignupComponent} from "./signup/signup.component";
 import {AlertComponent} from "./_alert/alert.component";
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { UserDetailsComponent } from './user-admin/user-details/user-details.component';
+import { CourseComponent } from './course/course.component';
+import { HorseComponent } from './horse/horse.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { UserDetailsComponent } from './user-admin/user-details/user-details.com
     AlertComponent,
     UserAdminComponent,
     UserDetailsComponent,
+    CourseComponent,
+    HorseComponent,
   ],
   imports: [
     BrowserModule,

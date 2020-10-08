@@ -1,0 +1,14 @@
+th {
+	color: white;
+}
+
+table {
+	border: none;
+}
+
+.horseName {
+  background-color: transparent;
+  color: white;
+  border:none;
+  cursor: pointer;
+}
