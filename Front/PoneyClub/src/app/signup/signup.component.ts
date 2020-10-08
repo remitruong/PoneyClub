@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit{
   signUpForm: FormGroup;
   submitted = false;
   localError:IError;
+  mobileNumberPattern = "^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$";
 
   user: User = {
     id: 0,
@@ -26,7 +27,7 @@ export class SignupComponent implements OnInit{
     password: '',
     mobile: '',
     licenceNum: '',
-    role:'', 
+    role:'',
     statut:''
   }
 

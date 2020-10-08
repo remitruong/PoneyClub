@@ -20,7 +20,7 @@ export class UserAdminComponent implements OnInit {
     password: '',
     mobile: '',
     licenceNum: '',
-    role:'', 
+    role:'',
     statut:''
   };
   users: User[] = [];

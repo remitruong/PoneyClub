@@ -34,7 +34,7 @@
     </div>
     <div class="form-group">
       <label>Mobile</label>
-      <input type="tel" formControlName="mobile" class="form-control" placeholder="Enter your phone number" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }">
+      <input type="tel" formControlName="mobile" class="form-control" placeholder="Enter your phone number" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" [pattern]="mobileNumberPattern">
       <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
         <div *ngIf="f.mobile.errors.required">Mobile is required</div>
       </div>
@@ -42,7 +42,6 @@
     <div class="form-group">
       <label>Licence Number</label>
       <input type="text" formControlName="licenceNum" class="form-control" placeholder="Enter your licence number (optional)" >
-
     </div>
     <section class="button-with-link">
       <button type="submit" nbButton>Sign up</button>
