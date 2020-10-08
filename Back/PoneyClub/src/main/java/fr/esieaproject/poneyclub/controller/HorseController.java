@@ -17,6 +17,7 @@ import fr.esieaproject.poneyclub.dao.HorseRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
 import fr.esieaproject.poneyclub.entity.Horse;
 import fr.esieaproject.poneyclub.entity.User;
+import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -47,21 +48,20 @@ public class HorseController {
 	} 
 
 	@PostMapping(value = "/create-horse/{name}/{idAdmin}")
-	public boolean createHorse(@PathVariable String name, @PathVariable Long idAdmin) {
+	public Horse createHorse(@PathVariable String name, @PathVariable Long idAdmin) throws NoUserFoundException {
 
 		Optional<User> admin = userRepo.findById(idAdmin);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			logger.error("Error while retrieving admin");
-			return false;
+			throw new NoUserFoundException("admin not found");
 		}
 		
-
 		try {
-			horseRepo.save(new Horse(name));
-			return true;
+			Horse horse = horseRepo.save(new Horse(name));
+			return horse;
 		} catch (Exception e) {
 			logger.error("" + e);
-			return false;
+			return null;
 		}
 
 	}
@@ -84,6 +84,7 @@ public class HorseController {
 		}
 
 		try {
+			horse.get().setName(name);
 			horseRepo.save(horse.get());
 			return true;
 		} catch (Exception e) {

@@ -10,6 +10,8 @@
 			<input id="email" type="text" [(ngModel)]="userSelected.email">
 			<label for="mobile">Mobile : </label>
 			<input id="mobile" type="text" [(ngModel)]="userSelected.mobile">
+			<label for ="password">Temp password</label>
+			<input type="password" [(ngModel)]="userSelected.password"/>
 			<label for="licencenumber">Licence Number : </label>
 			<input id="licencenumber" [(ngModel)]="userSelected.licenceNum"/>
 			<p *ngIf="userSelected.id == 0">Teacher</p>

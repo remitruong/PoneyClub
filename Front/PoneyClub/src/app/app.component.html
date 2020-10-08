@@ -2,7 +2,8 @@
   <nb-layout-header fixed>
     <div class="col-lg-8 col-xl-9 col-md-8 col-sm-7 col-5 justify-content-center"></div>
     <div class="col-lg-2 col-xl-2 col-md-3 col-sm-4 col-5">
-      <button nbButton routerLink="/course" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.role == 'Rider'">Course</button>
+      <button nbButton routerLink="/horse" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.statut =='Admin'">Horse</button>
+      <button nbButton routerLink="/course-management" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.role == 'Teacher'">Course</button>
       <button nbButton routerLink="/user-admin" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.statut == 'Admin'">User administration</button>
       <button nbButton routerLink="/login" routerLinkActive="activebutton" *ngIf="!currentUser">Login/Sign up</button>
       <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser" (click)="disconnect()">Disconnect</button>
