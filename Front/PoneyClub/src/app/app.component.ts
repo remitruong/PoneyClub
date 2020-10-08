@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { User } from './_classes';
 import {AuthenticationService} from "./services/authentification.service";
 import {Router} from "@angular/router";
+import {AlertService} from "./services/alert.service";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import {Router} from "@angular/router";
 export class AppComponent {
   currentUser: User;
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
+  constructor(private authenticationService: AuthenticationService, private router: Router, private alertService: AlertService) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
@@ -23,10 +24,16 @@ export class AppComponent {
     this.router.navigate(['/login']);
   }
 
-  backToHome(){
-    window.location.reload();
-    this.router.navigate(['/home']);
+  refreshAlert(){
+    setTimeout(() => {
+      this.alertService.clear();
+    }, 3000);
   }
+
+  // backToHome(){
+  //   window.location.reload();
+  //   this.router.navigate(['/home']);
+  // }
 
 }
 
