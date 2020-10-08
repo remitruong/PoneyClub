@@ -48,7 +48,6 @@ export class UserAdminComponent implements OnInit {
   }
 
   updateUser(user: User) {
-    console.log(user.id);
     this.userService.updateUser(user.id, user).subscribe(
       data => {
         console.log("user update successfull");
