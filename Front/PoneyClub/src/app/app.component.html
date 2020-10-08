@@ -10,14 +10,14 @@
         <nb-action *ngIf="currentUser && currentUser.statut == 'Admin'">
           <a  routerLink="/user-admin" routerLinkActive="activebutton" >User administration</a>
         </nb-action>
-        <nb-action *ngIf="currentUser">
+        <nb-action *ngIf="currentUser" (click)="refreshAlert()">
           <a routerLink="/home" routerLinkActive="activebutton">Home</a>
         </nb-action>
         <nb-action>
           <nb-icon icon="person-outline"></nb-icon>
         </nb-action>
 
-        <nb-action *ngIf="!currentUser">
+        <nb-action *ngIf="!currentUser" (click)="refreshAlert()">
         <a routerLink="/login" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>
       </nb-action>
       <nb-action *ngIf="currentUser" (click)="disconnect()">

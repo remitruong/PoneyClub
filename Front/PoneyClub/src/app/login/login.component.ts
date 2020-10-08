@@ -60,20 +60,6 @@ export class LoginComponent  {
     this.user.mobile = this.connectForm.get('emailOrPhone').value;
     this.user.password = this.connectForm.get('password').value;
 
-    // this.userService.connect(this.user).subscribe(
-    //   data => {
-    //     this.user = data;
-    //     this.objectService.shUser(this.user);
-    //     this.alertService.success('You are connected', true);
-    //     this.router.navigate(['/home']);
-    //   },
-    //   error => {
-    //     this.localError = error;
-    //     this.alertService.error(this.localError.error.response);
-    //   }
-    //
-    // )
-
     this.authenticationService.login(this.user)
       .pipe(first())
       .subscribe(
@@ -81,6 +67,9 @@ export class LoginComponent  {
           // this.router.navigate([this.returnUrl]);
           this.alertService.success('You are connected', true);
           this.router.navigate(['/home']);
+          setTimeout(() => {
+            this.alertService.clear();
+          }, 3000);
         },
         error => {
           this.localError = error;

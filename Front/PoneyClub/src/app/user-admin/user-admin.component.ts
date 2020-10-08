@@ -39,6 +39,10 @@ export class UserAdminComponent implements OnInit {
       data => {
         console.log(data);
         this.users = data;
+        this.alertService.success('All user refreshed');
+        setTimeout(() => {
+          this.alertService.clear();
+        }, 1500);
       },
       error => {
         this.localError = error;
@@ -50,10 +54,14 @@ export class UserAdminComponent implements OnInit {
   updateUser(user: User) {
     this.userService.updateUser(user.id, user).subscribe(
       data => {
-        console.log("user update successfull");
+        this.alertService.success('Update user successful');
+        setTimeout(() => {
+          this.alertService.clear();
+        }, 3000);
       },
       error => {
         console.log("error occured while update user" + error);
+        // this.alertService.error(this.localError.error.response);
       }
     )
   }
@@ -63,9 +71,14 @@ export class UserAdminComponent implements OnInit {
       data => {
         this.selectedUser = data;
         this.users.push(this.selectedUser);
+        this.alertService.success('Teacher created successful');
+        setTimeout(() => {
+          this.alertService.clear();
+        }, 3000);
       },
       error => {
         console.log("error occured while adding user");
+        // this.alertService.error(this.localError.error.response);
       }
 
     )
@@ -76,9 +89,14 @@ export class UserAdminComponent implements OnInit {
       data => {
         this.selectedUser.statut='Admin';
         console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
+        this.alertService.success("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
+        setTimeout(() => {
+          this.alertService.clear();
+        }, 3000);
       },
       error => {
         console.log("Error while setting selected user to admin");
+        // this.alertService.error(this.localError.error.response);
       }
     )
   }
