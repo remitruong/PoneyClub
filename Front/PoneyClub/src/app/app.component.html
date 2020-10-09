@@ -1,16 +1,30 @@
 <nb-layout>
-  <nb-layout-header fixed>
-    <div class="col-lg-8 col-xl-9 col-md-8 col-sm-7 col-5 justify-content-center"></div>
-    <div class="col-lg-2 col-xl-2 col-md-3 col-sm-4 col-5">
-      <button nbButton routerLink="/horse" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.statut =='Admin'">Horse</button>
-      <button nbButton routerLink="/course" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.role == 'Teacher'">Course</button>
-      <button nbButton routerLink="/user-admin" routerLinkActive="activebutton" *ngIf="currentUser && currentUser.statut == 'Admin'">User administration</button>
-      <button nbButton routerLink="/login" routerLinkActive="activebutton" *ngIf="!currentUser">Login/Sign up</button>
-      <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser" (click)="disconnect()">Disconnect</button>
-    </div>
-    <div class="col-lg-2 col-xl-1 col-md-1 col-sm-1 col-2">
-      <button nbButton routerLink="/home" routerLinkActive="activebutton" *ngIf="currentUser" (click)="backToHome()"><nb-icon icon="home"></nb-icon></button>
-    </div>
+
+  <nb-layout-header>
+    <nb-actions size="medium">
+        <nb-action *ngIf="currentUser && currentUser.role == 'Rider'">
+          <a routerLink="/course" routerLinkActive="activebutton">Course</a>
+        </nb-action>
+        <nb-action *ngIf="currentUser && currentUser.role == 'Rider'">
+          <a routerLink="/course" routerLinkActive="activebutton">Horse</a>
+        </nb-action>
+        <nb-action *ngIf="currentUser && currentUser.statut == 'Admin'">
+          <a  routerLink="/user-admin" routerLinkActive="activebutton" >User administration</a>
+        </nb-action>
+        <nb-action *ngIf="currentUser" (click)="refreshAlert()">
+          <a routerLink="/home" routerLinkActive="activebutton">Home</a>
+        </nb-action>
+        <nb-action>
+          <nb-icon icon="person-outline"></nb-icon>
+        </nb-action>
+
+        <nb-action *ngIf="!currentUser" (click)="refreshAlert()">
+        <a routerLink="/login" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>
+      </nb-action>
+      <nb-action *ngIf="currentUser" (click)="disconnect()">
+        <a  routerLink="/home" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>
+      </nb-action>
+    </nb-actions>
   </nb-layout-header>
 
   <nb-layout-column>
