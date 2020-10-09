@@ -19,7 +19,6 @@ public class User {
 	private String password;
 	@Column(unique = true)
 	private String mobile;
-	@Column(unique = true)
 	private String licenceNum;
 	private String role;
 	private String statut = "User";
