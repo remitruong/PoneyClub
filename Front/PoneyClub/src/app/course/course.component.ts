@@ -13,7 +13,7 @@ import { User } from '../_classes';
 export class CourseComponent implements OnInit {
 
   course: ICourse = {
-    id: null,
+    id: 0,
     title: '',
     startDateTime: '',
     endDateTime: '',
@@ -51,6 +51,7 @@ export class CourseComponent implements OnInit {
 
     this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
       data => {
+        console.log(data);
         this.courses.push(data);
         console.log("course well added");
       },
@@ -58,7 +59,7 @@ export class CourseComponent implements OnInit {
         console.log("error while adding course");
       }
     )
-
+    this.course = null;
     this.bCourseAdd = false;
   }
 

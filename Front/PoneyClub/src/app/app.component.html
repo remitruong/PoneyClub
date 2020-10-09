@@ -2,11 +2,11 @@
 
   <nb-layout-header>
     <nb-actions size="medium">
-        <nb-action *ngIf="currentUser && currentUser.role == 'Rider'">
+        <nb-action *ngIf="currentUser">
           <a routerLink="/course" routerLinkActive="activebutton">Course</a>
         </nb-action>
-        <nb-action *ngIf="currentUser && currentUser.role == 'Rider'">
-          <a routerLink="/course" routerLinkActive="activebutton">Horse</a>
+        <nb-action *ngIf="currentUser && currentUser.statut == 'Admin'">
+          <a routerLink="/horse" routerLinkActive="activebutton">Horse</a>
         </nb-action>
         <nb-action *ngIf="currentUser && currentUser.statut == 'Admin'">
           <a  routerLink="/user-admin" routerLinkActive="activebutton" >User administration</a>
