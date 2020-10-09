@@ -21,6 +21,7 @@ import fr.esieaproject.poneyclub.dao.UserRepository;
 import fr.esieaproject.poneyclub.entity.Course;
 import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
+import fr.esieaproject.poneyclub.exception.NoUserFoundException;
 
 
 @RestController
@@ -39,7 +40,7 @@ public class CourseController {
 	@Autowired
 	private CoursePlaceRepository coursePlaceRepo;
 	
-	@GetMapping(value = "/")
+	@GetMapping(value = "/get-courses")
 	public Iterable<Course> findAll() {
 		return courseRepo.findAll();
 	}
@@ -54,12 +55,12 @@ public class CourseController {
 	}
 	
 	@PostMapping(value = "/plan/{idTeacher}")
-	public boolean addCourse(@RequestBody Course course, @PathVariable Long idTeacher) {
+	public Course addCourse(@RequestBody Course course, @PathVariable Long idTeacher) throws NoUserFoundException {
 		
 		Optional<User> teacher = userRepo.findById(idTeacher);
 		if (teacher.isEmpty() || !teacher.get().getRole().equals("Teacher")) {
 			logger.error("Issue while retrieving teacher");
-			return false;
+			throw new NoUserFoundException("Teacher not found");
 		}
 		course.setTeacher(teacher.get());
 		Course course1 = courseRepo.save(course);
@@ -71,7 +72,7 @@ public class CourseController {
 			coursePlaceRepo.save(coursePlace);
 		}
 		
-		return true;
+		return course1;
 	}
 	
 	@PostMapping(value = "/register/{idCourse}")
