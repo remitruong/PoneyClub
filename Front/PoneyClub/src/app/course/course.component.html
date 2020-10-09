@@ -1,1 +1,53 @@
-<p>course works!</p>
+<div class="container">
+
+	<div class="col-md-10">
+		<table>
+			<thead>
+				<tr>
+					<th><i>ID </i></th>
+					<th><i>Title</i></th>
+					<th><i>Start Date</i></th>
+					<th><i>End Date</i></th>
+					<th><i>Level</i></th>
+					<th><i>Available Places</i></th>
+					<th>
+						<button *ngIf="currentUser && currentUser.role == 'Teacher'" (click)="addCourse()"></button>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngIf="bCourseAdd">
+					<th></th>
+					<th><input type="text" [([(ngModel)]="course.title"/></th>
+					<th><input type="datetime-local" [(ngModel)]="startDateTime"/></th>
+					<th><input type="datetime-local" [(ngModel)]="endDateTime"/></th>
+					<th><input type="text" [(ngModel)]="course.levelStudying"/></th>
+					<th><input type="text" [(ngModel)]="course.maxStudent"/></th>
+					<th>
+						<button (click)="createCourse()">Send</button>
+					</th>
+				<tr>
+				<tr *ngFor="let course of courses">
+					<th>{{course.id}}</th>
+					<th>{{course.title}}</th>
+					<th>{{course.startDateTime}}</th>
+					<th>{{course.endDateTime}}</th>
+					<th>{{course.levelStudying}}
+					<th>{{course.maxStudent}}</th>
+					<th>
+						<button *ngIf="currentUser && currentUser.role == 'Rider'">Subscribe</button>
+					</th>
+				</tr>
+
+			</tbody>
+
+		</table>
+	</div>
+
+	<div>
+		<app-user-planning>
+		</app-user-planning>
+	</div>
+
+
+</div>

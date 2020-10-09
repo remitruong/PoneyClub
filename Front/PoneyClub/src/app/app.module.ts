@@ -28,6 +28,8 @@ import { UserAdminComponent } from './user-admin/user-admin.component';
 import { UserDetailsComponent } from './user-admin/user-details/user-details.component';
 import { CourseComponent } from './course/course.component';
 import { HorseComponent } from './horse/horse.component';
+import { UserPlanningComponent } from './course/user-planning/user-planning.component';
+import { DateTimePipe } from './share/pipe/date-time.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { HorseComponent } from './horse/horse.component';
     UserDetailsComponent,
     CourseComponent,
     HorseComponent,
+    UserPlanningComponent,
+    DateTimePipe,
   ],
     imports: [
         BrowserModule,
