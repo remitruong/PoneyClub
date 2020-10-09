@@ -1,6 +1,6 @@
 <div class="container">
 
-	<div class="col-md-10">
+	<div class="col-md-12">
 		<table>
 			<thead>
 				<tr>
@@ -18,7 +18,7 @@
 			<tbody>
 				<tr *ngIf="bCourseAdd">
 					<th></th>
-					<th><input type="text" [([(ngModel)]="course.title"/></th>
+					<th><input type="text" [(ngModel)]="course.title"/></th>
 					<th><input type="datetime-local" [(ngModel)]="startDateTime"/></th>
 					<th><input type="datetime-local" [(ngModel)]="endDateTime"/></th>
 					<th><input type="text" [(ngModel)]="course.levelStudying"/></th>
@@ -26,17 +26,17 @@
 					<th>
 						<button (click)="createCourse()">Send</button>
 					</th>
-				<tr>
+				</tr>
 				<tr *ngFor="let course of courses">
-					<th>{{course.id}}</th>
-					<th>{{course.title}}</th>
-					<th>{{course.startDateTime}}</th>
-					<th>{{course.endDateTime}}</th>
-					<th>{{course.levelStudying}}
-					<th>{{course.maxStudent}}</th>
-					<th>
-						<button *ngIf="currentUser && currentUser.role == 'Rider'">Subscribe</button>
-					</th>
+					<td>{{course.id}}</td>
+					<td>{{course.title}}</td>
+					<td>{{course.startDateTime}}</td>
+					<td>{{course.endDateTime}}</td>
+					<td>{{course.levelStudying}}</td>
+					<td>{{course.maxStudent}}</td>
+					<td>
+						<button (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">Subscribe</button>
+					</td>
 				</tr>
 
 			</tbody>

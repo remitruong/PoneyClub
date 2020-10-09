@@ -24,16 +24,12 @@ public class CoursePlace {
 	
 	public CoursePlace() {}
 	
-	public CoursePlace(User rider) {
-		this.rider = rider;
-	}
-	
-	public CoursePlace(Horse horse) {
-		this.horse = horse;
-	}
-	
 	public Long getId() {
 		return idCoursePlace;
+	}
+	
+	public Course getCourse() {
+		return course;
 	}
 	
 	public User getRider() {

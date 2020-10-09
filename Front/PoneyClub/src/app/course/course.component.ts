@@ -63,4 +63,16 @@ export class CourseComponent implements OnInit {
     this.bCourseAdd = false;
   }
 
+  subscribe(course: ICourse) {
+    this.courseService.registerToCourse(this.currentUser, course.id).subscribe (
+      data => {
+        console.log("Subscribe succes ! ");
+      },
+      err => {
+        console.log("error while subscribing to course");
+      }
+    )
+
+  }
+
 }
