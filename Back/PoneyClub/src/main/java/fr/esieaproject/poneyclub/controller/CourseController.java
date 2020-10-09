@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.esieaproject.poneyclub.dao.CoursePlaceRepository;
-import fr.esieaproject.poneyclub.dao.CourseRepository;
-import fr.esieaproject.poneyclub.dao.UserRepository;
 import fr.esieaproject.poneyclub.entity.Course;
 import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
-import fr.esieaproject.poneyclub.exception.NoUserFoundException;
+import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
+import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
+import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
+import fr.esieaproject.poneyclub.services.CourseService;
 
 
 @RestController
@@ -32,63 +34,44 @@ public class CourseController {
 	Logger logger = LoggerFactory.getLogger(CourseController.class);
 	
 	@Autowired
-	private UserRepository userRepo;
+	private CourseService courseService;
 	
-	@Autowired
-	private CourseRepository courseRepo; 
-	
-	@Autowired
-	private CoursePlaceRepository coursePlaceRepo;
 	
 	@GetMapping(value = "/get-courses")
-	public Iterable<Course> findAll() {
-		return courseRepo.findAll();
+	public ResponseEntity findAll() {
+		try {
+			return new ResponseEntity<Iterable<Course>>(courseService.findAll(), HttpStatus.OK);
+		} catch(Exception e) {
+			return new ResponseEntity<>("An error has occured while retrieving courses", HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping(value = "/{startDateTime}/{endDateTime}")
-	public List<Course> findByDateTime(@PathVariable String startDateTime, @PathVariable String endDateTime){
+	public ResponseEntity findByDateTime(@PathVariable String startDateTime, @PathVariable String endDateTime){
+			try {
+				return new ResponseEntity(courseService.findByDateTime(startDateTime, endDateTime), HttpStatus.OK);
+			} catch (StartShouldBeBeforeEndException e) {
+				return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			}
 		
-		
-		List<Course> courseList = courseRepo.findByDateTime(Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
-		
-		return courseList;
 	}
 	
 	@PostMapping(value = "/plan/{idTeacher}")
-	public Course addCourse(@RequestBody Course course, @PathVariable Long idTeacher) throws NoUserFoundException {
-		
-		Optional<User> teacher = userRepo.findById(idTeacher);
-		if (teacher.isEmpty() || !teacher.get().getRole().equals("Teacher")) {
-			logger.error("Issue while retrieving teacher");
-			throw new NoUserFoundException("Teacher not found");
+	public ResponseEntity addCourse(@RequestBody Course course, @PathVariable long idTeacher) throws NoUserFoundException {
+		try {
+			return new ResponseEntity(courseService.addCourse(course, idTeacher), HttpStatus.OK);
+		} catch (StartShouldBeBeforeEndException | NoUserFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		course.setTeacher(teacher.get());
-		Course course1 = courseRepo.save(course);
-
-		int places = course1.getMaxStudent();
-		for (int i=0; i<places; i++) {
-			CoursePlace coursePlace = new CoursePlace();
-			coursePlace.setCourse(course1);
-			coursePlaceRepo.save(coursePlace);
-		}
-		
-		return course1;
 	}
 	
 	@PostMapping(value = "/register/{idCourse}")
-	public boolean register(@RequestBody User user, @PathVariable Long idCourse) {
-		
-		Optional<Course> course = courseRepo.findById(idCourse);
-		if(course.isEmpty()) {
-			logger.error("Unable to retrieve course");
-			return false;
+	public ResponseEntity register(@RequestBody User user, @PathVariable long idCourse) {
+		try {
+			return new ResponseEntity(courseService.registerToCourse(user, idCourse), HttpStatus.OK);
+		} catch (CourseNotExistException | NoUserFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		Optional<User> rider = userRepo.findByEmail(user.getEmail());
-		CoursePlace planning = new CoursePlace();
-		planning.setCourse(course.get());
-		planning.setRider(rider.get());
-		coursePlaceRepo.save(planning);
-		return true;
 	}
 	
 	

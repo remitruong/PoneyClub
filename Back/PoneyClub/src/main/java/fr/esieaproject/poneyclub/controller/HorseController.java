@@ -17,7 +17,7 @@ import fr.esieaproject.poneyclub.dao.HorseRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
 import fr.esieaproject.poneyclub.entity.Horse;
 import fr.esieaproject.poneyclub.entity.User;
-import fr.esieaproject.poneyclub.exception.NoUserFoundException;
+import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
