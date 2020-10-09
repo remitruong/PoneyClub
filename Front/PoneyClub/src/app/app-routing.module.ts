@@ -7,6 +7,7 @@ import {SignupComponent} from "./signup/signup.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
 import { UserAdminComponent } from "./user-admin/user-admin.component";
 import { HorseComponent } from './horse/horse.component';
+import { CourseComponent } from './course/course.component';
 
 const routes: Routes = [
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'home', component: HomeComponent},
   {path: 'user-admin', component: UserAdminComponent},
+  {path: 'course', component: CourseComponent},
   {path: 'horse', component: HorseComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
