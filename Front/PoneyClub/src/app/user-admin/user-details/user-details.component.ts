@@ -28,6 +28,7 @@ export class UserDetailsComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
       mobile: ['', Validators.required],
       licenceNum: ['']
     });
