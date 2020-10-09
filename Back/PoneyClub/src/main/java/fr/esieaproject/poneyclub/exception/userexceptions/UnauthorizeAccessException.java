@@ -1,4 +1,4 @@
-package fr.esieaproject.poneyclub.exception;
+package fr.esieaproject.poneyclub.exception.userexceptions;
 
 public class UnauthorizeAccessException extends Exception {
 	public UnauthorizeAccessException(String message) {

@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.esieaproject.poneyclub.entity.User;
-import fr.esieaproject.poneyclub.exception.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.ExceptionResponse;
-import fr.esieaproject.poneyclub.exception.MobileNotAvailableException;
-import fr.esieaproject.poneyclub.exception.NoUserFoundException;
-import fr.esieaproject.poneyclub.exception.UnauthorizeAccessException;
-import fr.esieaproject.poneyclub.exception.WrongMobileOrEmailFormat;
-import fr.esieaproject.poneyclub.exception.WrongPasswordException;
-import fr.esieaproject.poneyclub.exception.MaxTrialConnectionAttempException;
+import fr.esieaproject.poneyclub.exception.userexceptions.EmailNotAvailableException;
+import fr.esieaproject.poneyclub.exception.userexceptions.MaxTrialConnectionAttempException;
+import fr.esieaproject.poneyclub.exception.userexceptions.MobileNotAvailableException;
+import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
+import fr.esieaproject.poneyclub.exception.userexceptions.UnauthorizeAccessException;
+import fr.esieaproject.poneyclub.exception.userexceptions.WrongMobileOrEmailFormat;
+import fr.esieaproject.poneyclub.exception.userexceptions.WrongPasswordException;
 import fr.esieaproject.poneyclub.services.UserService;
 
 @RestController
