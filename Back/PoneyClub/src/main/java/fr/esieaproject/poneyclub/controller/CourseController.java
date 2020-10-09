@@ -84,7 +84,9 @@ public class CourseController {
 			return false;
 		}
 		Optional<User> rider = userRepo.findByEmail(user.getEmail());
-		CoursePlace planning = new CoursePlace(rider.get());
+		CoursePlace planning = new CoursePlace();
+		planning.setCourse(course.get());
+		planning.setRider(rider.get());
 		coursePlaceRepo.save(planning);
 		return true;
 	}
