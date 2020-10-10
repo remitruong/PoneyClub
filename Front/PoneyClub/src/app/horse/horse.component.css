@@ -1,14 +1,8 @@
 th {
 	color: white;
+  text-align: center;
 }
 
-table {
-	border: none;
-}
-
-.horseName {
-  background-color: transparent;
-  color: white;
-  border:none;
+.form-control{
   cursor: pointer;
 }

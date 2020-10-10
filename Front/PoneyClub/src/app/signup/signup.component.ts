@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { User } from '../_classes/user';
-import { UserService } from '../services/api/user.service';
+import {User} from '../_classes/user';
+import {UserService} from '../services/api/user.service';
 import {Router} from "@angular/router";
 import {first} from "rxjs/operators";
 import {AlertService} from "../services/alert.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { IError } from '../_classes/ierror';
+import {IError} from '../_classes/ierror';
 
 @Component({
   selector: 'app-signup',
@@ -68,6 +68,7 @@ export class SignupComponent implements OnInit{
       data => {
         this.alertService.success('Sign up successful', true);
         this.router.navigate(['/login']);
+        this.alertService.clearAfter(1500);
       },
       error => {
         this.localError = error as IError;

@@ -10,8 +10,8 @@ import {AlertService} from "../../services/alert.service";
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
-  submitted = false;
   userForm: FormGroup;
+  submitted = false;
   mobileNumberPattern = "^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$";
   emailPattern ="([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))";
 
@@ -24,11 +24,12 @@ export class UserDetailsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private alertService: AlertService) { }
 
   ngOnInit(): void {
+    this.submitted = false;
     this.userForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       mobile: ['', Validators.required],
       licenceNum: ['']
     });

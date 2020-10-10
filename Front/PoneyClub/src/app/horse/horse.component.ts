@@ -4,6 +4,8 @@ import { HorseService } from '../services/api/horse.service';
 import { User } from '../_classes';
 import { AuthenticationService } from '../services/authentification.service';
 import { FormBuilder } from '@angular/forms';
+import {AlertComponent} from "../_alert/alert.component";
+import {AlertService} from "../services/alert.service";
 
 @Component({
   selector: 'app-horse',
@@ -19,16 +21,19 @@ export class HorseComponent implements OnInit {
   horses: IHorse[] = [];
   currentUser: User = null;
   newHorsePanel = false;
+  submitted = false;
 
-  constructor(private horseService: HorseService, private authenticationService: AuthenticationService) { }
+  constructor(private horseService: HorseService, private authenticationService: AuthenticationService, private alertService: AlertService) { }
 
   ngOnInit(): void {
-
+    horseName:
     this.currentUser = this.authenticationService.currentUserValue;
 
     this.horseService.getHorses(this.currentUser.id).subscribe(
       data => {
         this.horses = data;
+        this.alertService.success('All horse refreshed');
+        this.alertService.clearAfter(1500);
       },
       error => {
         console.log("An error occured while retrieving horses");
@@ -46,6 +51,8 @@ export class HorseComponent implements OnInit {
         this.horse = data;
         this.horses.push(this.horse);
         this.newHorsePanel = false;
+        this.alertService.success("Horse created success");
+        this.alertService.clearAfter(1500);
       },
       error => {
         console.log("An error has occured while creating horse");
@@ -53,13 +60,14 @@ export class HorseComponent implements OnInit {
 
     )
   }
-  
+
   deleteHorse(horse: IHorse) {
     this.horseService.deleteHorse(horse, this.currentUser.id).subscribe(
       data => {
         let horseIndex = this.horses.indexOf(horse);
         this.horses.splice(horseIndex, 1);
-        console.log("horse well deleted");
+        this.alertService.success("Horse delete success");
+        this.alertService.clearAfter(1500);
       },
       error => {
         console.log("error while deleting horse");
@@ -71,7 +79,8 @@ export class HorseComponent implements OnInit {
     if (horse.id != null) {
       this.horseService.updateHorse(horse, this.currentUser.id).subscribe (
         data => {
-          console.log("Horse name updated");
+          this.alertService.success("Horse name updated");
+          this.alertService.clearAfter(1500);
         },
         error => {
           console.log("Error occured while updating horse name");

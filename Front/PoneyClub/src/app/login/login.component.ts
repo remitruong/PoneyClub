@@ -67,9 +67,7 @@ export class LoginComponent  {
           // this.router.navigate([this.returnUrl]);
           this.alertService.success('You are connected', true);
           this.router.navigate(['/home']);
-          setTimeout(() => {
-            this.alertService.clear();
-          }, 3000);
+          this.alertService.clearAfter(1500);
         },
         error => {
           this.localError = error;
