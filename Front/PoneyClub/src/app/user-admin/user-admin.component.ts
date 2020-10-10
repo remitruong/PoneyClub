@@ -26,6 +26,8 @@ export class UserAdminComponent implements OnInit {
   users: User[] = [];
   localError : IError;
   selectedUser: User;
+  display = false;
+
 
   constructor(private userService : UserService, private alertService : AlertService, private authenticationService: AuthenticationService) { }
 
@@ -40,9 +42,8 @@ export class UserAdminComponent implements OnInit {
         console.log(data);
         this.users = data;
         this.alertService.success('All user refreshed');
-        setTimeout(() => {
-          this.alertService.clear();
-        }, 1500);
+        this.alertService.clearAfter(1500);
+
       },
       error => {
         this.localError = error;
@@ -55,9 +56,7 @@ export class UserAdminComponent implements OnInit {
     this.userService.updateUser(user.id, user).subscribe(
       data => {
         this.alertService.success('Update user successful');
-        setTimeout(() => {
-          this.alertService.clear();
-        }, 3000);
+        this.alertService.clearAfter(3000);
       },
       error => {
         console.log("error occured while update user" + error);
@@ -72,9 +71,7 @@ export class UserAdminComponent implements OnInit {
         this.selectedUser = data;
         this.users.push(this.selectedUser);
         this.alertService.success('Teacher created successful');
-        setTimeout(() => {
-          this.alertService.clear();
-        }, 3000);
+        this.alertService.clearAfter(3000);
       },
       error => {
         console.log("error occured while adding user");
@@ -90,9 +87,8 @@ export class UserAdminComponent implements OnInit {
         this.selectedUser.statut='Admin';
         console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
         this.alertService.success("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
-        setTimeout(() => {
-          this.alertService.clear();
-        }, 3000);
+        this.alertService.clearAfter(3000);
+
       },
       error => {
         console.log("Error while setting selected user to admin");
@@ -103,9 +99,12 @@ export class UserAdminComponent implements OnInit {
 
   selectUser(user: User) {
    this.selectedUser = user;
+    this.display = true;
   }
 
   addTeacher() {
+    this.display = !this.display; //si on veut afficher/cacher sur le click
+    //this.display = true;
     this.newUser.email='';
     this.newUser.firstName='';
     this.newUser.lastName='';

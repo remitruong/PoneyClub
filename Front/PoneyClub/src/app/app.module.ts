@@ -16,8 +16,8 @@ import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {
   NbActionsModule,
   NbButtonModule,
-  NbCardModule,
-  NbIconModule,
+  NbCardModule, NbFormFieldModule,
+  NbIconModule, NbInputModule,
   NbLayoutModule,
   NbThemeModule,
 } from '@nebular/theme';
@@ -63,7 +63,9 @@ import { DateTimePipe } from './share/pipe/date-time.pipe';
     NbActionsModule,
     HttpClientModule,
     FormsModule,
+    NbInputModule,
     ReactiveFormsModule,
+    NbFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
