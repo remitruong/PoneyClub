@@ -62,7 +62,7 @@ public class CourseService {
 		return course1;
 	}
 	
-	public boolean registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException {
+	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException {
 		Optional<Course> course = courseRepo.findById(idCourse);
 		Optional<User> rider = userRepo.findByEmail(user.getEmail());
 		
@@ -72,8 +72,8 @@ public class CourseService {
 		CoursePlace planning = new CoursePlace();
 		planning.setCourse(course.get());
 		planning.setRider(rider.get());
-		coursePlaceRepo.save(planning);
-		return true;
+		CoursePlace coursePlace = coursePlaceRepo.save(planning);
+		return coursePlace;
 	}
 	
 	

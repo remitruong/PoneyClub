@@ -68,7 +68,7 @@ public class CourseController {
 	@PostMapping(value = "/register/{idCourse}")
 	public ResponseEntity register(@RequestBody User user, @PathVariable long idCourse) {
 		try {
-			return new ResponseEntity(courseService.registerToCourse(user, idCourse), HttpStatus.OK);
+			return new ResponseEntity<CoursePlace>(courseService.registerToCourse(user, idCourse), HttpStatus.OK);
 		} catch (CourseNotExistException | NoUserFoundException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

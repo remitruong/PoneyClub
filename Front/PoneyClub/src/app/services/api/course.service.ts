@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ICourse } from 'src/app/_classes/icourse';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/_classes';
+import { ICoursePlace } from 'src/app/_classes/icourseplace';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,8 @@ export class CourseService {
     return this.http.post<ICourse>(this.addCourseUrl + '/' + idTeacher, course);
   }
 
-  public registerToCourse(user: User, idCourse: number): Observable<any> {
+  public registerToCourse(user: User, idCourse: number): Observable<ICoursePlace> {
     console.log(this.registerToCourseUrl);
-     return this.http.post<any>( 'http://localhost:8081/course/register/' + idCourse, user);
+     return this.http.post<ICoursePlace>( 'http://localhost:8081/course/register/' + idCourse, user);
   }
 }
