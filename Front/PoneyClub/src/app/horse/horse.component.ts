@@ -18,6 +18,10 @@ export class HorseComponent implements OnInit {
     id: 0,
     name: ''
   }
+  newHorse: IHorse = {
+    id: 0,
+    name: ''
+  }
   horses: IHorse[] = [];
   currentUser: User = null;
   newHorsePanel = false;
@@ -26,7 +30,6 @@ export class HorseComponent implements OnInit {
   constructor(private horseService: HorseService, private authenticationService: AuthenticationService, private alertService: AlertService) { }
 
   ngOnInit(): void {
-    horseName:
     this.currentUser = this.authenticationService.currentUserValue;
 
     this.horseService.getHorses(this.currentUser.id).subscribe(
@@ -42,17 +45,19 @@ export class HorseComponent implements OnInit {
   }
 
   addHorse() {
+    this.newHorse.id = 0;
+    this.newHorse.name = '';
     this.newHorsePanel = true;
   }
 
   createHorse() {
-    this.horseService.createHorse(this.horse.name, this.currentUser.id).subscribe(
+    this.horseService.createHorse(this.newHorse.name, this.currentUser.id).subscribe(
       data => {
         this.horse = data;
         this.horses.push(this.horse);
         this.newHorsePanel = false;
         this.alertService.success("Horse created success");
-        this.alertService.clearAfter(1500);
+        this.alertService.clearAfter( 3000);
       },
       error => {
         console.log("An error has occured while creating horse");
@@ -76,11 +81,11 @@ export class HorseComponent implements OnInit {
   }
 
   updateHorse(horse: IHorse){
-    if (horse.id != null) {
+    if (horse.id != 0) {
       this.horseService.updateHorse(horse, this.currentUser.id).subscribe (
         data => {
           this.alertService.success("Horse name updated");
-          this.alertService.clearAfter(1500);
+          this.alertService.clearAfter(3000);
         },
         error => {
           console.log("Error occured while updating horse name");
