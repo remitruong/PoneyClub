@@ -7,5 +7,6 @@ export interface ICourse {
 	endDateTime: string;
 	levelStudying: string;
 	maxStudent: number;
+	availablePlaces: number;
 	teacher: User;
 }

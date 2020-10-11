@@ -7,6 +7,7 @@ import { AuthenticationService } from '../services/authentification.service';
 import { DateTimePipe } from '../share/pipe/date-time.pipe';
 import { ICoursePlace } from '../_classes/icourseplace';
 import { CoursePlaceService } from '../services/api/course-place.service';
+import { IError } from '../_classes/ierror';
 
 @Component({
   selector: 'app-course',
@@ -22,6 +23,7 @@ export class CourseComponent implements OnInit {
     endDateTime: '',
     levelStudying: '',
     maxStudent: 0,
+    availablePlaces: 0,
     teacher: null,
   };
   public courses: ICourse[] = [];
@@ -38,13 +40,28 @@ export class CourseComponent implements OnInit {
     this.currentUser = this.authenticationService.currentUserValue;
 
     this.courseService.getCourses().subscribe(
+      
       (data) => {
         this.courses = data;
+         for (let course of this.courses) {
+      console.log("test"+ course.id);
+      this.courseService.getAvailablePlaces(course.id).subscribe(
+        data => {
+          console.log(data);
+          course.availablePlaces = data;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    }
       },
       (error) => {
 
       },
     );
+
+   
 
     this.coursePlaceService.getUserPlanning(this.authenticationService.currentUserValue.email).subscribe(
       data => {
@@ -83,13 +100,14 @@ export class CourseComponent implements OnInit {
     this.course.endDateTime = new DateTimePipe().transform(this.endDateTime);
 
     this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
-      (data) => {
+      data => {
         console.log(data);
         this.courses.push(data);
         console.log('course well added');
       },
-      (error) => {
-        console.log('error while adding course');
+      error => {
+        let ierror: IError = error;
+        console.log('error while adding course' + ierror.error);
       },
     );
     this.bCourseAdd = false;

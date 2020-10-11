@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,13 @@ import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
 import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
+import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 
 @Service
 public class CourseService {
 	
+	private Logger logger = LogManager.getLogger(CourseService.class);
 
 	@Autowired
 	private UserRepository userRepo;
@@ -62,18 +66,20 @@ public class CourseService {
 		return course1;
 	}
 	
-	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException {
+	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException, NoPlacesAvailableException {
 		Optional<Course> course = courseRepo.findById(idCourse);
 		Optional<User> rider = userRepo.findByEmail(user.getEmail());
 		
-		if(course.isEmpty()) throw new CourseNotExistException("Course does not exist, try later");
+		if (course.isEmpty()) throw new CourseNotExistException("Course does not exist, try later");
 		if (rider.isEmpty() || !rider.get().getRole().equals("Rider")) throw new NoUserFoundException("Error while retrieving user");
 		
-		CoursePlace planning = new CoursePlace();
-		planning.setCourse(course.get());
-		planning.setRider(rider.get());
-		CoursePlace coursePlace = coursePlaceRepo.save(planning);
-		return coursePlace;
+		List<CoursePlace> coursePlace = courseRepo.findFirstAvailablePlace(course.get());
+		
+		if (coursePlace.isEmpty()) throw new NoPlacesAvailableException("There is no place for this course");
+		
+		coursePlace.get(0).setRider(rider.get());
+		CoursePlace newCoursePlace = coursePlaceRepo.save(coursePlace.get(0));
+		return newCoursePlace;
 	}
 	
 	public Integer availablePlaces(long idCourse) throws CourseNotExistException {
@@ -81,7 +87,7 @@ public class CourseService {
 		
 		if(isCourse.isEmpty()) throw new CourseNotExistException("Course not found");
 		
-		return courseRepo.getAvailablePlaces(idCourse);
+		return courseRepo.getCountAvailablePlaces(isCourse.get());
 	}
 		
 	private boolean isStartBeforeEnd(String startDateTime, String endDateTime) {

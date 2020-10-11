@@ -24,7 +24,7 @@
 							<td>{{course.startDateTime}}</td>
 							<td>{{course.endDateTime}}</td>
 							<td>{{course.levelStudying}}</td>
-							<td>{{course.maxStudent}}</td>
+							<td>{{course.availablePlaces}}</td>
 							<td>
 								<button type="button" class="btn-light btn-sm"(click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
 									<nb-icon icon="checkmark-square-outline"></nb-icon> Subscribe

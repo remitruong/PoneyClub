@@ -22,6 +22,7 @@ import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
 import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
+import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 import fr.esieaproject.poneyclub.services.CourseService;
 
@@ -69,7 +70,7 @@ public class CourseController {
 	public ResponseEntity register(@RequestBody User user, @PathVariable long idCourse) {
 		try {
 			return new ResponseEntity<CoursePlace>(courseService.registerToCourse(user, idCourse), HttpStatus.OK);
-		} catch (CourseNotExistException | NoUserFoundException e) {
+		} catch (CourseNotExistException | NoUserFoundException | NoPlacesAvailableException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
