@@ -107,7 +107,16 @@ export class CourseComponent implements OnInit {
   }
 
   unsubscribe(coursePlace: ICoursePlace){
-
+    this.coursePlaceService.unsubscribeCourse(coursePlace.id).subscribe (
+      (data) => {
+        let indexCoursePlace = this.coursePlaces.indexOf(coursePlace);
+        this.coursePlaces.splice(indexCoursePlace, 1);
+        console.log('Unsubscribe succes ! ');
+      },
+      (err) => {
+        console.log('error while unsubscribing to course');
+      },
+    );
   }
 
 }

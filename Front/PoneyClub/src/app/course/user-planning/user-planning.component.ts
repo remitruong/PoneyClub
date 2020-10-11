@@ -12,15 +12,15 @@ import { ICoursePlace } from 'src/app/_classes/icourseplace';
 export class UserPlanningComponent implements OnInit {
 
   @Input() coursePlaces: ICoursePlace[];
-  @Output() courseUnsubscribe: EventEmitter<number> = new EventEmitter<number>();
+  @Output() courseUnsubscribe: EventEmitter<ICoursePlace> = new EventEmitter<ICoursePlace>();
 
   constructor(private authenticationService : AuthenticationService) { }
 
   ngOnInit(): void {
   }
 
-  unsubscribe(coursePlaceId: number) {
-    this.courseUnsubscribe.emit(coursePlaceId);
+  unsubscribe(coursePlace: ICoursePlace) {
+    this.courseUnsubscribe.emit(coursePlace);
   }
 
 }

@@ -66,6 +66,7 @@
 		<app-user-planning 
 		*ngIf="currentUser && currentUser.role == 'Rider'"
 		[coursePlaces] = "coursePlaces"
+		(courseUnsubscribe)="unsubscribe($event)"
 		>
 		</app-user-planning>
 	</div>
