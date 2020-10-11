@@ -15,6 +15,7 @@ import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.Horse;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
+import fr.esieaproject.poneyclub.exception.courseplaceexceptions.CoursePlaceNotFoundException;
 import fr.esieaproject.poneyclub.exception.horseexceptions.HorseNotExistException;
 import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 
@@ -57,6 +58,15 @@ public class CoursePlaceService {
 
 		List<CoursePlace> userPlanning = coursePlaceRepo.findByRider(existingUser.get());
 		return userPlanning;
+	}
+	
+	public boolean unsubscribe(long idCoursePlace) throws CoursePlaceNotFoundException {
+		Optional<CoursePlace> isCoursePlace = coursePlaceRepo.findById(idCoursePlace);
+		
+		if (isCoursePlace.isEmpty()) throw new CoursePlaceNotFoundException("Course place was not found");
+		
+		coursePlaceRepo.delete(isCoursePlace.get());
+		return true;
 	}
 
 	public boolean mapHorse(String horseName, long idTeacher, long idCourse)
