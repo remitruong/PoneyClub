@@ -13,5 +13,7 @@ public interface CourseRepository extends CrudRepository<Course,Long> {
 
 	@Query("SELECT c FROM Course c WHERE c.startDateTime BETWEEN :startDateTime and  :endDateTime")
 	List<Course> findByDateTime( @Param("startDateTime") Timestamp startDateTime, @Param("endDateTime") Timestamp endDateTime);
-
+	
+	@Query("select count(*) from courseplace cp where cp.idCourse= :idCourse and ISNULL(idrider) = 1")
+	Integer getAvailablePlaces(@Param("idCourse") long idCourse);
 }

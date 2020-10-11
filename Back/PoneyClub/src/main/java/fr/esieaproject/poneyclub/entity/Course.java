@@ -20,7 +20,7 @@ public class Course {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private long id;
 	private String title;
 	private Timestamp startDateTime;
 	private Timestamp endDateTime;    
@@ -48,7 +48,7 @@ public class Course {
 		this.maxStudent = maxStudent;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 	

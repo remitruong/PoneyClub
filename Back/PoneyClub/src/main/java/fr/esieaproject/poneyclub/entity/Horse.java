@@ -16,7 +16,7 @@ public class Horse {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idHorse;
+	private long idHorse;
 	@Column(unique = true)
 	private String name;
 	
@@ -27,7 +27,7 @@ public class Horse {
 		this.name = name;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return idHorse;
 	}
 

@@ -74,5 +74,13 @@ public class CourseController {
 		}
 	}
 	
+	@GetMapping(value = "/available-places/{idCourse}")
+	public ResponseEntity getAvailablePlaces(@PathVariable long idCourse) {
+		try {
+			return new ResponseEntity(courseService.availablePlaces(idCourse), HttpStatus.OK);
+		} catch (CourseNotExistException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 }

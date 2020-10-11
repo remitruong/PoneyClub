@@ -76,8 +76,14 @@ public class CourseService {
 		return coursePlace;
 	}
 	
-	
-	
+	public Integer availablePlaces(long idCourse) throws CourseNotExistException {
+		Optional<Course> isCourse = courseRepo.findById(idCourse);
+		
+		if(isCourse.isEmpty()) throw new CourseNotExistException("Course not found");
+		
+		return courseRepo.getAvailablePlaces(idCourse);
+	}
+		
 	private boolean isStartBeforeEnd(String startDateTime, String endDateTime) {
 		Timestamp start = Timestamp.valueOf(startDateTime);
 		Timestamp end = Timestamp.valueOf(endDateTime);
