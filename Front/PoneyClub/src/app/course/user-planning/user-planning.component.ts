@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/authentification.service';
+import { ICourse } from 'src/app/_classes/icourse';
+import { EventEmitter } from '@angular/core';
+import { ICoursePlace } from 'src/app/_classes/icourseplace';
 
 @Component({
   selector: 'app-user-planning',
@@ -7,9 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserPlanningComponent implements OnInit {
 
-  constructor() { }
+  @Input() coursePlaces: ICoursePlace[];
+  @Output() courseUnsubscribe: EventEmitter<ICoursePlace> = new EventEmitter<ICoursePlace>();
+
+  constructor(private authenticationService : AuthenticationService) { }
 
   ngOnInit(): void {
+  }
+
+  unsubscribe(coursePlace: ICoursePlace) {
+    this.courseUnsubscribe.emit(coursePlace);
   }
 
 }

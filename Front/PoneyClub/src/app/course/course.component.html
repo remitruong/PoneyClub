@@ -1,53 +1,73 @@
-<div class="container">
+<div class="container-fluid">
+	<div class="row">
+		<nb-card>
+			<nb-card-header>
+				<button type ="btn" class="btn btn-light btn-sm" *ngIf="currentUser && currentUser.role == 'Teacher'" (click)="addCourse()">
+					<nb-icon icon="plus-square-outline"></nb-icon> Add Course
+				</button>
+			</nb-card-header>
+			<nb-card-body>
+				<table class="table table-hover table-dark table-responsive">
+					<thead>
+						<tr>
+							<th><i>Title</i></th>
+							<th><i>Start Date</i></th>
+							<th><i>End Date</i></th>
+							<th><i>Level</i></th>
+							<th><i>Available Places</i></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let course of courses">
+							<td>{{course.title}}</td>
+							<td>{{course.startDateTime}}</td>
+							<td>{{course.endDateTime}}</td>
+							<td>{{course.levelStudying}}</td>
+							<td>{{course.availablePlaces}}</td>
+							<td>
+								<button type="button" class="btn-light btn-sm"(click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
+									<nb-icon icon="checkmark-square-outline"></nb-icon> Subscribe
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</nb-card-body>
+		</nb-card>
 
-	<div class="col-md-12">
-		<table>
-			<thead>
-				<tr>
-					<th><i>ID </i></th>
-					<th><i>Title</i></th>
-					<th><i>Start Date</i></th>
-					<th><i>End Date</i></th>
-					<th><i>Level</i></th>
-					<th><i>Available Places</i></th>
-					<th>
-						<button *ngIf="currentUser && currentUser.role == 'Teacher'" (click)="addCourse()"></button>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngIf="bCourseAdd">
-					<th></th>
-					<th><input type="text" [(ngModel)]="course.title"/></th>
-					<th><input type="datetime-local" [(ngModel)]="startDateTime"/></th>
-					<th><input type="datetime-local" [(ngModel)]="endDateTime"/></th>
-					<th><input type="text" [(ngModel)]="course.levelStudying"/></th>
-					<th><input type="text" [(ngModel)]="course.maxStudent"/></th>
-					<th>
-						<button (click)="createCourse()">Send</button>
-					</th>
-				</tr>
-				<tr *ngFor="let course of courses">
-					<td>{{course.id}}</td>
-					<td>{{course.title}}</td>
-					<td>{{course.startDateTime}}</td>
-					<td>{{course.endDateTime}}</td>
-					<td>{{course.levelStudying}}</td>
-					<td>{{course.maxStudent}}</td>
-					<td>
-						<button (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">Subscribe</button>
-					</td>
-				</tr>
-
-			</tbody>
-
-		</table>
+		<nb-card *ngIf="bCourseAdd">
+			<nb-card-body>
+				<form [formGroup]="courseForm">
+					<div class="form-group">
+						<input type="text" formControlName="title" class="form-control" [(ngModel)]="course.title" placeholder="Course title"/>
+					</div>					
+					<div class="form-group">
+						<label for="startDateTime">Start date</label>
+						<input id="startDateTime" type="datetime-local" formControlName="startDateTime" class="form-control" [(ngModel)]="startDateTime" placeholder="Start date"/>
+					</div>
+					<div class="form-group">
+						<label for="endDateTime">End date</label>
+						<input id="endDateTime" type="datetime-local" formControlName="endDateTime" class="form-control" [(ngModel)]="endDateTime"/>
+					</div>
+					<div class="form-group">
+						<input type="text" formControlName="level" class="form-control" [(ngModel)]="course.levelStudying" placeholder="Level"/>
+					</div>
+					<div class="form-group">
+						<input type="text" formControlName="maxStudent" class="form-control" [(ngModel)]="course.maxStudent" placeholder="Max student"/>
+					</div>
+					<button type="button" class="btn btn-light btn-sm" (click)="createCourse()">Send</button>
+				</form>		
+			</nb-card-body>
+		</nb-card>
 	</div>
 
-	<div>
-		<app-user-planning>
+	<div class="col-md-8 justify-content-center">
+		<app-user-planning 
+		*ngIf="currentUser && currentUser.role == 'Rider'"
+		[coursePlaces] = "coursePlaces"
+		(courseUnsubscribe)="unsubscribe($event)"
+		>
 		</app-user-planning>
 	</div>
-
-
 </div>

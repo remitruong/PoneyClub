@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class CoursePlace {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long idCoursePlace;
+	private long idCoursePlace;
 	
 	@ManyToOne @JoinColumn(name ="idCourse")
 	private Course course;
@@ -24,7 +24,7 @@ public class CoursePlace {
 	
 	public CoursePlace() {}
 	
-	public Long getId() {
+	public long getId() {
 		return idCoursePlace;
 	}
 	

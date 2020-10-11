@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface ICourse {
 	id: number;
 	title: string;
@@ -5,4 +7,6 @@ export interface ICourse {
 	endDateTime: string;
 	levelStudying: string;
 	maxStudent: number;
+	availablePlaces: number;
+	teacher: User;
 }

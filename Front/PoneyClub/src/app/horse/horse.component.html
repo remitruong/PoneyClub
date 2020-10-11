@@ -6,7 +6,7 @@
       </div>
       <div class="form-group">
         <form *ngIf="newHorsePanel" (submit)="createHorse()">
-          <input id="horseName" nbInput fieldSize="small" type="text" placeholder="Horse Name" [(ngModel)]="horse.name" name="horsename"/>
+          <input id="horseName" nbInput fieldSize="small" type="text" placeholder="Horse Name" [(ngModel)]="newHorse.name" name="horsename"/>
           <button nbButton nbSuffix  size="small" type="submit"><nb-icon icon="arrow-circle-right-outline"></nb-icon></button>
         </form>
       </div>

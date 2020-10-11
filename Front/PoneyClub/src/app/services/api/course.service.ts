@@ -3,16 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { ICourse } from 'src/app/_classes/icourse';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/_classes';
+import { ICoursePlace } from 'src/app/_classes/icourseplace';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
 
-  BASE_URL: string = 'http://localhost:8081';
-  getCoursesUrl: string = `${this.BASE_URL}/course/get-courses`;
-  addCourseUrl: string = `${this.BASE_URL}/course/plan`;
-  registerToCourseUrl: string = `${this.BASE_URL}/course?/register?`;
+  BASE_URL: string = 'http://localhost:8081/course';
+  getCoursesUrl: string = `${this.BASE_URL}/get-courses`;
+  addCourseUrl: string = `${this.BASE_URL}/plan`;
+  registerToCourseUrl: string = `${this.BASE_URL}/register`;
+  availablePlacesUrl: string =  `${this.BASE_URL}/available-places`;
 
 
   constructor(private http: HttpClient) { }
@@ -25,8 +27,13 @@ export class CourseService {
     return this.http.post<ICourse>(this.addCourseUrl + '/' + idTeacher, course);
   }
 
-  public registerToCourse(user: User, idCourse: number): Observable<any> {
+  public registerToCourse(user: User, idCourse: number): Observable<ICoursePlace> {
     console.log(this.registerToCourseUrl);
-     return this.http.post<any>( 'http://localhost:8081/course/register/' + idCourse, user);
+     return this.http.post<ICoursePlace>( this.registerToCourseUrl + '/' + idCourse, user);
   }
+
+  public getAvailablePlaces(idCourse: number): Observable<any> {
+    return this.http.get(this.availablePlacesUrl + '/' + idCourse);
+  }
+
 }
