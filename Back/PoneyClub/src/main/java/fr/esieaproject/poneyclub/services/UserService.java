@@ -49,7 +49,6 @@ public class UserService {
 	public boolean updateUser(long idUser, User user) {
 		Optional<User> userToUpdate = userRepo.findById(idUser);
 		user.setIdUser(idUser);
-		
 		try {
 			userRepo.save(user);
 			return true;

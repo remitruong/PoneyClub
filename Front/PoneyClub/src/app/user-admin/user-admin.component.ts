@@ -4,6 +4,7 @@ import { User } from '../_classes';
 import { IError } from '../_classes/ierror';
 import { AlertService } from '../services/alert.service';
 import { AuthenticationService } from '../services/authentification.service';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-user-admin',

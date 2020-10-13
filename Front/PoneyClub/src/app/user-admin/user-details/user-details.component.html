@@ -1,7 +1,7 @@
 <div class="container-fluid justify-content-center">
   <form [formGroup]="userForm">
     <div *ngIf="userSelected">
-      <h1>{{userSelected.statut}}</h1>
+      <h1>{{userSelected.statut}} : {{userSelected.role}}</h1>
 
       <div class="form-group">
         <label>First Name</label>
@@ -50,12 +50,13 @@
         <input type="text" formControlName="licenceNum" class="form-control" placeholder="Enter your licence number (optional)" [(ngModel)]="userSelected.licenceNum">
       </div>
 
-      <p *ngIf="userSelected.id == 0">Teacher</p>
-      <p *ngIf="userSelected.id != 0">{{userSelected.role}}</p>
-
       <section class="button-with-link">
-        <button nbButton (click)="updateUser()" *ngIf="userSelected.id !=0">Update User</button>
-        <button nbButton (click)="addUser()" *ngIf="userSelected.id == 0">Add User</button>
+        <span>
+          <button nbButton class="mr-3 " (click)="updateUser()" *ngIf="userSelected.id !=0">Update User</button>
+        </span>
+        <span>
+          <button nbButton (click)="addUser()" *ngIf="userSelected.id == 0">Add User</button>
+        </span>
         <span>
           <button nbButton (click)="changetoAdmin()" *ngIf="userSelected.statut == 'User' && userSelected.role == 'Teacher'">
             <nb-icon icon="chevron-right-outline"></nb-icon>Convert to administrator
