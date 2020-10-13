@@ -3,7 +3,7 @@ import { IHorse } from '../_classes/ihorse';
 import { HorseService } from '../services/api/horse.service';
 import { User } from '../_classes';
 import { AuthenticationService } from '../services/authentification.service';
-import { FormBuilder } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertComponent} from "../_alert/alert.component";
 import {AlertService} from "../services/alert.service";
 
@@ -26,11 +26,20 @@ export class HorseComponent implements OnInit {
   currentUser: User = null;
   newHorsePanel = false;
   submitted = false;
+  horseFormCreation: FormGroup;
+  horseFormUpdate: FormGroup;
 
-  constructor(private horseService: HorseService, private authenticationService: AuthenticationService, private alertService: AlertService) { }
+  constructor(private horseService: HorseService, private authenticationService: AuthenticationService, private alertService: AlertService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
+    this.submitted = false;
+    this.horseFormCreation = this.formBuilder.group({
+      horseNameCreation: ['', Validators.required],
+    });
+    this.horseFormUpdate = this.formBuilder.group({
+      horseNameUpdate: ['', Validators.required],
+    });
 
     this.horseService.getHorses(this.currentUser.id).subscribe(
       data => {
@@ -51,6 +60,11 @@ export class HorseComponent implements OnInit {
   }
 
   createHorse() {
+    this.submitted = true;
+
+    if(this.horseFormCreation.invalid){
+      return;
+    }
     this.horseService.createHorse(this.newHorse.name, this.currentUser.id).subscribe(
       data => {
         this.horse = data;
@@ -81,6 +95,9 @@ export class HorseComponent implements OnInit {
   }
 
   updateHorse(horse: IHorse){
+    if(this.horseFormUpdate.get('horseNameUpdate')){
+      return;
+    }
     if (horse.id != 0) {
       this.horseService.updateHorse(horse, this.currentUser.id).subscribe (
         data => {
@@ -93,5 +110,7 @@ export class HorseComponent implements OnInit {
       )
     }
   }
+
+  get fC() { return this.horseFormCreation.controls; }
 
 }

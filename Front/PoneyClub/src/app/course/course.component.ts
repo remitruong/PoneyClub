@@ -29,6 +29,7 @@ export class CourseComponent implements OnInit {
   public courses: ICourse[] = [];
   public currentUser: User = null;
   public bCourseAdd = false;
+  submitted = false;
   public startDateTime: string = null;
   public endDateTime: string = null;
   public courseForm: FormGroup;
@@ -38,9 +39,18 @@ export class CourseComponent implements OnInit {
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
+    this.submitted = false;
+    this.courseForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      startDateTime: ['', Validators.required],
+      endDateTime: ['', Validators.required],
+      level: ['', Validators.required],
+      maxStudent: ['', Validators.required],
+    });
+
 
     this.courseService.getCourses().subscribe(
-      
+
       (data) => {
         this.courses = data;
          for (let course of this.courses) {
@@ -61,7 +71,7 @@ export class CourseComponent implements OnInit {
       },
     );
 
-   
+
 
     this.coursePlaceService.getUserPlanning(this.authenticationService.currentUserValue.email).subscribe(
       data => {
@@ -81,24 +91,19 @@ export class CourseComponent implements OnInit {
     this.course.levelStudying = '';
     this.course.maxStudent = null;
     this.course.teacher = null;
-
     this.startDateTime = '';
     this.endDateTime = '';
-
-
-    this.courseForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      startDateTime: ['', Validators.required],
-      endDateTime: ['', Validators.required],
-      level: ['', Validators.required],
-      maxStudent: ['', Validators.required],
-    });
   }
 
   createCourse() {
     this.course.startDateTime = new DateTimePipe().transform(this.startDateTime);
     this.course.endDateTime = new DateTimePipe().transform(this.endDateTime);
 
+    this.submitted = true;
+
+    if (this.courseForm.invalid) {
+      return;
+    }
     this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
       data => {
         console.log(data);
@@ -138,5 +143,7 @@ export class CourseComponent implements OnInit {
       },
     );
   }
+
+  get f() { return this.courseForm.controls; }
 
 }

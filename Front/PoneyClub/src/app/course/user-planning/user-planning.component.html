@@ -1,28 +1,31 @@
-<div>
-	<nb-card>
-		<table class="table table-hover table-dark table-responsive">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Start date</th>
-					<th>End date</th>
-					<th>Level</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let coursePlace of coursePlaces">
-					<td>{{coursePlace.course.title}}</td>
-					<td>{{coursePlace.course.startDateTime}}</td>
-					<td>{{coursePlace.course.endDateTime}}</td>
-					<td>{{coursePlace.course.levelStudying}}</td>
-					<td>
-						<button type="button" class="btn btn-light btn-sm" (click)="unsubscribe(coursePlace)">
-							<nb-icon icon="backspace-outline"></nb-icon> Unsubscribe
-						</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</nb-card>
-</div>
+
+<nb-card>
+  <nb-card-header>
+    <h1>Enrolled course</h1>
+  </nb-card-header>
+  <nb-card-body>
+    <table class="table table-hover table-dark table-responsive">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Level</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let coursePlace of coursePlaces">
+        <td>{{coursePlace.course.title}}</td>
+        <td>{{coursePlace.course.startDateTime}}</td>
+        <td>{{coursePlace.course.endDateTime}}</td>
+        <td>{{coursePlace.course.levelStudying}}</td>
+        <td>
+          <button type="button" nbButton (click)="unsubscribe(coursePlace)"><nb-icon icon="backspace-outline"></nb-icon>Unsubscribe</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>
+

@@ -4,12 +4,15 @@
       <div class="form-group">
         <button nbButton class=" mr-3" (click)="addHorse()" ><nb-icon icon="plus-square-outline"></nb-icon>Add a horse</button>
       </div>
-      <div class="form-group">
-        <form *ngIf="newHorsePanel" (submit)="createHorse()">
-          <input id="horseName" nbInput fieldSize="small" type="text" placeholder="Horse Name" [(ngModel)]="newHorse.name" name="horsename"/>
+      <form [formGroup]="horseFormCreation" *ngIf="newHorsePanel" (submit)="createHorse()">
+        <div class="form-group">
+          <input nbInput fieldSize="small" formControlName="horseNameCreation" type="text" placeholder="Horse Name" [ngClass]="{ 'is-invalid': submitted && fC.horseNameCreation.errors }" [(ngModel)]="newHorse.name" name="horsename"/>
           <button nbButton nbSuffix  size="small" type="submit"><nb-icon icon="arrow-circle-right-outline"></nb-icon></button>
-        </form>
-      </div>
+          <div *ngIf="submitted && fC.horseNameCreation.errors" class="invalid-feedback">
+            <div *ngIf="fC.horseNameCreation.errors.required">Horse name is required</div>
+          </div>
+        </div>
+      </form>
     </nb-card-header>
     <nb-card-body>
       <div class="row justify-content-center">
@@ -25,7 +28,7 @@
             <tr scope="col">
               <th>{{h.id}}</th>
               <th>
-                <input nbInput fieldSize="small"  type="text" [(ngModel)]="h.name" (change)="updateHorse(h)">
+                <input nbInput fieldSize="small" type="text" [(ngModel)]="h.name" (change)="updateHorse(h)">
                 <button nbButton nbSuffix size="small" (click)="deleteHorse(h)" ><nb-icon icon="close-square-outline"></nb-icon></button>
               </th>
             </tr>
