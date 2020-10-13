@@ -61,7 +61,7 @@ export class UserAdminComponent implements OnInit {
       },
       error => {
         console.log("error occured while update user" + error);
-        // this.alertService.error(this.localError.error.response);
+        this.alertService.error(this.localError.error.response);
       }
     )
   }
@@ -76,7 +76,7 @@ export class UserAdminComponent implements OnInit {
       },
       error => {
         console.log("error occured while adding user");
-        // this.alertService.error(this.localError.error.response);
+        this.alertService.error(this.localError.error.response);
       }
 
     )
@@ -93,7 +93,7 @@ export class UserAdminComponent implements OnInit {
       },
       error => {
         console.log("Error while setting selected user to admin");
-        // this.alertService.error(this.localError.error.response);
+        this.alertService.error(this.localError.error.response);
       }
     )
   }

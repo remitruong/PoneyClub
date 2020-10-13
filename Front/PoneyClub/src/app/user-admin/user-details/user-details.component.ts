@@ -21,7 +21,9 @@ export class UserDetailsComponent implements OnInit {
   @Output() userAdded: EventEmitter<User> = new EventEmitter<User>();
   @Output() userToAdmin: EventEmitter<User> = new EventEmitter<User>();
 
-  constructor(private formBuilder: FormBuilder, private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder, private alertService: AlertService) {}
+
+  ngOnInit(): void {
     this.submitted = false;
     this.userForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -33,21 +35,15 @@ export class UserDetailsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.userForm.valueChanges.subscribe(
-      ()=>
-        this.userForm.updateValueAndValidity()
-  )
-  }
-
   get f() { return this.userForm.controls; }
 
   updateUser() {
-    //TODO vérification
-    // this.submitted = true;
-    // if (this.userForm.invalid) {
-    //   return;
-    // }
+    this.submitted = true;
+    //disable the control on password
+    this.userForm.get('password').disable();
+    if (this.userForm.invalid) {
+      return;
+    }
     this.userUpdated.emit(this.userSelected);
   }
 

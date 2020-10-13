@@ -116,7 +116,7 @@ public class UserService {
 		}
 		Iterable<User> userList = userRepo.findAll();
 		for (User user : userList) {
-			user.setPassword("");
+//			user.setPassword("");
 			logger.info("user list :" + user.toString());
 		}
 		return userList;

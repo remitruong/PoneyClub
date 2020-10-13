@@ -1,8 +1,9 @@
 <div class="container-fluid justify-content-center">
   <form [formGroup]="userForm">
     <div *ngIf="userSelected">
-      <h1>{{userSelected.statut}} : {{userSelected.role}}</h1>
-
+      <div *ngIf="userSelected.id !=0">
+        <h1>{{userSelected.statut}} : {{userSelected.role}}</h1>
+      </div>
       <div class="form-group">
         <label>First Name</label>
         <input type="text" formControlName="firstName" placeholder="Enter your First Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" [(ngModel)]="userSelected.firstName"/>
