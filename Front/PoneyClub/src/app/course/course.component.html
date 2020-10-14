@@ -27,10 +27,10 @@
                 <td>{{course.startDateTime}}</td>
                 <td>{{course.endDateTime}}</td>
                 <td>
-                  <div *ngIf="course.levelStudying == 8">
+                  <div *ngIf="course.levelStudying == '8'">
                     Galop
                   </div>
-                  <div *ngIf="course.levelStudying != 8">
+                  <div *ngIf="course.levelStudying != '8'">
                     {{course.levelStudying}}
                   </div>
                 </td>

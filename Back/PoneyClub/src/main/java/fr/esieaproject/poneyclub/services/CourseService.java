@@ -17,6 +17,7 @@ import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
 import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
+import fr.esieaproject.poneyclub.exception.courseexception.UserAlreadyRegisteredException;
 import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 
@@ -66,7 +67,7 @@ public class CourseService {
 		return course1;
 	}
 	
-	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException, NoPlacesAvailableException {
+	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException, NoPlacesAvailableException, UserAlreadyRegisteredException {
 		Optional<Course> course = courseRepo.findById(idCourse);
 		Optional<User> rider = userRepo.findByEmail(user.getEmail());
 		
@@ -76,6 +77,11 @@ public class CourseService {
 		List<CoursePlace> coursePlace = courseRepo.findFirstAvailablePlace(course.get());
 		
 		if (coursePlace.isEmpty()) throw new NoPlacesAvailableException("There is no place for this course");
+		
+		Integer isUserAlreadyRegistered = 0;
+		if ((isUserAlreadyRegistered = courseRepo.isUserAlreadyRegistered(course.get(), rider.get())) != 0) 
+			throw new UserAlreadyRegisteredException("You are already registered in this course ! ");
+		
 		
 		coursePlace.get(0).setRider(rider.get());
 		CoursePlace newCoursePlace = coursePlaceRepo.save(coursePlace.get(0));

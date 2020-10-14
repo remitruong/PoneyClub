@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import fr.esieaproject.poneyclub.entity.Course;
 import fr.esieaproject.poneyclub.entity.CoursePlace;
+import fr.esieaproject.poneyclub.entity.User;
 
 public interface CourseRepository extends CrudRepository<Course,Long> {
 
@@ -20,5 +21,8 @@ public interface CourseRepository extends CrudRepository<Course,Long> {
 	
 	@Query("SELECT cp FROM CoursePlace cp where cp.course= :course AND cp.rider IS NULL")
 	List<CoursePlace> findFirstAvailablePlace(@Param("course") Course course);
+	
+	@Query("SELECT count(*) FROM CoursePlace cp where cp.course= :course AND cp.rider= :rider")
+	Integer isUserAlreadyRegistered(@Param("course") Course course, @Param("rider") User rider);
 
 }
