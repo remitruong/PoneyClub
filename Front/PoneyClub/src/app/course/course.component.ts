@@ -8,6 +8,7 @@ import { DateTimePipe } from '../share/pipe/date-time.pipe';
 import { ICoursePlace } from '../_classes/icourseplace';
 import { CoursePlaceService } from '../services/api/course-place.service';
 import { IError } from '../_classes/ierror';
+import {AlertService} from "../services/alert.service";
 
 @Component({
   selector: 'app-course',
@@ -35,7 +36,7 @@ export class CourseComponent implements OnInit {
   public courseForm: FormGroup;
   public coursePlaces : ICoursePlace[] = [];
 
-  constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService ,private authenticationService: AuthenticationService, private formBuilder: FormBuilder) { }
+  constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService ,private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private alertService: AlertService) { }
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
@@ -44,35 +45,10 @@ export class CourseComponent implements OnInit {
       title: ['', Validators.required],
       startDateTime: ['', Validators.required],
       endDateTime: ['', Validators.required],
-      level: ['', Validators.required],
-      maxStudent: ['', Validators.required],
+      level: ['', [Validators.required, Validators.min(1),, Validators.max(8)]],
+      maxStudent: ['', [Validators.required, Validators.min(1),, Validators.max(10)] ],
     });
-
-
-    this.courseService.getCourses().subscribe(
-
-      (data) => {
-        this.courses = data;
-         for (let course of this.courses) {
-      console.log("test"+ course.id);
-      this.courseService.getAvailablePlaces(course.id).subscribe(
-        data => {
-          console.log(data);
-          course.availablePlaces = data;
-        },
-        error => {
-          console.log(error);
-        }
-      )
-    }
-      },
-      (error) => {
-
-      },
-    );
-
-
-
+    this.getCourse();
     this.coursePlaceService.getUserPlanning(this.authenticationService.currentUserValue.email).subscribe(
       data => {
         this.coursePlaces = data;
@@ -81,6 +57,32 @@ export class CourseComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  getCourse(){
+    this.courseService.getCourses().subscribe(
+
+      (data) => {
+        this.courses = data;
+        for (let course of this.courses) {
+          console.log("test"+ course.id);
+          this.courseService.getAvailablePlaces(course.id).subscribe(
+            data => {
+              console.log(data);
+              course.availablePlaces = data;
+              this.alertService.success('Course refresh successfull');
+              this.alertService.clearAfter(1500);
+            },
+            error => {
+              console.log(error);
+            }
+          )
+        }
+      },
+      (error) => {
+
+      },
+    );
   }
 
   addCourse() {
@@ -108,7 +110,8 @@ export class CourseComponent implements OnInit {
       data => {
         console.log(data);
         this.courses.push(data);
-        console.log('course well added');
+        this.alertService.success('course well added');
+        this.alertService.clearAfter(1500);
       },
       error => {
         let ierror: IError = error;
@@ -124,6 +127,8 @@ export class CourseComponent implements OnInit {
         console.log(data);
         this.coursePlaces.push(data);
         console.log('Subscribe succes ! ');
+        this.alertService.success('Subscription success');
+        this.alertService.clearAfter(1500);
       },
       (err) => {
         console.log('error while subscribing to course');
@@ -136,7 +141,8 @@ export class CourseComponent implements OnInit {
       (data) => {
         let indexCoursePlace = this.coursePlaces.indexOf(coursePlace);
         this.coursePlaces.splice(indexCoursePlace, 1);
-        console.log('Unsubscribe succes ! ');
+        this.alertService.success('Unsubscribe success');
+        this.alertService.clearAfter(1500);
       },
       (err) => {
         console.log('error while unsubscribing to course');
