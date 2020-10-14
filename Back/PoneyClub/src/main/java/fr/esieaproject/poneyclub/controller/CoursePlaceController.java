@@ -79,11 +79,11 @@ public class CoursePlaceController {
 		}
 	}
 
-	@PostMapping(value = "/addhorse/{horseName}/{idTeacher}/{idCourse}")
+	@PostMapping(value = "/addhorse/{horseName}/{idTeacher}/{idCoursePlace}")
 	public ResponseEntity mapHorse(@PathVariable String horseName, @PathVariable long idTeacher,
-			@PathVariable long idCourse) {
+			@PathVariable long idCoursePlace) {
 		try {
-			return new ResponseEntity(coursePlaceService.mapHorse(horseName, idTeacher, idCourse), HttpStatus.OK);
+			return new ResponseEntity(coursePlaceService.mapHorse(horseName, idTeacher, idCoursePlace), HttpStatus.OK);
 		} catch (NoUserFoundException | HorseNotExistException | CourseNotExistException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

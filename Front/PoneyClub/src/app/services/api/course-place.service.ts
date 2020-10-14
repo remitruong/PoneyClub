@@ -29,7 +29,7 @@ export class CoursePlaceService {
 
   public mapHorseToCourse(coursePlace: ICoursePlace): Observable<any> {
     return this.http.post<any>(this.mapHorseToCourseUrl + '/' + coursePlace.horse.name + '/' +
-     coursePlace.course.teacher.id + '/' + coursePlace.course.id, null);
+     coursePlace.course.teacher.id + '/' + coursePlace.id, null);
   }
 
   public unsubscribeCourse(idCourse: number): Observable<any> {
