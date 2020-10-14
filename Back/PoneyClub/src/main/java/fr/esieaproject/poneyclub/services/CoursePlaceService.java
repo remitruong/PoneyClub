@@ -60,6 +60,18 @@ public class CoursePlaceService {
 		return userPlanning;
 	}
 	
+	public List<CoursePlace> getTeacherCoursePlaces(long teacherId, long courseId) throws NoUserFoundException, CourseNotExistException {
+		Optional<User> existingTeacher = userRepo.findById(teacherId);
+		Optional<Course> existingCourse = courseRepo.findById(courseId);
+		
+		if (existingTeacher.isEmpty()) throw new NoUserFoundException("Teacher not found");
+		if (existingCourse.isEmpty()) throw new CourseNotExistException("Course not found");
+
+		List<CoursePlace> teacherPlanning = coursePlaceRepo.findByTeacher(existingTeacher.get(), existingCourse.get());
+		return teacherPlanning;
+	}
+	
+	
 	public boolean unsubscribe(long idCoursePlace) throws CoursePlaceNotFoundException {
 		Optional<CoursePlace> isCoursePlace = coursePlaceRepo.findById(idCoursePlace);
 		

@@ -59,6 +59,16 @@ public class CoursePlaceController {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping(value = "/teacher-course-places/{teacherId}/{courseId}")
+	public ResponseEntity getTeacherCourse(@PathVariable long teacherId, @PathVariable long courseId) {
+		try {
+			return new ResponseEntity<List<CoursePlace>>(coursePlaceService.getTeacherCoursePlaces(teacherId, courseId),
+					HttpStatus.OK);
+		} catch (NoUserFoundException | CourseNotExistException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@DeleteMapping(value = "/user-planning/unsubscribe/{idCoursePlace}")
 	public ResponseEntity unsubscribe(@PathVariable long idCoursePlace) {
