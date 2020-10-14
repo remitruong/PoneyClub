@@ -35,6 +35,7 @@ export class CourseComponent implements OnInit {
   public endDateTime: string = null;
   public courseForm: FormGroup;
   public coursePlaces : ICoursePlace[] = [];
+  private localError : IError;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService ,private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private alertService: AlertService) { }
 
@@ -49,20 +50,23 @@ export class CourseComponent implements OnInit {
       maxStudent: ['', [Validators.required, Validators.min(1),, Validators.max(10)] ],
     });
     this.getCourse();
+    this.getUserPlanning();
+  }
+
+  getUserPlanning() {
     this.coursePlaceService.getUserPlanning(this.authenticationService.currentUserValue.email).subscribe(
       data => {
         this.coursePlaces = data;
       },
       error => {
-        console.log(error);
-      }
-    )
+        this.localError = error;
+        this.alertService.error(this.localError.error);
+      })
   }
 
   getCourse(){
     this.courseService.getCourses().subscribe(
-
-      (data) => {
+      data => {
         this.courses = data;
         for (let course of this.courses) {
           this.courseService.getAvailablePlaces(course.id).subscribe(
@@ -72,13 +76,15 @@ export class CourseComponent implements OnInit {
               this.alertService.clearAfter(1500);
             },
             error => {
-              console.log(error);
+             this.localError = error;
+             this.alertService.error(this.localError.error);
             }
           )
         }
       },
-      (error) => {
-
+      error => {
+        this.localError = error;
+        this.alertService.error(this.localError.error);
       },
     );
   }
@@ -106,16 +112,15 @@ export class CourseComponent implements OnInit {
     }
     this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
       data => {
-        console.log(data);
         this.course = data;
         this.course.availablePlaces = this.course.maxStudent;
         this.courses.push(data);
-        this.alertService.success('course well added');
+        this.alertService.success('Course well added');
         this.alertService.clearAfter(1500);
       },
       error => {
-        let ierror: IError = error;
-        console.log('error while adding course' + ierror.error);
+        this.localError = error;
+        this.alertService.error(this.localError.error);
       },
     );
     this.bCourseAdd = false;
@@ -124,14 +129,13 @@ export class CourseComponent implements OnInit {
   subscribe(course: ICourse) {
     this.courseService.registerToCourse(this.currentUser, course.id).subscribe (
       (data) => {
-        console.log(data);
         this.coursePlaces.push(data);
-        console.log('Subscribe succes ! ');
         this.alertService.success('Subscription success');
         this.alertService.clearAfter(1500);
       },
       (err) => {
-        console.log('error while subscribing to course');
+        this.localError = err;
+        this.alertService.error(this.localError.error);
       },
     );
   }
@@ -145,7 +149,8 @@ export class CourseComponent implements OnInit {
         this.alertService.clearAfter(1500);
       },
       (err) => {
-        console.log('error while unsubscribing to course');
+        this.localError = err;
+        this.alertService.error(this.localError.error);
       },
     );
   }
