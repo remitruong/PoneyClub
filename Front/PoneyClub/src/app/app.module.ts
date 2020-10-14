@@ -18,6 +18,7 @@ import {
   NbButtonModule,
   NbCardModule, NbFormFieldModule,
   NbIconModule, NbInputModule,
+  NbSelectModule,
   NbLayoutModule,
   NbThemeModule,
 } from '@nebular/theme';
@@ -31,6 +32,7 @@ import { CourseComponent } from './course/course.component';
 import { HorseComponent } from './horse/horse.component';
 import { UserPlanningComponent } from './course/user-planning/user-planning.component';
 import { DateTimePipe } from './share/pipe/date-time.pipe';
+import { CourseManagementComponent } from './course/course-management/course-management.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { DateTimePipe } from './share/pipe/date-time.pipe';
     HorseComponent,
     UserPlanningComponent,
     DateTimePipe,
+    CourseManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +61,7 @@ import { DateTimePipe } from './share/pipe/date-time.pipe';
     NbCardModule,
     NgbModule,
     NbButtonModule,
+    NbSelectModule,
     NgbPaginationModule,
     NgbAlertModule,
     NbActionsModule,

@@ -22,7 +22,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let course of courses">
+              <tr *ngFor="let course of courses" (click)="selectCourse(course)">
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime}}</td>
                 <td>{{course.endDateTime}}</td>
@@ -94,6 +94,12 @@
       <div class="row">
         <app-user-planning *ngIf="currentUser && currentUser.role == 'Rider'" [coursePlaces] = "coursePlaces" (courseUnsubscribe)="unsubscribe($event)">
         </app-user-planning>
+
+        <app-course-management *ngIf="currentUser && currentUser.role == 'Teacher'" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
+
+        </app-course-management>
+
+
       </div>
     </div>
   </div>

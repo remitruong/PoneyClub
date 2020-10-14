@@ -80,8 +80,8 @@ public class CoursePlaceController {
 	}
 
 	@PostMapping(value = "/addhorse/{horseName}/{idTeacher}/{idCourse}")
-	public ResponseEntity mapHorse(@PathVariable String horseName, @PathVariable Long idTeacher,
-			@PathVariable Long idCourse) {
+	public ResponseEntity mapHorse(@PathVariable String horseName, @PathVariable long idTeacher,
+			@PathVariable long idCourse) {
 		try {
 			return new ResponseEntity(coursePlaceService.mapHorse(horseName, idTeacher, idCourse), HttpStatus.OK);
 		} catch (NoUserFoundException | HorseNotExistException | CourseNotExistException e) {

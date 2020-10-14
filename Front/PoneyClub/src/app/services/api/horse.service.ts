@@ -20,8 +20,8 @@ export class HorseService {
     return this.http.post<IHorse>(this.createHorseUrl + '/' + horseName + '/' + idAdmin, null);
   }
 
-  public getHorses(idAdmin: number): Observable<IHorse[]> {
-    return this.http.get<IHorse[]>(this.getHorsesUrl + '/' + idAdmin);
+  public getHorses(): Observable<IHorse[]> {
+    return this.http.get<IHorse[]>(this.getHorsesUrl);
   }
 
   public updateHorse(horse: IHorse, idAdmin: number): Observable<any> {

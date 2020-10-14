@@ -41,7 +41,7 @@ export class HorseComponent implements OnInit {
       horseNameUpdate: ['', Validators.required],
     });
 
-    this.horseService.getHorses(this.currentUser.id).subscribe(
+    this.horseService.getHorses().subscribe(
       data => {
         this.horses = data;
         this.alertService.success('All horse refreshed');
