@@ -19,7 +19,14 @@
         <td>{{coursePlace.course.title}}</td>
         <td>{{coursePlace.course.startDateTime}}</td>
         <td>{{coursePlace.course.endDateTime}}</td>
-        <td>{{coursePlace.course.levelStudying}}</td>
+        <td>
+          <div *ngIf="coursePlace.course.levelStudying == 8">
+            Galop
+          </div>
+          <div *ngIf="coursePlace.course.levelStudying != 8">
+            {{coursePlace.course.levelStudying}}
+          </div>
+        </td>
         <td>
           <button type="button" nbButton (click)="unsubscribe(coursePlace)"><nb-icon icon="backspace-outline"></nb-icon>Unsubscribe</button>
         </td>

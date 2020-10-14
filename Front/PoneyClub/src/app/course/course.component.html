@@ -26,7 +26,14 @@
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime}}</td>
                 <td>{{course.endDateTime}}</td>
-                <td>{{course.levelStudying}}</td>
+                <td>
+                  <div *ngIf="course.levelStudying == 8">
+                    Galop
+                  </div>
+                  <div *ngIf="course.levelStudying != 8">
+                    {{course.levelStudying}}
+                  </div>
+                </td>
                 <td>{{course.availablePlaces}}</td>
                 <td>
                   <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
@@ -65,15 +72,17 @@
             </div>
           </div>
           <div class="form-group">
-            <input type="text" formControlName="level" class="form-control"[ngClass]="{ 'is-invalid': submitted && f.level.errors }" [(ngModel)]="course.levelStudying" placeholder="Level"/>
+            <input type="number" min="1" max="8" formControlName="level" class="form-control"[ngClass]="{ 'is-invalid': submitted && f.level.errors }" [(ngModel)]="course.levelStudying" placeholder="Level"/>
             <div *ngIf="submitted && f.level.errors" class="invalid-feedback">
               <div *ngIf="f.level.errors.required">Level is required</div>
+              <div *ngIf="f.level.errors">Level should be between 1 and 8</div>
             </div>
           </div>
           <div class="form-group">
-            <input type="text" formControlName="maxStudent" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.maxStudent.errors }" [(ngModel)]="course.maxStudent" placeholder="Max student"/>
+            <input type="number" min="1" max="10" formControlName="maxStudent" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.maxStudent.errors }" [(ngModel)]="course.maxStudent" placeholder="Max student"/>
             <div *ngIf="submitted && f.maxStudent.errors" class="invalid-feedback">
               <div *ngIf="f.maxStudent.errors.required">Max Student is required</div>
+              <div *ngIf="f.maxStudent.errors">Max Student should be between 1 and 10</div>
             </div>
           </div>
           <button type="button" nbButton (click)="createCourse()">Send</button>
@@ -87,9 +96,5 @@
         </app-user-planning>
       </div>
     </div>
-
-
   </div>
-
-
 </div>
