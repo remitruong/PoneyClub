@@ -1,0 +1,15 @@
+.button-with-link
+{
+  display: flex;
+  justify-content: space-between;
+}
+.sub-title,
+.title
+{
+  text-align: center;
+}
+
+.sub-text{
+  display: flex;
+  justify-content: space-between;
+}
