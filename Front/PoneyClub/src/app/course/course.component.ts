@@ -65,10 +65,8 @@ export class CourseComponent implements OnInit {
       (data) => {
         this.courses = data;
         for (let course of this.courses) {
-          console.log("test"+ course.id);
           this.courseService.getAvailablePlaces(course.id).subscribe(
             data => {
-              console.log(data);
               course.availablePlaces = data;
               this.alertService.success('Course refresh successfull');
               this.alertService.clearAfter(1500);
@@ -109,6 +107,8 @@ export class CourseComponent implements OnInit {
     this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
       data => {
         console.log(data);
+        this.course = data;
+        this.course.availablePlaces = this.course.maxStudent;
         this.courses.push(data);
         this.alertService.success('course well added');
         this.alertService.clearAfter(1500);
