@@ -9,6 +9,7 @@ import { ICoursePlace } from '../_classes/icourseplace';
 import { CoursePlaceService } from '../services/api/course-place.service';
 import { IError } from '../_classes/ierror';
 import {AlertService} from "../services/alert.service";
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-course',
@@ -27,6 +28,7 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
+  private selectedCourse: ICourse;
   public courses: ICourse[] = [];
   public currentUser: User = null;
   public bCourseAdd = false;
@@ -35,6 +37,7 @@ export class CourseComponent implements OnInit {
   public endDateTime: string = null;
   public courseForm: FormGroup;
   public coursePlaces : ICoursePlace[] = [];
+  public selectedCoursePlaces: ICoursePlace[] = [];
   private localError : IError;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService ,private authenticationService: AuthenticationService, private formBuilder: FormBuilder, private alertService: AlertService) { }
@@ -153,6 +156,31 @@ export class CourseComponent implements OnInit {
         this.alertService.error(this.localError.error);
       },
     );
+  }
+
+  selectCourse(course: ICourse) {
+    this.selectedCourse = course;
+    this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
+      data => {
+        this.selectedCoursePlaces = data;
+      }, 
+      error => {
+        this.localError = error;
+        this.alertService.error(this.localError.error);
+      }
+    )
+  }
+
+  mapHorseToCourse(coursePlace: ICoursePlace) {
+    this.coursePlaceService.mapHorseToCourse(coursePlace).subscribe(
+      data => {
+        this.alertService.success("Horse well mapped");
+      },
+      error => {
+        this.localError = error;
+        this.alertService.error(this.localError.error);
+      }
+    )
   }
 
   get f() { return this.courseForm.controls; }

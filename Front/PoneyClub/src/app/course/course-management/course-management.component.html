@@ -1,7 +1,7 @@
 
 <nb-card>
   <nb-card-header>
-    <h1>Enrolled course</h1>
+    <h1>Management course</h1>
   </nb-card-header>
   <nb-card-body>
     <table class="table table-hover table-dark table-responsive">
@@ -11,11 +11,13 @@
         <th>Start date</th>
         <th>End date</th>
         <th>Level</th>
+        <th>Rider</th>
+        <th>Horse</th>
         <th></th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let coursePlace of coursePlaces">
+      <tr *ngFor="let coursePlace of selectedCoursePlaces">
         <td>{{coursePlace.course.title}}</td>
         <td>{{coursePlace.course.startDateTime}}</td>
         <td>{{coursePlace.course.endDateTime}}</td>
@@ -27,8 +29,15 @@
             {{coursePlace.course.levelStudying}}
           </div>
         </td>
+        <td>{{coursePlace.rider.firstName}}</td>
+        <td *ngIf="coursePlace.horse">{{coursePlace.horse.name}}</td>
+        <td *ngIf="!coursePlace.horse"> 
+          <nb-select value="coursePlace.horse.name">
+            <nb-option *ngFor="let h of horses"  value="h" (click)="selectHorse(h)">{{h.name}}</nb-option>
+          </nb-select>
+        </td>
         <td>
-          <button type="button" nbButton (click)="unsubscribe(coursePlace)"><nb-icon icon="backspace-outline"></nb-icon>Unsubscribe</button>
+          <button nbButton (click)="validate(coursePlace)">Validate</button>
         </td>
       </tr>
       </tbody>

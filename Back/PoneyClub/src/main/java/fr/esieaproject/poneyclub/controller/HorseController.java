@@ -113,15 +113,8 @@ public class HorseController {
 
 	}
 	
-	@GetMapping(value = "/list-horse/{idAdmin}")
-	public Iterable<Horse> getListHorse(@PathVariable Long idAdmin) {
-
-		Optional<User> admin = userRepo.findById(idAdmin);
-		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
-			logger.error("Error while retrieving admin");
-			return null;
-		}
-		
+	@GetMapping(value = "/list-horse")
+	public Iterable<Horse> getListHorse() {
 		
 		try {
 		Iterable<Horse> listHorse = horseRepo.findAll();

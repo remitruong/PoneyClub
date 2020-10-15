@@ -60,6 +60,18 @@ public class CoursePlaceService {
 		return userPlanning;
 	}
 	
+	public List<CoursePlace> getTeacherCoursePlaces(long teacherId, long courseId) throws NoUserFoundException, CourseNotExistException {
+		Optional<User> existingTeacher = userRepo.findById(teacherId);
+		Optional<Course> existingCourse = courseRepo.findById(courseId);
+		
+		if (existingTeacher.isEmpty()) throw new NoUserFoundException("Teacher not found");
+		if (existingCourse.isEmpty()) throw new CourseNotExistException("Course not found");
+
+		List<CoursePlace> teacherPlanning = coursePlaceRepo.findByTeacher(existingTeacher.get(), existingCourse.get());
+		return teacherPlanning;
+	}
+	
+	
 	public boolean unsubscribe(long idCoursePlace) throws CoursePlaceNotFoundException {
 		Optional<CoursePlace> isCoursePlace = coursePlaceRepo.findById(idCoursePlace);
 		
@@ -69,24 +81,19 @@ public class CoursePlaceService {
 		return true;
 	}
 
-	public boolean mapHorse(String horseName, long idTeacher, long idCourse)
+	public boolean mapHorse(String horseName, long idTeacher, long idCoursePlace)
 			throws HorseNotExistException, NoUserFoundException, CourseNotExistException {
-		Optional<Course> course = courseRepo.findById(idCourse);
-		if (course.isEmpty()) {
-			throw new CourseNotExistException("Unable retrieving course");
-		}
-
+		
+		Optional<CoursePlace> coursePlace = coursePlaceRepo.findById(idCoursePlace);
 		Optional<User> user = userRepo.findById(idTeacher);
-		if (user.isEmpty() || !user.get().getRole().equals("Teacher")) {
-			throw new NoUserFoundException("Error while retrieving teacher");
-		}
-
 		Optional<Horse> horse = horseRepo.findByName(horseName);
-		if (horse.isEmpty()) {
-			throw new HorseNotExistException("Error while retrieving horse");
-		}
-
-		// TODO MAP THE HORSE TO THE CORRESPONDING COURSE PLACE
+		
+		if (coursePlace.isEmpty()) throw new CourseNotExistException("Unable retrieving course place");
+		if (user.isEmpty() || !user.get().getRole().equals("Teacher")) throw new NoUserFoundException("Error while retrieving teacher");
+		if (horse.isEmpty()) throw new HorseNotExistException("Error while retrieving horse");
+		
+		coursePlace.get().setHorse(horse.get());
+		coursePlaceRepo.save(coursePlace.get());
 
 		return true;
 	}
