@@ -28,6 +28,16 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
+  private newCourse: ICourse = {
+    id: 0,
+    title: '',
+    startDateTime: '',
+    endDateTime: '',
+    levelStudying: '',
+    maxStudent: 0,
+    availablePlaces: 0,
+    teacher: null,
+  };
   private selectedCourse: ICourse;
   public courses: ICourse[] = [];
   public currentUser: User = null;
@@ -94,26 +104,26 @@ export class CourseComponent implements OnInit {
 
   addCourse() {
     this.bCourseAdd = true;
-    this.course.title = '';
-    this.course.startDateTime = '';
-    this.course.endDateTime = '';
-    this.course.levelStudying = '';
-    this.course.maxStudent = null;
-    this.course.teacher = null;
+    this.newCourse.title = '';
+    this.newCourse.startDateTime = '';
+    this.newCourse.endDateTime = '';
+    this.newCourse.levelStudying = '';
+    this.newCourse.maxStudent = null;
+    this.newCourse.teacher = null;
     this.startDateTime = '';
     this.endDateTime = '';
   }
 
   createCourse() {
-    this.course.startDateTime = new DateTimePipe().transform(this.startDateTime);
-    this.course.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
 
     this.submitted = true;
 
     if (this.courseForm.invalid) {
       return;
     }
-    this.courseService.addCourse(this.course, this.currentUser.id).subscribe(
+    this.courseService.addCourse(this.newCourse, this.currentUser.id).subscribe(
       data => {
         this.course = data;
         this.course.availablePlaces = this.course.maxStudent;
