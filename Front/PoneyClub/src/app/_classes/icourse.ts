@@ -1,6 +1,6 @@
 import { User } from './user';
 
-export interface ICourse {
+export interface Icourse {
 	id: number;
 	title: string;
 	startDateTime: string;

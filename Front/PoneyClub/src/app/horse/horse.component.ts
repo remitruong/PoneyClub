@@ -40,7 +40,6 @@ export class HorseComponent implements OnInit {
     this.horseFormUpdate = this.formBuilder.group({
       horseNameUpdate: ['', Validators.required],
     });
-
     this.horseService.getHorses().subscribe(
       data => {
         this.horses = data;
@@ -57,6 +56,7 @@ export class HorseComponent implements OnInit {
     this.newHorse.id = 0;
     this.newHorse.name = '';
     this.newHorsePanel = true;
+    // this.submitted = false;
   }
 
   createHorse() {
@@ -70,14 +70,15 @@ export class HorseComponent implements OnInit {
         this.horse = data;
         this.horses.push(this.horse);
         this.newHorsePanel = false;
+        this.horseFormCreation.reset();
         this.alertService.success("Horse created success");
-        this.alertService.clearAfter( 3000);
+        this.alertService.clearAfter( 2000);
       },
       error => {
         console.log("An error has occured while creating horse");
       }
-
     )
+    this.submitted = false;
   }
 
   deleteHorse(horse: IHorse) {

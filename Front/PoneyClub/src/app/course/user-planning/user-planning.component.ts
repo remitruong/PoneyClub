@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentification.service';
-import { ICourse } from 'src/app/_classes/icourse';
+import { Icourse } from 'src/app/_classes/icourse';
 import { EventEmitter } from '@angular/core';
 import { ICoursePlace } from 'src/app/_classes/icourseplace';
 

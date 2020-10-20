@@ -1,12 +1,9 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { CoursePlaceService } from 'src/app/services/api/course-place.service';
-import { ICourse } from 'src/app/_classes/icourse';
-import { ICoursePlace } from 'src/app/_classes/icourseplace';
-import { HorseService } from 'src/app/services/api/horse.service';
-import { IHorse } from 'src/app/_classes/ihorse';
-import { AlertService } from 'src/app/services/alert.service';
-import { IError } from 'src/app/_classes/ierror';
-import { EventEmitter } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ICoursePlace} from 'src/app/_classes/icourseplace';
+import {HorseService} from 'src/app/services/api/horse.service';
+import {IHorse} from 'src/app/_classes/ihorse';
+import {AlertService} from 'src/app/services/alert.service';
+import {IError} from 'src/app/_classes/ierror';
 
 @Component({
   selector: 'app-course-management',
@@ -23,7 +20,7 @@ export class CourseManagementComponent implements OnInit {
     name: '',
   };
   horses: IHorse[] = [];
-  private coursePlace : ICoursePlace;
+  coursePlace : ICoursePlace;
 
   constructor(private horseService: HorseService, private alertService: AlertService) { }
 
@@ -31,7 +28,7 @@ export class CourseManagementComponent implements OnInit {
     this.horseService.getHorses().subscribe(
       data => {
         this.horses = data;
-      }, 
+      },
       error => {
         this.alertService.error(this.localError.error);
       }

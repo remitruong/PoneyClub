@@ -5,21 +5,22 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from "./login/login.component";
 import {SignupComponent} from "./signup/signup.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
-import { UserAdminComponent } from "./user-admin/user-admin.component";
-import { HorseComponent } from './horse/horse.component';
-import { CourseComponent } from './course/course.component';
+import {UserAdminComponent} from "./user-admin/user-admin.component";
+import {HorseComponent} from './horse/horse.component';
+import {CourseComponent} from './course/course.component';
+import {AuthGuard} from "./_auth/auth.guard";
+import {Role} from "./_classes/role";
 
 const routes: Routes = [
 
-  {path: '', component: LoginComponent},
+  {path: '', component: LoginComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'user-admin', component: UserAdminComponent},
-  {path: 'course', component: CourseComponent},
-  {path: 'horse', component: HorseComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  {path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+  {path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
+  {path: 'horse', component: HorseComponent, canActivate: [AuthGuard], data: {roles: [Role.Teacher, Role.Admin]} },
   {path: '**', component: PageNotFoundComponent}
 ];
 

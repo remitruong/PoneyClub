@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../_classes';
-import { ICourse } from '../_classes/icourse';
+import { Icourse } from '../_classes/icourse';
 import { CourseService } from '../services/api/course.service';
 import { AuthenticationService } from '../services/authentification.service';
 import { DateTimePipe } from '../share/pipe/date-time.pipe';
@@ -18,7 +18,7 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class CourseComponent implements OnInit {
 
-  public course: ICourse = {
+  public course: Icourse = {
     id: 0,
     title: '',
     startDateTime: '',
@@ -28,7 +28,7 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
-  private newCourse: ICourse = {
+  private newCourse: Icourse = {
     id: 0,
     title: '',
     startDateTime: '',
@@ -38,8 +38,8 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
-  private selectedCourse: ICourse;
-  public courses: ICourse[] = [];
+  private selectedCourse: Icourse;
+  public courses: Icourse[] = [];
   public currentUser: User = null;
   public bCourseAdd = false;
   submitted = false;
@@ -137,9 +137,10 @@ export class CourseComponent implements OnInit {
       },
     );
     this.bCourseAdd = false;
+    this.submitted = false;
   }
 
-  subscribe(course: ICourse) {
+  subscribe(course: Icourse) {
     this.courseService.registerToCourse(this.currentUser, course.id).subscribe (
       (data) => {
         this.coursePlaces.push(data);
@@ -168,12 +169,12 @@ export class CourseComponent implements OnInit {
     );
   }
 
-  selectCourse(course: ICourse) {
+  selectCourse(course: Icourse) {
     this.selectedCourse = course;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       data => {
         this.selectedCoursePlaces = data;
-      }, 
+      },
       error => {
         this.localError = error;
         this.alertService.error(this.localError.error);
@@ -185,6 +186,7 @@ export class CourseComponent implements OnInit {
     this.coursePlaceService.mapHorseToCourse(coursePlace).subscribe(
       data => {
         this.alertService.success("Horse well mapped");
+        this.alertService.clearAfter(1500);
       },
       error => {
         this.localError = error;

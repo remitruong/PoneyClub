@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ICourse } from 'src/app/_classes/icourse';
+import { Icourse } from 'src/app/_classes/icourse';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/_classes';
 import { ICoursePlace } from 'src/app/_classes/icourseplace';
@@ -19,12 +19,12 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
-  public getCourses(): Observable<ICourse[]> {
-    return this.http.get<ICourse[]>(this.getCoursesUrl);
+  public getCourses(): Observable<Icourse[]> {
+    return this.http.get<Icourse[]>(this.getCoursesUrl);
   }
 
-  public addCourse(course: ICourse, idTeacher: number): Observable<ICourse> {
-    return this.http.post<ICourse>(this.addCourseUrl + '/' + idTeacher, course);
+  public addCourse(course: Icourse, idTeacher: number): Observable<Icourse> {
+    return this.http.post<Icourse>(this.addCourseUrl + '/' + idTeacher, course);
   }
 
   public registerToCourse(user: User, idCourse: number): Observable<ICoursePlace> {
