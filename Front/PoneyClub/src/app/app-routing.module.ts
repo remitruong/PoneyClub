@@ -10,6 +10,7 @@ import {HorseComponent} from './horse/horse.component';
 import {CourseComponent} from './course/course.component';
 import {AuthGuard} from "./_auth/auth.guard";
 import {Role} from "./_classes/role";
+import {Statut} from "./_classes/statut";
 
 const routes: Routes = [
 
@@ -18,9 +19,9 @@ const routes: Routes = [
   {path: 'signup', component: SignupComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  {path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard], data: {roles: [Role.Admin]} },
+  {path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard], data: {status: [Statut.Admin] }},
   {path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
-  {path: 'horse', component: HorseComponent, canActivate: [AuthGuard], data: {roles: [Role.Teacher, Role.Admin]} },
+  {path: 'horse', component: HorseComponent, canActivate: [AuthGuard], data: {roles: [Role.Teacher, Role.Admin], status: [Statut.Admin, Statut.User] }},
   {path: '**', component: PageNotFoundComponent}
 ];
 
