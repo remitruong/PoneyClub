@@ -22,7 +22,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let course of courses" (click)="selectCourse(course)">
+              <tr *ngFor="let course of courses">
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime}}</td>
                 <td>{{course.endDateTime}}</td>
@@ -38,6 +38,8 @@
                 <td>
                   <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
+                  </button><button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                    <nb-icon icon="options-2-outline"></nb-icon>Manage
                   </button>
                 </td>
               </tr>

@@ -26,6 +26,7 @@ public class App {
     	return args -> {
     		User user = new User("Admin", "Root", "admin@gmail.com", "changeit", "0606060606");
     		user.setStatut("Admin");
+    		user.setRole("Admin");
     		
     		repository.save(user);
     		

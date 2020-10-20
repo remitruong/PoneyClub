@@ -144,6 +144,7 @@ public class UserService {
 			throw new NoUserFoundException("admin not found");
 		}
 		user.get().setStatut("Admin");
+//		user.get().setRole("Admin");
 		userRepo.save(user.get());
 		return true;
 	}

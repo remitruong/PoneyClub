@@ -22,18 +22,13 @@ export class AppComponent {
   disconnect() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+    this.alertService.success("Disconnected");
+    this.alertService.clearAfter(2000);
   }
 
   refreshAlert(){
-    setTimeout(() => {
-      this.alertService.clear();
-    }, 3000);
+    this.alertService.clearAfter(3000);
   }
-
-  // backToHome(){
-  //   window.location.reload();
-  //   this.router.navigate(['/home']);
-  // }
 
 }
 
