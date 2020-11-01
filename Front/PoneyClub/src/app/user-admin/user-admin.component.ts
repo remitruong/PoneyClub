@@ -22,7 +22,8 @@ export class UserAdminComponent implements OnInit {
     mobile: '',
     licenceNum: '',
     role:'',
-    statut:''
+    statut:'',
+    token:''
   };
   users: User[] = [];
   localError : IError;

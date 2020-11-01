@@ -1,6 +1,8 @@
 package fr.esieaproject.poneyclub.security;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -69,6 +71,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
+		ObjectMapper mapper = new ObjectMapper();
+		String userJson = mapper.writeValueAsString(principal.getUser());
+		response.setContentType("application/json");
+		response.setHeader("Access-Control-Expose-Headers", "Authorization");
+		response.getWriter().write(userJson);
 	}
 
 }

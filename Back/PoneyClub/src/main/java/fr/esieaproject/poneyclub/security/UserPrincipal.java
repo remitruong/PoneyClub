@@ -37,6 +37,10 @@ public class UserPrincipal implements UserDetails {
 		if (!user.getMobile().equals(null)) return this.user.getMobile();
 		return null;
 	}
+	
+	public User getUser() {
+		return this.user;
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {

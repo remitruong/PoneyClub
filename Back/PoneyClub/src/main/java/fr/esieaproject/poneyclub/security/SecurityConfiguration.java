@@ -1,5 +1,7 @@
 package fr.esieaproject.poneyclub.security;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,8 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import fr.esieaproject.poneyclub.dao.UserRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import fr.esieaproject.poneyclub.dao.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -21,14 +27,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private UserPrincipalDetailsService userPrincipalDetailsService;
 	private UserRepository userRepository;
 
-	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService, UserRepository userRepository) {
-        this.userPrincipalDetailsService = userPrincipalDetailsService;
+	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService,
+			UserRepository userRepository) {
+		this.userPrincipalDetailsService = userPrincipalDetailsService;
 		this.userRepository = userRepository;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.addFilter(new JwtAuthenticationFilter(authenticationManager()))
 				.addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository)).authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
@@ -46,6 +53,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
 	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200/*"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+		configuration.addAllowedOrigin("*");
+		configuration.addAllowedHeader("Authorization");
+		configuration.addAllowedHeader("Content-Type");
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
 	@Bean
 	DaoAuthenticationProvider authenticationProvider() {
@@ -55,10 +75,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		return daoAuthenticationProvider;
 	}
-	
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }	
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }
