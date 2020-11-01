@@ -31,6 +31,7 @@ public class App {
     		User rider = new User("Marc", "Douglass", "rider@gmail.com", "changeit", "0658963654");
     		User teacher = new User("Jean", "Dupont ", "teacher@gmail.com", "changeit", "0658963652");
     		teacher.setRole("Teacher");
+    		rider.setRole("Rider");
     		
     		
     		repository.save(admin);

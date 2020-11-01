@@ -76,8 +76,9 @@ public class CoursePlaceService {
 		Optional<CoursePlace> isCoursePlace = coursePlaceRepo.findById(idCoursePlace);
 		
 		if (isCoursePlace.isEmpty()) throw new CoursePlaceNotFoundException("Course place was not found");
-		
-		coursePlaceRepo.delete(isCoursePlace.get());
+		isCoursePlace.get().setRider(null);
+		isCoursePlace.get().setHorse(null);
+		coursePlaceRepo.save(isCoursePlace.get());
 		return true;
 	}
 
