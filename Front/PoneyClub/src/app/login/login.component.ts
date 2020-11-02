@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder,Validators } from '@angular/forms';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { User } from '../_classes';
 import { Router} from "@angular/router";
 import { UserService } from '../services/api/user.service';
@@ -7,6 +8,7 @@ import { AlertService } from '../services/alert.service';
 import { IError } from '../_classes/ierror';
 import {AuthenticationService} from "../services/authentification.service";
 import {first} from "rxjs/operators";
+import { LoginModel } from '../_classes/loginmodel';
 
 @Component({
   selector: 'app-login',
@@ -17,16 +19,10 @@ export class LoginComponent  {
 
   @Output() userConnected: EventEmitter<User> = new EventEmitter<User>();
 
-  user:User = {
-    id: 0,
-    firstName: '',
-    lastName:  '',
-    email: '',
+  user:User;
+  loginModel: LoginModel = {
+    username: '',
     password: '',
-    mobile: '',
-    licenceNum: '',
-    role:'',
-    statut:''
   }
   localError:IError;
   submitted = false;
@@ -56,15 +52,13 @@ export class LoginComponent  {
       return;
     }
 
-    this.user.email = this.connectForm.get('emailOrPhone').value;
-    this.user.mobile = this.connectForm.get('emailOrPhone').value;
-    this.user.password = this.connectForm.get('password').value;
+    this.loginModel.username = this.connectForm.get('emailOrPhone').value;
+    this.loginModel.password = this.connectForm.get('password').value;
 
-    this.authenticationService.login(this.user)
+    this.authenticationService.login(this.loginModel)
       .pipe(first())
       .subscribe(
-        data => {
-          // this.router.navigate([this.returnUrl]);
+        (data: HttpResponse<any>) => {
           this.alertService.success('You are connected', true);
           this.router.navigate(['/home']);
           this.alertService.clearAfter(1500);

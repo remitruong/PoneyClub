@@ -10,12 +10,12 @@ export class UserService {
 
   private BASE_URL = 'http://localhost:8081';
   private signupUrl = `${this.BASE_URL}/user/create-rider`;
-  private connectUrl = `${this.BASE_URL}/user/connect`;
   private updateUsertUrl = `${this.BASE_URL}/user/update-user`;
   private changeToAdminUrl = `${this.BASE_URL}/user/convert-to-admin`;
   private getUsersUrl = `${this.BASE_URL}/user/get-users`;  
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
   private createTeachertUrl = `${this.BASE_URL}/user/create-teacher`;
+  private getTeacherstUrl = `${this.BASE_URL}/user/get-teachers`;
 
 
   constructor(private http: HttpClient) { }
@@ -42,6 +42,10 @@ export class UserService {
 
   public getUser(mailOrNumber:string, adminMail:string): Observable<User> {
     return this.http.get<User>(this.getUserUrl + '/' + mailOrNumber + '/' + adminMail);
+  }
+
+  public getTeachers(): Observable<User[]> {
+    return this.http.get<User[]>(this.getTeacherstUrl);
   }
 
 

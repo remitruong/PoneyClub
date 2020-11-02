@@ -1,5 +1,6 @@
 package fr.esieaproject.poneyclub.services;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -132,6 +133,10 @@ public class UserService {
 		teacher.setTrialConnection(0);
 		teacher = userRepo.save(teacher);
 		return teacher;
+	}
+	
+	public List<User> getTeachers() {
+		return userRepo.findByRole("Teacher");
 	}
 
 	public boolean changeUserToAdmin(long idUser, String adminEmail) throws NoUserFoundException {

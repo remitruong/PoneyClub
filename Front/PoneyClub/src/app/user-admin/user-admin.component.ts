@@ -22,7 +22,8 @@ export class UserAdminComponent implements OnInit {
     mobile: '',
     licenceNum: '',
     role:'',
-    statut:''
+    statut:'',
+    token:''
   };
   users: User[] = [];
   localError : IError;
@@ -75,8 +76,8 @@ export class UserAdminComponent implements OnInit {
         this.alertService.clearAfter(3000);
       },
       error => {
-        console.log("error occured while adding user");
-        this.alertService.error(this.localError.error.response);
+        this.localError = error;
+        this.alertService.error(this.localError.error);
       }
 
     )

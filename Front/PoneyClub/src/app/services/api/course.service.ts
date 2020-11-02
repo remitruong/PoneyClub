@@ -15,6 +15,7 @@ export class CourseService {
   addCourseUrl: string = `${this.BASE_URL}/plan`;
   registerToCourseUrl: string = `${this.BASE_URL}/register`;
   availablePlacesUrl: string =  `${this.BASE_URL}/available-places`;
+  findCourseByTeacherUrl: string =  `${this.BASE_URL}/find-course-by-teacher`;
 
 
   constructor(private http: HttpClient) { }
@@ -34,6 +35,10 @@ export class CourseService {
 
   public getAvailablePlaces(idCourse: number): Observable<any> {
     return this.http.get(this.availablePlacesUrl + '/' + idCourse);
+  }
+
+  public findCourseByTeacher(idTeacher: number): Observable<any> {
+    return this.http.get(this.findCourseByTeacherUrl + '/' + idTeacher);
   }
 
 }

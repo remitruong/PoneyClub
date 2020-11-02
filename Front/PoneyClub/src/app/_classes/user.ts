@@ -6,6 +6,7 @@ export interface User {
   password: string;
   mobile: string;
   licenceNum: string;
-  role:string;
-  statut:string;
+  role: string;
+  statut: string;
+  token: string;
 }

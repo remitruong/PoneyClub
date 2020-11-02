@@ -34,6 +34,8 @@ import { UserPlanningComponent } from './course/user-planning/user-planning.comp
 import { DateTimePipe } from './share/pipe/date-time.pipe';
 import { CourseManagementComponent } from './course/course-management/course-management.component';
 
+import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,7 +73,7 @@ import { CourseManagementComponent } from './course/course-management/course-man
     ReactiveFormsModule,
     NbFormFieldModule,
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
