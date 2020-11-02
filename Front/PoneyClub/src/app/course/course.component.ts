@@ -39,6 +39,18 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
+  private userAll: User = {
+    id: 0,
+    firstName: 'All',
+    lastName: 'teachers',
+    email: '',
+    password: '',
+    mobile: '',
+    licenceNum: '',
+    role: '', 
+    statut: '',
+    token: ''
+  };
   private selectedCourse: Icourse;
   public courses: Icourse[] = [];
   public currentUser: User = null;
@@ -71,7 +83,7 @@ export class CourseComponent implements OnInit {
       level: ['', [Validators.required, Validators.min(1), , Validators.max(8)]],
       maxStudent: ['', [Validators.required, Validators.min(1), , Validators.max(10)] ],
     });
-    this.getCourse();
+    this.getCourses();
     this.getUserPlanning();
     this.getTeachers();
   }
@@ -87,7 +99,7 @@ export class CourseComponent implements OnInit {
       });
   }
 
-  getCourse() {
+  getCourses() {
     this.courseService.getCourses().subscribe(
       (data) => {
         this.courses = data;
@@ -117,6 +129,7 @@ export class CourseComponent implements OnInit {
       data => {
         console.log(data);
         this.teachers = data;
+        this.teachers.push(this.userAll);
       },
       error => {
         this.localError = error;
@@ -228,15 +241,19 @@ export class CourseComponent implements OnInit {
 
   filter() {
     this.courses = null;
-    this.courseService.findCourseByTeacher(this.selectedTeacher.id).subscribe(
-      data => {
-        this.courses = data;
-      },
-      error => {
-        this.localError = error;
-        this.alertService.error(this.localError.error);
-      }
-    )
+    if (this.selectedTeacher.firstName == 'All' && this.selectedTeacher.lastName == 'teachers') {
+      this.getCourses();
+    } else {
+      this.courseService.findCourseByTeacher(this.selectedTeacher.id).subscribe(
+        data => {
+          this.courses = data;
+        },
+        error => {
+          this.localError = error;
+          this.alertService.error(this.localError.error);
+        }
+      )
+    }
   }
 
   get f() { return this.courseForm.controls; }
