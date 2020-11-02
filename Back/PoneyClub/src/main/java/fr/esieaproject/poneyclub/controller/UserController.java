@@ -101,6 +101,11 @@ public class UserController {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping(value ="/get-teachers")
+	public ResponseEntity<?> getTeachers() {
+			return new ResponseEntity<>(userService.getTeachers(), HttpStatus.OK);
+	}	
 
 	@PostMapping(value ="/convert-to-admin/{idUser}/{adminMail}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> convertToAdmin(@PathVariable long idUser, @PathVariable String adminMail) {

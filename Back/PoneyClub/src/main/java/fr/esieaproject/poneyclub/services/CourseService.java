@@ -20,6 +20,7 @@ import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEn
 import fr.esieaproject.poneyclub.exception.courseexception.UserAlreadyRegisteredException;
 import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
+import fr.esieaproject.poneyclub.exception.userexceptions.UnauthorizeAccessException;
 
 @Service
 public class CourseService {
@@ -45,6 +46,16 @@ public class CourseService {
 		if (!this.isStartBeforeEnd(startDateTime, endDateTime)) throw new StartShouldBeBeforeEndException("Provided start time should be before end time");
 
 		return courseRepo.findByDateTime(Timestamp.valueOf(startDateTime), Timestamp.valueOf(endDateTime));
+	}
+	
+	public List<Course> findByTeacher(long teacherId) throws NoUserFoundException, UnauthorizeAccessException {
+		
+		Optional<User> teacher = userRepo.findById(teacherId);
+		
+		if(teacher.isEmpty()) throw new NoUserFoundException("Teacher not found");
+		if (!teacher.get().getRole().equals("Teacher")) throw new UnauthorizeAccessException("User selected is not a teacher");
+		
+		return courseRepo.findByTeacher(teacher.get());
 	}
 	
 	

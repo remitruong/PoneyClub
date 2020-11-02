@@ -12,6 +12,8 @@ import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 
 public interface CourseRepository extends CrudRepository<Course,Long> {
+	
+	List<Course> findByTeacher(User teacher);
 
 	@Query("SELECT c FROM Course c WHERE c.startDateTime BETWEEN :startDateTime and  :endDateTime")
 	List<Course> findByDateTime( @Param("startDateTime") Timestamp startDateTime, @Param("endDateTime") Timestamp endDateTime);

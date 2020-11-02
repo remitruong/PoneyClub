@@ -15,6 +15,7 @@ export class UserService {
   private getUsersUrl = `${this.BASE_URL}/user/get-users`;  
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
   private createTeachertUrl = `${this.BASE_URL}/user/create-teacher`;
+  private getTeacherstUrl = `${this.BASE_URL}/user/get-teachers`;
 
 
   constructor(private http: HttpClient) { }
@@ -41,6 +42,10 @@ export class UserService {
 
   public getUser(mailOrNumber:string, adminMail:string): Observable<User> {
     return this.http.get<User>(this.getUserUrl + '/' + mailOrNumber + '/' + adminMail);
+  }
+
+  public getTeachers(): Observable<User[]> {
+    return this.http.get<User[]>(this.getTeacherstUrl);
   }
 
 
