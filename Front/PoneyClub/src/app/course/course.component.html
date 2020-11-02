@@ -10,10 +10,10 @@
       <nb-card-body>
         <div class="row justify-content-center">
           <div>
-             <nb-select value="teacher">
+             <nb-select value="teacher" (click)='getTeachers()'>
                <nb-option *ngFor="let teacher of teachers"  value="teacher" (click)="selectTeacher(teacher)">{{teacher.firstName}} {{teacher.lastName}}</nb-option>
              </nb-select>
-             <nb-select value="level">
+             <nb-select value="level" (click)='getLevels()'>
                <nb-option *ngFor="let level of levels" value="level" (click)="selectLevel(level)">{{level}}</nb-option>
              </nb-select>
              <button type="button" (click)="filter()">Filter</button>

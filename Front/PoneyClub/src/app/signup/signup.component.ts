@@ -31,7 +31,6 @@ export class SignupComponent implements OnInit{
     licenceNum: '',
     role:'',
     statut:'',
-    token: ''
   }
 
   constructor(private userService: UserService, private router: Router, private alertService: AlertService, private formBuilder: FormBuilder) {

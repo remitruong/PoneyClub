@@ -47,9 +47,8 @@ export class CourseComponent implements OnInit {
     password: '',
     mobile: '',
     licenceNum: '',
-    role: '', 
+    role: '',
     statut: '',
-    token: ''
   };
   private selectedCourse: Icourse;
   public courses: Icourse[] = [];
@@ -65,7 +64,7 @@ export class CourseComponent implements OnInit {
   teachers: User[] = [];
   private selectedTeacher: User = null;
   private selectedLevel: number = 0;
-  levels = [1, 2, 3, 4, 5, 6, 7, 8];
+  levels = [];
   level= null;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
@@ -125,17 +124,20 @@ export class CourseComponent implements OnInit {
   }
 
   getTeachers() {
-    this.userService.getTeachers().subscribe(
-      data => {
-        console.log(data);
-        this.teachers = data;
-        this.teachers.push(this.userAll);
-      },
-      error => {
-        this.localError = error;
-        this.alertService.error(this.localError.error);
-      }
+    this.teachers = [];
+    this.courses.forEach(x =>
+      this.teachers.push(x.teacher)
     )
+    this.teachers = Array.from(new Set(this.teachers))
+  }
+
+  getLevels() {
+    this.levels = [];
+    this.courses.forEach(x =>
+      this.levels.push(x.levelStudying)
+    )
+    
+    this.levels = Array.from(new Set(this.levels));
   }
 
   addCourse() {
