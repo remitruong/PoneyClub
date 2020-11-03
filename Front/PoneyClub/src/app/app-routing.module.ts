@@ -11,6 +11,7 @@ import {CourseComponent} from './course/course.component';
 import {AuthGuard} from "./_auth/auth.guard";
 import {Role} from "./_classes/role";
 import {Statut} from "./_classes/statut";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 const routes: Routes = [
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'reset-password', component: ResetPasswordComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   {path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard], data: {status: [Statut.Admin] }},
   {path: 'course', component: CourseComponent, canActivate: [AuthGuard] },

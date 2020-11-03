@@ -35,6 +35,7 @@ import { DateTimePipe } from './share/pipe/date-time.pipe';
 import { CourseManagementComponent } from './course/course-management/course-management.component';
 
 import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
     SignupComponent,
     HomeComponent,
     PageNotFoundComponent,
+    ResetPasswordComponent,
     AlertComponent,
     UserAdminComponent,
     UserDetailsComponent,
