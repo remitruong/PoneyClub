@@ -8,5 +8,4 @@ export interface User {
   licenceNum: string;
   role: string;
   statut: string;
-  token: string;
 }

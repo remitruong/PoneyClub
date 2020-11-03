@@ -5,12 +5,12 @@ import { User } from '../_classes';
 import { Icourse } from '../_classes/icourse';
 import { ICoursePlace } from '../_classes/icourseplace';
 import { IError } from '../_classes/ierror';
-import {AlertService} from '../services/alert.service';
+import { AlertService } from '../services/alert.service';
 import { CoursePlaceService } from '../services/api/course-place.service';
 import { CourseService } from '../services/api/course.service';
+import { UserService } from '../services/api/user.service';
 import { AuthenticationService } from '../services/authentification.service';
 import { DateTimePipe } from '../share/pipe/date-time.pipe';
-import { UserService } from '../services/api/user.service';
 
 @Component({
   selector: 'app-course',
@@ -39,7 +39,7 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
   };
-  private userAll: User = {
+  private allTeachers: User = {
     id: 0,
     firstName: 'All',
     lastName: 'teachers',
@@ -47,12 +47,12 @@ export class CourseComponent implements OnInit {
     password: '',
     mobile: '',
     licenceNum: '',
-    role: '', 
+    role: '',
     statut: '',
-    token: ''
   };
   private selectedCourse: Icourse;
   public courses: Icourse[] = [];
+  public filteredCourse: Icourse[] = [];
   public currentUser: User = null;
   public bCourseAdd = false;
   public submitted = false;
@@ -62,16 +62,18 @@ export class CourseComponent implements OnInit {
   public coursePlaces: ICoursePlace[] = [];
   public selectedCoursePlaces: ICoursePlace[] = [];
   private localError: IError;
-  teachers: User[] = [];
+  public teachers: User[] = [
+    this.allTeachers,
+  ];
   private selectedTeacher: User = null;
-  private selectedLevel: number = 0;
-  levels = [1, 2, 3, 4, 5, 6, 7, 8];
-  level= null;
+  private selectedLevel = null;
+  public levels = [];
+  public level = null;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
-     private authenticationService: AuthenticationService,
-     private formBuilder: FormBuilder, private alertService: AlertService,
-     private userService: UserService) { }
+    private authenticationService: AuthenticationService,
+    private formBuilder: FormBuilder, private alertService: AlertService,
+    private userService: UserService) { }
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
@@ -81,7 +83,7 @@ export class CourseComponent implements OnInit {
       startDateTime: ['', Validators.required],
       endDateTime: ['', Validators.required],
       level: ['', [Validators.required, Validators.min(1), , Validators.max(8)]],
-      maxStudent: ['', [Validators.required, Validators.min(1), , Validators.max(10)] ],
+      maxStudent: ['', [Validators.required, Validators.min(1), , Validators.max(10)]],
     });
     this.getCourses();
     this.getUserPlanning();
@@ -103,6 +105,7 @@ export class CourseComponent implements OnInit {
     this.courseService.getCourses().subscribe(
       (data) => {
         this.courses = data;
+        this.filteredCourse = this.courses;
         for (const course of this.courses) {
           this.courseService.getAvailablePlaces(course.id).subscribe(
             data => {
@@ -111,8 +114,8 @@ export class CourseComponent implements OnInit {
               this.alertService.clearAfter(1500);
             },
             (error) => {
-             this.localError = error;
-             this.alertService.error(this.localError.error);
+              this.localError = error;
+              this.alertService.error(this.localError.error);
             },
           );
         }
@@ -125,17 +128,25 @@ export class CourseComponent implements OnInit {
   }
 
   getTeachers() {
-    this.userService.getTeachers().subscribe(
-      data => {
-        console.log(data);
-        this.teachers = data;
-        this.teachers.push(this.userAll);
-      },
-      error => {
-        this.localError = error;
-        this.alertService.error(this.localError.error);
+    const teachersTemp = this.teachers;
+    this.teachers = [];
+    const idList = [];
+    this.teachers.push(this.allTeachers)
+    this.courses.forEach((x) => {
+      if (!idList.includes(x.teacher.id)) {
+        idList.push(x.teacher.id);
+        this.teachers.push(x.teacher);
       }
-    )
+    })
+  }
+
+  getLevels() {
+    this.levels = [];
+    this.courses.forEach((x) =>
+      this.levels.push(x.levelStudying),
+    );
+    this.levels.push('All');
+    this.levels = Array.from(new Set(this.levels));
   }
 
   addCourse() {
@@ -159,6 +170,7 @@ export class CourseComponent implements OnInit {
     if (this.courseForm.invalid) {
       return;
     }
+
     this.courseService.addCourse(this.newCourse, this.currentUser.id).subscribe(
       (data) => {
         this.course = data;
@@ -177,7 +189,7 @@ export class CourseComponent implements OnInit {
   }
 
   subscribe(course: Icourse) {
-    this.courseService.registerToCourse(this.currentUser, course.id).subscribe (
+    this.courseService.registerToCourse(this.currentUser, course.id).subscribe(
       (data) => {
         this.coursePlaces.push(data);
         this.alertService.success('Subscription success');
@@ -191,7 +203,7 @@ export class CourseComponent implements OnInit {
   }
 
   unsubscribe(coursePlace: ICoursePlace) {
-    this.coursePlaceService.unsubscribeCourse(coursePlace.id).subscribe (
+    this.coursePlaceService.unsubscribeCourse(coursePlace.id).subscribe(
       (data) => {
         const indexCoursePlace = this.coursePlaces.indexOf(coursePlace);
         this.coursePlaces.splice(indexCoursePlace, 1);
@@ -220,10 +232,12 @@ export class CourseComponent implements OnInit {
 
   selectTeacher(teacher: User) {
     this.selectedTeacher = teacher;
+    this.filter();
   }
 
-  selectLevel(level: number) {
-    this.level = level;
+  selectLevel(level) {
+    this.selectedLevel = level;
+    this.filter();
   }
 
   mapHorseToCourse(coursePlace: ICoursePlace) {
@@ -240,19 +254,41 @@ export class CourseComponent implements OnInit {
   }
 
   filter() {
-    this.courses = null;
-    if (this.selectedTeacher.firstName == 'All' && this.selectedTeacher.lastName == 'teachers') {
-      this.getCourses();
-    } else {
-      this.courseService.findCourseByTeacher(this.selectedTeacher.id).subscribe(
-        data => {
-          this.courses = data;
-        },
-        error => {
-          this.localError = error;
-          this.alertService.error(this.localError.error);
+    this.filteredCourse = [];
+
+    if (this.selectedLevel === null || this.selectedLevel === 'All') {
+      if (this.selectedTeacher !== this.allTeachers && this.selectedTeacher !== null) {
+        this.courses.forEach( (x) => {
+          if ( x.teacher.id === this.selectedTeacher.id) {
+          this.filteredCourse.push(x);
+          }
+        })
+      } else {
+        this.filteredCourse = this.courses;
+      }
+      return;
+    }
+
+    if (this.selectedTeacher === null || this.selectedTeacher === this.allTeachers) {
+      if (this.selectedLevel !== 'All') {
+        this.courses.forEach( (x) => {
+          if (x.levelStudying === this.selectedLevel) {
+            this.filteredCourse.push(x);
+          }
+        })
+      } else {
+        this.filteredCourse = this.courses;
+      }
+      return;
+    }
+
+    if (  (this.selectedTeacher !== null && this.selectedTeacher !== this.allTeachers) &&
+          (this.selectedLevel !== null  && this.selectedLevel !== 'All') ) {
+      this.courses.forEach( (x) => {
+        if ( x.teacher.id ===  this.selectedTeacher.id && this.selectedLevel === x.levelStudying) {
+          this.filteredCourse.push(x);
         }
-      )
+      })
     }
   }
 
