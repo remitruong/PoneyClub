@@ -36,7 +36,7 @@ export class AuthenticationService {
 
     return this.http.post<any>(this.connectUrl, loginForm, {headers: headers, observe: 'response' as 'body'})
     .pipe(map(
-      user => { 
+      user => {
         location.reload();
         this.user = user; 
         this.tokenService.saveToken(user.headers.get('Authorization'));
