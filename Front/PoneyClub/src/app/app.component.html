@@ -15,7 +15,7 @@
           <a routerLink="/home" routerLinkActive="activebutton">Home</a>
         </nb-action>
         <nb-action>
-          <nb-icon icon="person-outline"></nb-icon>
+          <a routerLink="/account"routerLinkActive="activebutton"><nb-icon icon="person-outline"></nb-icon></a>
         </nb-action>
 
         <nb-action *ngIf="!currentUser" (click)="refreshAlert()">
