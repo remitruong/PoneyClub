@@ -16,7 +16,8 @@ export class UserService {
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
   private createTeachertUrl = `${this.BASE_URL}/user/create-teacher`;
   private getTeacherstUrl = `${this.BASE_URL}/user/get-teachers`;
-
+  private forgotPasswordUrl = `${this.BASE_URL}/user/forgot-password`;
+  private setNewPasswordUrl = `${this.BASE_URL}/user/reset-password`;
 
   constructor(private http: HttpClient) { }
 
@@ -48,6 +49,12 @@ export class UserService {
     return this.http.get<User[]>(this.getTeacherstUrl);
   }
 
+  public forgotPassword(email:string): Observable<any> {
+    return this.http.post(this.forgotPasswordUrl + '/' + email, null);
+  }
 
+  public setNewPassword(token: string, password: string): Observable<any> {
+    return this.http.post(this.setNewPasswordUrl + '?token=' + token, password);
+  }
 
 }

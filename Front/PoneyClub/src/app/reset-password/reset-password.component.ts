@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../services/api/user.service";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router";
 import {AlertService} from "../services/alert.service";
+import { IError } from '../_classes/ierror';
 
 export function MustMatch(controlName: string, matchingControlName: string) {
   return (formGroup: FormGroup) => {
@@ -27,14 +28,24 @@ export function MustMatch(controlName: string, matchingControlName: string) {
 })
 export class ResetPasswordComponent implements OnInit {
 
+  localError: IError;
   resetPasswordForm: FormGroup
   submitted = false;
+  newPassword: string;
+  token: string;
 
 
-  constructor(private userService: UserService, private router: Router, private alertService: AlertService, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private router: Router, private alertService: AlertService,
+     private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(
+      values => {
+        this.token = values['token'];
+      }
+    )
+
     this.resetPasswordForm = this.formBuilder.group({
         password : ['', [Validators.required,  Validators.minLength(6)]],
         confirmPassword: ['', Validators.required],
@@ -53,7 +64,20 @@ export class ResetPasswordComponent implements OnInit {
     if (this.resetPasswordForm.invalid) {
       return;
     }
-    alert("Submitted !")
+
+    this.newPassword = this.resetPasswordForm.get('password').value;
+    
+    this.userService.setNewPassword(this.token, this.newPassword).subscribe(
+      data => {
+        this.router.navigate(['/login']);
+      },
+      error => {
+        this.localError = error;
+        this.alertService.error(this.localError.message);
+      }
+
+    )
+
   }
 
 

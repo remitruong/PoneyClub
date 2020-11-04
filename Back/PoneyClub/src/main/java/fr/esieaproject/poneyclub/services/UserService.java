@@ -1,16 +1,27 @@
 package fr.esieaproject.poneyclub.services;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import fr.esieaproject.poneyclub.dao.PasswordTokenRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
+import fr.esieaproject.poneyclub.entity.PasswordResetToken;
 import fr.esieaproject.poneyclub.entity.User;
+import fr.esieaproject.poneyclub.exception.ExpiredTokenException;
+import fr.esieaproject.poneyclub.exception.InvalidTokenException;
 import fr.esieaproject.poneyclub.exception.userexceptions.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.MaxTrialConnectionAttempException;
 import fr.esieaproject.poneyclub.exception.userexceptions.MobileNotAvailableException;
@@ -26,6 +37,12 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private JavaMailSender emailSender;
+	
+	@Autowired
+	private PasswordTokenRepository passwordTokenRepository;
 
 	public boolean createUser(User user)
 			throws MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {
@@ -154,6 +171,55 @@ public class UserService {
 		return true;
 	}
 	
+	public boolean forgotPassword(String email) throws NoUserFoundException, MessagingException {
+		
+		Optional<User> user = this.userRepo.findByEmail(email);
+		
+		if (user.isEmpty()) throw new NoUserFoundException("No user was found with this email, please retry or subscribe");
+		
+		MimeMessage message = this.emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+		
+		helper.setTo(email);
+		helper.setSubject("You have forgotten your password !");
+		
+		String token = UUID.randomUUID().toString();
+		this.createPasswordResetTokenForUser(user.get(), token);
+		String htmlResponse = "Hello " + user.get().getFirstName() + " " + user.get().getLastName() + "\n"
+				+ "\n\n"
+				+ "You have forgotten your password ! You can set a new one by clicking the below link ! \n"
+				+ "http://localhost:4200/reset-password?token=" + token + "\n"
+				+ "Please do not share your ids with someone else \n"
+				+ "PoneyClub technical team";
+		helper.setText(htmlResponse);
+		
+		this.emailSender.send(message);
+		return true;
+	}	
+	
+	public boolean setNewPassword(String token, String password) throws InvalidTokenException, ExpiredTokenException {
+		
+		Optional<PasswordResetToken> passwordResetToken = this.passwordTokenRepository.findByToken(token);
+		
+		if(passwordResetToken.isEmpty()) throw new InvalidTokenException("Invalid token !");
+		if(tokenIsExpired(passwordResetToken.get())) throw new ExpiredTokenException("Your token is expired, please retry !");
+		
+		User user = passwordResetToken.get().getUser();
+		user.setPassword(password);
+		this.userRepo.save(user);
+		return true;
+
+	}
+	
+	private boolean tokenIsExpired(PasswordResetToken passwordResetToken) {
+		final Calendar cal = Calendar.getInstance();
+	    return passwordResetToken.getExpiryDate().before(cal.getTime());
+	}
+
+	private void createPasswordResetTokenForUser(User user, String token) {
+	    PasswordResetToken myToken = new PasswordResetToken(token, user);
+	    passwordTokenRepository.save(myToken);
+	}
 	
 
 	private boolean isEmailValid(String email) {

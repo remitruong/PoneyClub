@@ -1,5 +1,7 @@
 package fr.esieaproject.poneyclub.controller;
 
+import javax.mail.MessagingException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.ExceptionResponse;
+import fr.esieaproject.poneyclub.exception.ExpiredTokenException;
+import fr.esieaproject.poneyclub.exception.InvalidTokenException;
 import fr.esieaproject.poneyclub.exception.userexceptions.EmailNotAvailableException;
 import fr.esieaproject.poneyclub.exception.userexceptions.MaxTrialConnectionAttempException;
 import fr.esieaproject.poneyclub.exception.userexceptions.MobileNotAvailableException;
@@ -115,4 +120,23 @@ public class UserController {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@PostMapping(value ="/forgot-password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> forgot_password(@PathVariable String email) {
+		try {
+			return new ResponseEntity<>(userService.forgotPassword(email), HttpStatus.OK);
+		} catch (NoUserFoundException | MessagingException e) {
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping(value ="/reset-password")
+	public ResponseEntity<?> reset_password(@RequestParam(value="token") String token, @RequestBody String password) {
+		try {
+			return new ResponseEntity<>(userService.setNewPassword(token, password), HttpStatus.OK);
+		} catch (InvalidTokenException | ExpiredTokenException e) {
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }
