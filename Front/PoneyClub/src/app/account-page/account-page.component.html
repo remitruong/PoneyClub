@@ -6,7 +6,7 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label>First Name</label>
-          <input type="text" formControlName="firstName" placeholder="Enter First Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" [(ngModel)]="currentUser.firstName"/>
+          <input type="text" disabled="true" formControlName="firstName" placeholder="Enter First Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" [(ngModel)]="currentUser.firstName"/>
           <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
             <div *ngIf="f.firstName.errors.required">First Name is required</div>
           </div>
@@ -14,7 +14,7 @@
 
         <div class="form-group col-md-6">
           <label>Last Name</label>
-          <input type="text" formControlName="lastName" class="form-control" placeholder="Enter Last Name" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" [(ngModel)]="currentUser.lastName">
+          <input type="text" disabled="true" formControlName="lastName" class="form-control" placeholder="Enter Last Name" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" [(ngModel)]="currentUser.lastName">
           <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
             <div *ngIf="f.lastName.errors.required">Last Name is required</div>
           </div>

@@ -4,6 +4,7 @@ import {UserService} from '../services/api/user.service';
 import {AlertService} from '../services/alert.service';
 import {User} from "../_classes";
 import {AuthenticationService} from "../services/authentification.service";
+import {IError} from "../_classes/ierror";
 
 @Component({
   selector: 'app-account-page',
@@ -14,6 +15,7 @@ export class AccountPageComponent  {
 
   submitted = false;
   accountForm: FormGroup;
+  localError : IError;
   mobileNumberPattern = "^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$";
   emailPattern ="([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))";
 
@@ -37,15 +39,29 @@ export class AccountPageComponent  {
 
   get f() { return this.accountForm.controls; }
 
-  updateUser(){
+  updateUser() {
     this.submitted = true;
     if (this.accountForm.invalid) {
       return;
     }
 
-    //UPDATE USER
+    //replace info
+    this.currentUser.email = this.accountForm.get('email').value;
+    this.currentUser.mobile = this.accountForm.get('mobile').value;
+    this.currentUser.licenceNum = this.accountForm.get('licenceNum').value;
 
+    console.log(this.currentUser);
 
+    this.userService.updateUser(this.currentUser.id, this.currentUser).subscribe(
+      data => {
+        this.alertService.success('Update contact information successful');
+        this.alertService.clearAfter(1500);
+      },
+      error => {
+        this.localError = error as IError;
+        this.alertService.error(this.localError.error.response);
+      }
+    )
   }
 
 }
