@@ -36,6 +36,7 @@ import { CourseManagementComponent } from './course/course-management/course-man
 
 import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {AccountPageComponent} from "./account-page/account-page.component";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {ResetPasswordComponent} from "./reset-password/reset-password.component"
     UserPlanningComponent,
     DateTimePipe,
     CourseManagementComponent,
+    AccountPageComponent,
   ],
   imports: [
     BrowserModule,

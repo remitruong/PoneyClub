@@ -31,12 +31,12 @@
         </td>
         <td>{{coursePlace.rider.firstName}}</td>
         <td *ngIf="coursePlace.horse">{{coursePlace.horse.name}}</td>
-        <td *ngIf="!coursePlace.horse"> 
+        <td *ngIf="!coursePlace.horse">
           <nb-select value="coursePlace.horse.name">
             <nb-option *ngFor="let h of horses"  value="h" (click)="selectHorse(h)">{{h.name}}</nb-option>
           </nb-select>
         </td>
-        <td>
+        <td *ngIf="!coursePlace.horse">
           <button nbButton (click)="validate(coursePlace)">Validate</button>
         </td>
       </tr>

@@ -121,5 +121,8 @@
       }
     }
   },
-  "defaultProject": "PoneyClub"
+  "defaultProject": "PoneyClub",
+  "cli": {
+    "analytics": false
+  }
 }
