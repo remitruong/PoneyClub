@@ -1,8 +1,6 @@
 package fr.esieaproject.poneyclub.security;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,11 +15,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.model.LoginViewModel;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		this.authenticationManager = authenticationManager;
 		this.setFilterProcessesUrl("/login");
 	}
-
+	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
@@ -76,6 +76,33 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setContentType("application/json");
 		response.setHeader("Access-Control-Expose-Headers", "Authorization");
 		response.getWriter().write(userJson);
+	}
+	
+	public boolean updatePrincipal(User userToUpdate, User updatedUser) {
+		
+		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (username.equals(userToUpdate.getEmail())) {
+			if (!updatedUser.getEmail().equals(userToUpdate.getEmail())) {
+		        Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+		        		updatedUser.getEmail(),
+		        		updatedUser.getPassword(),
+		                new ArrayList<>());
+		        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			}
+	        return true;
+		} else if (username.equals(userToUpdate.getMobile())) {
+			if (!updatedUser.getMobile().equals(userToUpdate.getEmail())) {
+		        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+		        		updatedUser.getMobile(),
+		        		updatedUser.getPassword(),
+		                new ArrayList<>());
+		        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

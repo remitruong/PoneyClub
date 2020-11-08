@@ -26,6 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private UserPrincipalDetailsService userPrincipalDetailsService;
 	private UserRepository userRepository;
+	private JwtAuthenticationFilter authFilter;
 
 	public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService,
 			UserRepository userRepository) {
@@ -35,10 +36,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		authFilter = new JwtAuthenticationFilter(authenticationManager());
+		
 		http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.addFilter(new JwtAuthenticationFilter(authenticationManager()))
+				.addFilter(authFilter)
 				.addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository)).authorizeRequests()
 				.antMatchers(HttpMethod.POST, "/login").permitAll()
+				.antMatchers("/swagger-ui/*").permitAll()
 				.antMatchers("/user/create-rider").permitAll()
 				.antMatchers("/user/forgot-password/*").permitAll()
 				.antMatchers("/user/reset-password").permitAll()
@@ -81,6 +85,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	public JwtAuthenticationFilter getAuthFilter() {
+		return this.authFilter;
 	}
 
 }

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from 'src/app/_classes/user';
+import { TokenStorageService } from 'src/app/_auth/token-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ export class UserService {
 
   private BASE_URL = 'http://localhost:8081';
   private signupUrl = `${this.BASE_URL}/user/create-rider`;
-  private updateUsertUrl = `${this.BASE_URL}/user/update-user`;
+  private updateUserUrl = `${this.BASE_URL}/user/update-user`;
   private changeToAdminUrl = `${this.BASE_URL}/user/convert-to-admin`;
   private getUsersUrl = `${this.BASE_URL}/user/get-users`;  
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
@@ -19,25 +21,36 @@ export class UserService {
   private forgotPasswordUrl = `${this.BASE_URL}/user/forgot-password`;
   private setNewPasswordUrl = `${this.BASE_URL}/user/reset-password`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tokenService: TokenStorageService) { }
 
   public signup(user: User): Observable<any> {
     return this.http.post(this.signupUrl, user);
   }
 
-  public updateUser(idUser: number, user:User): Observable<any> {
-    return this.http.post(this.updateUsertUrl+'/'+idUser, user);
+  public updateUser(idUser: number, user: User): Observable<any> {
+
+     let headers = new HttpHeaders();
+      headers.set('Content-Type', 'application/json; charset=utf-8');
+
+
+    return this.http.post<any>(this.updateUserUrl + '/' + idUser, user,  {headers: headers, observe: 'response'as 'body'})
+    .pipe(map(
+      (resp: HttpResponse<any>) => {
+        console.log(resp);
+        this.tokenService.saveToken(resp.headers.get('Authorization'));
+      }
+    ))
   }
 
   public changeToAdmin(idUser: number, adminMail:string): Observable<any> {
-    return this.http.post(this.changeToAdminUrl + '/'+ idUser + '/' + adminMail, null);
+    return this.http.post(this.changeToAdminUrl + '/' + idUser + '/' + adminMail, null);
   }
 
-  public createTeacher(user:User, adminMail:string): Observable<any> {
+  public createTeacher(user: User, adminMail:string): Observable<any> {
     return this.http.post(this.createTeachertUrl + '/' + adminMail, user);
   }
 
-  public getUsers(adminMail:string): Observable<User[]> {
+  public getUsers(adminMail: string): Observable<User[]> {
     return this.http.get<User[]>(this.getUsersUrl + '/' + adminMail);
   }
 

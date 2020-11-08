@@ -1,13 +1,18 @@
 package fr.esieaproject.poneyclub.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,14 +59,14 @@ public class UserController {
 
 	@PostMapping(value = "/update-user/{idUser}", consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> updateRider(@PathVariable long idUser, @RequestBody User user) {
-		System.out.println(user.toString());
-		boolean bool = userService.updateUser(idUser, user);
-		if (bool) {
-			return new ResponseEntity<>(true, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<?> updateUser(@PathVariable long idUser, @RequestBody User user) {
+		MultiValueMap<String, String> headers = new HttpHeaders();
+		user.setIdUser(idUser);
+		String newToken = userService.updateUser(idUser, user);
+		headers.add("Access-Control-Expose-Headers", "Authorization");
+		headers.add("Access-Control-Allow-Headers", "Authorization");
+		headers.add("Authorization", "Bearer " + newToken);
+		return new ResponseEntity<>((MultiValueMap) headers, HttpStatus.OK);
 	}
 
 

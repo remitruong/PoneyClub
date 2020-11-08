@@ -1,6 +1,9 @@
 package fr.esieaproject.poneyclub.services;
 
+import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +17,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
 
 import fr.esieaproject.poneyclub.dao.PasswordTokenRepository;
 import fr.esieaproject.poneyclub.dao.UserRepository;
@@ -29,6 +36,10 @@ import fr.esieaproject.poneyclub.exception.userexceptions.NoUserFoundException;
 import fr.esieaproject.poneyclub.exception.userexceptions.UnauthorizeAccessException;
 import fr.esieaproject.poneyclub.exception.userexceptions.WrongMobileOrEmailFormat;
 import fr.esieaproject.poneyclub.exception.userexceptions.WrongPasswordException;
+import fr.esieaproject.poneyclub.security.JwtAuthenticationFilter;
+import fr.esieaproject.poneyclub.security.JwtProperties;
+import fr.esieaproject.poneyclub.security.SecurityConfiguration;
+import fr.esieaproject.poneyclub.security.UserPrincipal;
 
 @Service
 public class UserService {
@@ -43,6 +54,9 @@ public class UserService {
 	
 	@Autowired
 	private PasswordTokenRepository passwordTokenRepository;
+	
+	@Autowired
+	SecurityConfiguration securityConfiguration;
 
 	public boolean createUser(User user)
 			throws MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {
@@ -64,16 +78,30 @@ public class UserService {
 		}
 	}
 
-	public boolean updateUser(long idUser, User user) {
-		Optional<User> userToUpdate = userRepo.findById(idUser);
-		user.setIdUser(idUser);
-		try {
-			userRepo.save(user);
-			return true;
-		} catch (Exception e) {
-			logger.error("" + e);
-			return false;
+	public String updateUser(long idUser, User user) {
+		
+		String newToken = null;
+		Optional<User> optionalUserToUpdate = userRepo.findById(idUser);
+		User userToUpdate = null;
+		if (optionalUserToUpdate.isPresent()) {
+			userToUpdate = optionalUserToUpdate.get();
 		}
+		 
+	
+		JwtAuthenticationFilter authFilter = securityConfiguration.getAuthFilter();
+		if (authFilter.updatePrincipal(userToUpdate, user)) {
+		
+		UsernamePasswordAuthenticationToken userPrincipal = 
+				(UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+		String username = (String) userPrincipal.getPrincipal();
+		
+		newToken = JWT.create().withSubject(username)
+				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+				.sign(HMAC512(JwtProperties.SECRET.getBytes())); 
+		}
+		
+		userRepo.save(user);
+		return newToken;
 	}
 	
 	//TODO Gérer l'exception No value present (quand aucun champs n'est rempli)

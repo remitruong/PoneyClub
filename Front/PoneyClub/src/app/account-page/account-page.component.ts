@@ -5,6 +5,8 @@ import {AlertService} from '../services/alert.service';
 import {User} from "../_classes";
 import {AuthenticationService} from "../services/authentification.service";
 import {IError} from "../_classes/ierror";
+import { TokenStorageService } from '../_auth/token-storage.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-account-page',
@@ -22,7 +24,8 @@ export class AccountPageComponent  {
   currentUser: User;
 
 
-  constructor(private userService:UserService,private authenticationService: AuthenticationService, private alertService: AlertService, private formBuilder: FormBuilder){
+  constructor(private userService: UserService,private authenticationService: AuthenticationService,
+     private alertService: AlertService, private formBuilder: FormBuilder, private tokenService: TokenStorageService) {
     this.currentUser = this.authenticationService.currentUserValue;
   }
 
@@ -53,14 +56,7 @@ export class AccountPageComponent  {
     console.log(this.currentUser);
 
     this.userService.updateUser(this.currentUser.id, this.currentUser).subscribe(
-      data => {
-        this.alertService.success('Update contact information successful');
-        this.alertService.clearAfter(1500);
-      },
-      error => {
-        this.localError = error as IError;
-        this.alertService.error(this.localError.error.response);
-      }
+      
     )
   }
 
