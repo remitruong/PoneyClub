@@ -50,11 +50,13 @@ export class CourseComponent implements OnInit {
     role: '',
     statut: '',
   };
+  searchTeacher;
   private selectedCourse: Icourse;
   public courses: Icourse[] = [];
   public filteredCourse: Icourse[] = [];
   public currentUser: User = null;
   public bCourseAdd = false;
+  public bRecurrentCourseAdd = false;
   public submitted = false;
   public startDateTime: string = null;
   public endDateTime: string = null;
@@ -150,6 +152,7 @@ export class CourseComponent implements OnInit {
   }
 
   addCourse() {
+    this.bRecurrentCourseAdd = false;
     this.bCourseAdd = true;
     this.newCourse.title = '';
     this.newCourse.startDateTime = '';
@@ -159,6 +162,10 @@ export class CourseComponent implements OnInit {
     this.newCourse.teacher = null;
     this.startDateTime = '';
     this.endDateTime = '';
+  }
+  addRecurrentCourse() {
+    this.bCourseAdd = false;
+    this.bRecurrentCourseAdd = true;
   }
 
   createCourse() {
@@ -255,7 +262,6 @@ export class CourseComponent implements OnInit {
 
   filter() {
     this.filteredCourse = [];
-
     if (this.selectedLevel === null || this.selectedLevel === 'All') {
       if (this.selectedTeacher !== this.allTeachers && this.selectedTeacher !== null) {
         this.courses.forEach( (x) => {

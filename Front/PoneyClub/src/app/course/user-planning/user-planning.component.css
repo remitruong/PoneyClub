@@ -1,3 +1,7 @@
 table {
 	background-color: transparent;
 }
+
+tbody{
+  text-align: justify;
+}
