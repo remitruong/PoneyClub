@@ -7,6 +7,9 @@
             <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
           </div>
           <div class="btn-group">
+            <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a recurrent course</button>
+          </div>
+          <div class="btn-group">
             <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)='getTeachers()'>
               <nb-option *ngFor="let teacher of teachers" value="teacher" (click)="selectTeacher(teacher)">{{teacher.firstName}} {{teacher.lastName}}</nb-option>
             </nb-select>

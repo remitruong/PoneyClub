@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/api/user.service';
-import { User } from '../_classes';
-import { IError } from '../_classes/ierror';
-import { AlertService } from '../services/alert.service';
-import { AuthenticationService } from '../services/authentification.service';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../services/api/user.service';
+import {User} from '../_classes';
+import {IError} from '../_classes/ierror';
+import {AlertService} from '../services/alert.service';
+import {AuthenticationService} from '../services/authentification.service';
 
 @Component({
   selector: 'app-user-admin',
@@ -27,6 +26,7 @@ export class UserAdminComponent implements OnInit {
   users: User[] = [];
   localError : IError;
   selectedUser: User;
+  searchText;
   display = false;
 
 

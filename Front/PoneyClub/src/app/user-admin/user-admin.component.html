@@ -3,7 +3,17 @@
     <div class="justify-content-center">
       <nb-card>
         <nb-card-header>
-          <button nbButton (click)="addTeacher()"><nb-icon icon="plus-outline"></nb-icon>Add a teacher</button>
+          <div class="btn-toolbar justify-content-between">
+            <div class="btn-group">
+              <button class="mr-2" nbButton (click)="addTeacher()"><nb-icon icon="plus-outline"></nb-icon>Add a teacher</button>
+            </div>
+            <div class="btn-group">
+              <input type="text" name="search" [(ngModel)]="searchText" nbInput placeholder="Search">
+              <button nbButton (click)="addTeacher()"><nb-icon icon="search-outline"></nb-icon>Search User</button>
+            </div>
+          </div>
+
+
         </nb-card-header>
         <nb-card-body>
           <div class="row justify-content-center">
@@ -17,8 +27,8 @@
                   <th scope="col">Email</th>
                 </tr>
                 </thead>
-                <tbody *ngFor="let user of users">
-                <tr scope="row" (click)="selectUser(user)">
+                <tbody *ngFor="let user of users | filter:searchText">
+                <tr (click)="selectUser(user)">
                   <td>{{user.id}}</td>
                   <td>{{user.firstName}}</td>
                   <td>{{user.lastName}}</td>
