@@ -37,6 +37,7 @@ import { CourseManagementComponent } from './course/course-management/course-man
 import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {AccountPageComponent} from "./account-page/account-page.component";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import {AccountPageComponent} from "./account-page/account-page.component";
     NbActionsModule,
     HttpClientModule,
     FormsModule,
+    Ng2SearchPipeModule,
     NbInputModule,
     ReactiveFormsModule,
     NbFormFieldModule,

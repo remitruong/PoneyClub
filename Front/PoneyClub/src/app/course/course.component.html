@@ -4,7 +4,10 @@
       <nb-card-header *ngIf="currentUser && currentUser.role == 'Teacher'" >
         <div class="btn-toolbar justify-content-between">
           <div class="btn-group">
-            <button nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
+            <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
+          </div>
+          <div class="btn-group">
+            <button class="mr-2" nbButton (click)="addRecurrentCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a recurrent course</button>
           </div>
           <div class="btn-group">
             <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)='getTeachers()'>
@@ -52,9 +55,12 @@
                 <td>
                   <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
-                  </button><button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
-                    <nb-icon icon="options-2-outline"></nb-icon>Manage
                   </button>
+                  <div *ngIf="course.teacher.id == currentUser.id">
+                    <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                      <nb-icon icon="options-2-outline"></nb-icon>Manage
+                    </button>
+                  </div>
                 </td>
               </tr>
               </tbody>
@@ -106,15 +112,51 @@
       </nb-card-body>
     </nb-card>
 
+    <nb-card *ngIf="bRecurrentCourseAdd">
+      <nb-card-body>
+        <form [formGroup]="courseForm">
+          <div class="form-group">
+            <input type="text" formControlName="title" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" [(ngModel)]="newCourse.title" placeholder="Course title"/>
+            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+              <div *ngIf="f.title.errors.required">Title is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="courseSchedule">Course Schedule</label>
+            <input type="time" id="courseSchedule" class="form-control"placeholder="Course schedule"/>
+          </div>
+          <div class="form-group">
+            <nb-select class="mr-2" placeholder="Select reccurence">
+              <nb-option>Option HERE</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <input type="number" min="1" max="8" formControlName="level" class="form-control"[ngClass]="{ 'is-invalid': submitted && f.level.errors }" [(ngModel)]="newCourse.levelStudying" placeholder="Level"/>
+            <div *ngIf="submitted && f.level.errors" class="invalid-feedback">
+              <div *ngIf="f.level.errors.required">Level is required</div>
+              <div *ngIf="f.level.errors">Level should be between 1 and 8</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="number" min="1" max="10" formControlName="maxStudent" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.maxStudent.errors }" [(ngModel)]="newCourse.maxStudent" placeholder="Max student"/>
+            <div *ngIf="submitted && f.maxStudent.errors" class="invalid-feedback">
+              <div *ngIf="f.maxStudent.errors.required">Max Student is required</div>
+              <div *ngIf="f.maxStudent.errors">Max Student should be between 1 and 10</div>
+            </div>
+          </div>
+          <button type="button" nbButton (click)="createCourse()">Send</button>
+        </form>
+      </nb-card-body>
+    </nb-card>
+
     <div class="container-fluid">
       <div class="row">
+
         <app-user-planning *ngIf="currentUser && currentUser.role == 'Rider'" [coursePlaces] = "coursePlaces" (courseUnsubscribe)="unsubscribe($event)">
         </app-user-planning>
 
         <app-course-management *ngIf="currentUser && currentUser.role == 'Teacher'" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
-
         </app-course-management>
-
 
       </div>
     </div>
