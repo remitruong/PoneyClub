@@ -1,4 +1,3 @@
-
 <nb-card>
   <nb-card-header>
     <h1>Enrolled course</h1>
@@ -11,6 +10,8 @@
         <th>Start date</th>
         <th>End date</th>
         <th>Level</th>
+        <th>Teacher</th>
+        <th>Horse</th>
         <th></th>
       </tr>
       </thead>
@@ -25,6 +26,12 @@
           </div>
           <div *ngIf="coursePlace.course.levelStudying != '8'">
             {{coursePlace.course.levelStudying}}
+          </div>
+        </td>
+        <td>{{coursePlace.course.teacher.firstName}} {{coursePlace.course.teacher.lastName}}</td>
+        <td>
+          <div *ngIf="coursePlace.horse">
+            {{coursePlace.horse.name}}
           </div>
         </td>
         <td>

@@ -4,7 +4,7 @@
       <nb-card-header *ngIf="currentUser && currentUser.role == 'Teacher'" >
         <div class="btn-toolbar justify-content-between">
           <div class="btn-group">
-            <button nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
+            <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
           </div>
           <div class="btn-group">
             <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)='getTeachers()'>
@@ -52,9 +52,12 @@
                 <td>
                   <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
-                  </button><button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
-                    <nb-icon icon="options-2-outline"></nb-icon>Manage
                   </button>
+                  <div *ngIf="course.teacher.id == currentUser.id">
+                    <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                      <nb-icon icon="options-2-outline"></nb-icon>Manage
+                    </button>
+                  </div>
                 </td>
               </tr>
               </tbody>
@@ -108,13 +111,12 @@
 
     <div class="container-fluid">
       <div class="row">
+
         <app-user-planning *ngIf="currentUser && currentUser.role == 'Rider'" [coursePlaces] = "coursePlaces" (courseUnsubscribe)="unsubscribe($event)">
         </app-user-planning>
 
         <app-course-management *ngIf="currentUser && currentUser.role == 'Teacher'" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
-
         </app-course-management>
-
 
       </div>
     </div>
