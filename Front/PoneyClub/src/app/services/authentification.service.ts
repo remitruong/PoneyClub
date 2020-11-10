@@ -38,7 +38,7 @@ export class AuthenticationService {
     .pipe(map(
       user => {
         location.reload();
-        this.user = user; 
+        this.user = user;
         this.tokenService.saveToken(user.headers.get('Authorization'));
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currentUserSubject.next(user);
