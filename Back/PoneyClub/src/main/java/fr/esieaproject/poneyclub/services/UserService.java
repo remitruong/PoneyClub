@@ -100,7 +100,7 @@ public class UserService {
 				.sign(HMAC512(JwtProperties.SECRET.getBytes())); 
 		}
 		
-		userRepo.save(user);
+		userRepo.updateUserInformations(user.getEmail(), user.getMobile(), user.getLicenceNum(),user.getId());
 		return newToken;
 	}
 	
