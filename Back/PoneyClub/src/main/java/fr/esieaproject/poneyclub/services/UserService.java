@@ -211,6 +211,25 @@ public class UserService {
 		return true;
 	}
 	
+	public boolean createAdmin(User user) throws WrongMobileOrEmailFormat, MobileNotAvailableException, EmailNotAvailableException {
+		if (emailAvailable(user.getEmail())) {
+			if (mobileAvailable(user.getMobile())) {
+				if (isEmailValid(user.getEmail()) && isMobileValid(user.getMobile())) {
+					user.setRole("Admin");
+					user.setStatut("Admin");
+					userRepo.save(user);
+					return true;
+				} else {
+					throw new WrongMobileOrEmailFormat("Email or Mobile is wrong");
+				}
+			} else {
+				throw new MobileNotAvailableException("This mobile number is already used");
+			}
+		} else {
+			throw new EmailNotAvailableException("This email is already used");
+		}
+	}
+	
 	public boolean forgotPassword(String email) throws NoUserFoundException, MessagingException {
 		
 		Optional<User> user = this.userRepo.findByEmail(email);

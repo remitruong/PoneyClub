@@ -24,7 +24,11 @@ public class App {
     @Bean
     CommandLineRunner init(UserRepository repository) { 
     	return args -> {
-    		User admin = new User("Admin", "Root", "admin@gmail.com", "changeit", "0606060606");
+    		User root = new User("Root", "Root", "root@gmail.com", "changeit", "0606060605");
+    		root.setStatut("Root");
+    		root.setRole("Root");
+    		
+    		User admin = new User("Admin", "Admin", "admin@gmail.com", "changeit", "0606060606");
     		admin.setStatut("Admin");
     		admin.setRole("Admin");
     		
@@ -33,7 +37,7 @@ public class App {
     		teacher.setRole("Teacher");
     		rider.setRole("Rider");
     		
-    		
+    		repository.save(root);
     		repository.save(admin);
     		repository.save(rider);
     		repository.save(teacher);

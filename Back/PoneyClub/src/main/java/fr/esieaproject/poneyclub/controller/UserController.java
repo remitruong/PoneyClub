@@ -144,4 +144,13 @@ public class UserController {
 		}
 	}
 	
+	@PostMapping(value ="/create-admin")
+	public ResponseEntity<?> reset_password(@RequestBody User user) {
+		try {
+			return new ResponseEntity<>(userService.createAdmin(user), HttpStatus.OK);
+		} catch (WrongMobileOrEmailFormat | MobileNotAvailableException | EmailNotAvailableException e) {
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }
