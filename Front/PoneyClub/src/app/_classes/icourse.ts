@@ -9,4 +9,5 @@ export interface Icourse {
 	maxStudent: number;
 	availablePlaces: number;
 	teacher: User;
+	showManageButton: boolean
 }

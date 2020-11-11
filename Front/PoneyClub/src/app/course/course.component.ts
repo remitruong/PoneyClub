@@ -1,4 +1,3 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../_classes';
@@ -28,6 +27,7 @@ export class CourseComponent implements OnInit {
     maxStudent: 0,
     availablePlaces: 0,
     teacher: null,
+    showManageButton: false,
   };
   private newCourse: Icourse = {
     id: 0,
@@ -38,6 +38,7 @@ export class CourseComponent implements OnInit {
     maxStudent: 0,
     availablePlaces: 0,
     teacher: null,
+    showManageButton: false,
   };
   private allTeachers: User = {
     id: 0,
@@ -110,6 +111,16 @@ export class CourseComponent implements OnInit {
         this.courses = data;
         this.filteredCourse = this.courses;
         for (const course of this.courses) {
+
+          var courseDate = new Date(course.startDateTime);
+          var courseDateBefore = new Date(course.startDateTime);
+          courseDateBefore.setHours(courseDate.getHours() - 24)
+          var now = new Date();
+
+          if(now<courseDateBefore){
+            course.showManageButton = true;
+          }
+
           this.courseService.getAvailablePlaces(course.id).subscribe(
             data => {
               course.availablePlaces = data;

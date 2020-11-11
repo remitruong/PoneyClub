@@ -56,7 +56,7 @@
                   <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
                   </button>
-                  <div *ngIf="course.teacher.id == currentUser.id">
+                  <div *ngIf="course.teacher.id == currentUser.id && course.showManageButton == true">
                     <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
                       <nb-icon icon="options-2-outline"></nb-icon>Manage
                     </button>
