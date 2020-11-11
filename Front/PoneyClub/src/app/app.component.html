@@ -21,9 +21,9 @@
         <nb-action *ngIf="!currentUser" (click)="refreshAlert()">
         <a routerLink="/login" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>
       </nb-action>
-<!--      <nb-action *ngIf="currentUser" (click)="disconnect()">-->
-<!--        <a  routerLink="/home" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>-->
-<!--      </nb-action>-->
+      <nb-action *ngIf="currentUser" (click)="disconnect()">
+        <a  routerLink="/home" routerLinkActive="activebutton" ><nb-icon icon="power-outline"></nb-icon></a>
+      </nb-action>
     </nb-actions>
   </nb-layout-header>
 

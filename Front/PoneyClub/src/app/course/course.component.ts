@@ -72,6 +72,7 @@ export class CourseComponent implements OnInit {
   private selectedLevel = null;
   public levels = [];
   public level = null;
+  public recurrence : string = null;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
     private authenticationService: AuthenticationService,
@@ -182,6 +183,7 @@ export class CourseComponent implements OnInit {
   createCourse() {
     this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
     this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.teacher = this.authenticationService.currentUserValue;
 
     this.submitted = true;
 
@@ -207,7 +209,28 @@ export class CourseComponent implements OnInit {
   }
 
   createRecurrentCourse(){
+    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.teacher = this.authenticationService.currentUserValue;
 
+    this.submitted = true;
+
+    if (this.courseForm.invalid) {
+      return;
+    }
+
+    this.courseService.addRecurrentCourse(this.newCourse, this.recurrence).subscribe(
+      (data) => {
+        const recurrentCourses: Icourse[] = data;
+        for (let recurrentCourse of recurrentCourses) {
+          this.courses.push(recurrentCourse);
+        }
+      },
+      (error) => {
+        this.localError = error;
+        this.alertService.error(this.localError.error);
+      }
+    )
   }
 
   subscribe(course: Icourse) {
@@ -273,6 +296,10 @@ export class CourseComponent implements OnInit {
         this.alertService.error(this.localError.error);
       },
     );
+  }
+
+  selectRecurrence(recurrence: string) {
+    this.recurrence = recurrence;
   }
 
   filter() {

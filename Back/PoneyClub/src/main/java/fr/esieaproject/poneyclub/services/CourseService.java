@@ -91,9 +91,9 @@ public class CourseService {
 		int coeff = 0;
 		
 		if (recurrence.equals("DAILY")) {
-			coeff = 365;
+			coeff = 7;
 		} else if (recurrence.equals("WEEKLY")) {
-			coeff = 53;
+			coeff = 4;
 		}else if (recurrence.equals("MONTHLY")) {
 			coeff = 12;
 		} else {
@@ -106,18 +106,20 @@ public class CourseService {
 			Timestamp newStartTime = Timestamp.from(startTime.plusSeconds(86400*i));
 			Timestamp newEndTime = Timestamp.from(endTime.plusSeconds(86400*i));
 			
+			Optional<User> teacher = userRepo.findByEmail(course.getTeacher().getEmail());
+			
 			Course newCourse = new Course();
-			newCourse.setTeacher(course.getTeacher());
+			newCourse.setTeacher(teacher.get());
 			newCourse.setLevelStudying(course.getLevelStudying());
 			newCourse.setMaxStudent(course.getMaxStudent());
-			newCourse.setTitle(course.getTitle() + "number :" + i);
+			newCourse.setTitle(course.getTitle() + " number : " + i+1);
 			newCourse.setStartDateTime(newStartTime.toString());
 			newCourse.setEndDateTime(newEndTime.toString());
 			
 			Course savedCourse = courseRepo.save(newCourse);
 			
 			int places = savedCourse.getMaxStudent();
-			for (int nbPlace = 0; nbPlace < places; i++) {
+			for (int nbPlace = 0; nbPlace < places; nbPlace++) {
 				CoursePlace coursePlace = new CoursePlace();
 				coursePlace.setCourse(savedCourse);
 				coursePlaceRepo.save(coursePlace);
