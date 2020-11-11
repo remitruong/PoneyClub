@@ -13,6 +13,7 @@ export class CourseService {
   BASE_URL: string = 'http://localhost:8081/course';
   getCoursesUrl: string = `${this.BASE_URL}/get-courses`;
   addCourseUrl: string = `${this.BASE_URL}/plan`;
+  addRecurrentCourseUrl: string = `${this.BASE_URL}/plan/recurrent-course`;
   registerToCourseUrl: string = `${this.BASE_URL}/register`;
   availablePlacesUrl: string =  `${this.BASE_URL}/available-places`;
   findCourseByTeacherUrl: string =  `${this.BASE_URL}/find-course-by-teacher`;
@@ -26,6 +27,10 @@ export class CourseService {
 
   public addCourse(course: Icourse, idTeacher: number): Observable<Icourse> {
     return this.http.post<Icourse>(this.addCourseUrl + '/' + idTeacher, course);
+  }
+
+  public addRecurrentCourse(course: Icourse, recurrence: string): Observable<Icourse[]> {
+    return this.http.post<Icourse[]>(this.addRecurrentCourseUrl + '/' + recurrence , course);
   }
 
   public registerToCourse(user: User, idCourse: number): Observable<ICoursePlace> {
