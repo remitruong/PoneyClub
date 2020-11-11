@@ -10,52 +10,51 @@ import {AlertService} from "../../services/alert.service";
   styleUrls: ['./admin-details.component.css']
 })
 export class AdminDetailsComponent implements OnInit {
-  userForm: FormGroup;
+  superAdminForm: FormGroup;
   submitted = false;
   mobileNumberPattern = "^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$";
   emailPattern ="([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))";
 
-  @Input() userSelected:User;
-  @Output() userUpdated: EventEmitter<User> = new EventEmitter<User>();
-  @Output() userDeleted: EventEmitter<User> = new EventEmitter<User>();
-  @Output() userAdded: EventEmitter<User> = new EventEmitter<User>();
+  @Input() adminSelected:User;
+  @Output() adminUpdated: EventEmitter<User> = new EventEmitter<User>();
+  @Output() adminDeleted: EventEmitter<User> = new EventEmitter<User>();
+  @Output() adminAdded: EventEmitter<User> = new EventEmitter<User>();
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.submitted = false;
-    this.userForm = this.formBuilder.group({
+    this.superAdminForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      mobile: ['', Validators.required],
-      licenceNum: ['']
+      mobile: ['', Validators.required]
     });
   }
 
-  get f() { return this.userForm.controls; }
+  get f() { return this.superAdminForm.controls; }
 
   updateAdmin() {
     this.submitted = true;
     //disable the control on password
-    this.userForm.get('password').disable();
-    if (this.userForm.invalid) {
+    this.superAdminForm.get('password').disable();
+    if (this.superAdminForm.invalid) {
       return;
     }
-    this.userUpdated.emit(this.userSelected);
+    this.adminUpdated.emit(this.adminSelected);
   }
 
   deleteAdmin() {
-    this.userDeleted.emit(this.userSelected);
+    this.adminDeleted.emit(this.adminSelected);
   }
 
   addAdmin() {
     this.submitted = true;
-    if (this.userForm.invalid) {
+    if (this.superAdminForm.invalid) {
       return;
     }
-    this.userAdded.emit(this.userSelected);
+    this.adminAdded.emit(this.adminSelected);
   }
 
 }

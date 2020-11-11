@@ -20,7 +20,7 @@ import {
   NbIconModule, NbInputModule,
   NbSelectModule,
   NbLayoutModule,
-  NbThemeModule,
+  NbThemeModule, NbAlertModule,
 } from '@nebular/theme';
 import {LoginComponent} from "./login/login.component";
 import {ForgotPasswordComponent} from "./forgot-password/forgot-password.component";
@@ -82,6 +82,7 @@ import {AdminDetailsComponent} from "./super-admin/admin-details/admin-details.c
     NbInputModule,
     ReactiveFormsModule,
     NbFormFieldModule,
+    NbAlertModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

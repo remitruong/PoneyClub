@@ -86,7 +86,6 @@ public class UserService {
 		if (optionalUserToUpdate.isPresent()) {
 			userToUpdate = optionalUserToUpdate.get();
 		}
-		 
 	
 		JwtAuthenticationFilter authFilter = securityConfiguration.getAuthFilter();
 		if (authFilter.updatePrincipal(userToUpdate, user)) {
