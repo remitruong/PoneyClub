@@ -25,6 +25,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   {path: 'account', component: AccountPageComponent, canActivate: [AuthGuard] },
   {path: 'user-admin', component: UserAdminComponent, canActivate: [AuthGuard], data: {status: [Statut.Admin] }},
+  //{path: 'super-admin', component: SuperAdminComponent, canActivate: [AuthGuard], data: {status: [Statut.SuperAdmin] }},
   {path: 'super-admin', component: SuperAdminComponent},
   {path: 'course', component: CourseComponent, canActivate: [AuthGuard] },
   {path: 'horse', component: HorseComponent, canActivate: [AuthGuard], data: {roles: [Role.Teacher, Role.Admin], status: [Statut.Admin, Statut.User] }},
