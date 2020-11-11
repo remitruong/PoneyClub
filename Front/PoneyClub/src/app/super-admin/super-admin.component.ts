@@ -33,14 +33,13 @@ export class SuperAdminComponent implements OnInit {
   constructor(private userService : UserService, private alertService : AlertService, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.getAllUsers();
+    this.getAdmins();
   }
 
 
-  getAllUsers() {
-    this.userService.getUsers(this.authenticationService.currentUserValue.email).subscribe(
+  getAdmins() {
+    this.userService.getAdmins().subscribe(
       data => {
-        console.log(data);
         this.admins = data;
         this.alertService.success('All user refreshed');
         this.alertService.clearAfter(1500);
@@ -48,7 +47,7 @@ export class SuperAdminComponent implements OnInit {
       },
       error => {
         this.localError = error;
-        this.alertService = this.localError.error.response;
+        this.alertService.error(this.localError.error.response);
       }
     );
   }
@@ -72,7 +71,7 @@ export class SuperAdminComponent implements OnInit {
         this.selectedAdmin = data;
         this.admins.push(this.selectedAdmin);
         this.display = false;
-        this.getAllUsers();
+        this.getAdmins();
         this.alertService.success('Admin created successful');
         this.alertService.clearAfter(3000);
       },

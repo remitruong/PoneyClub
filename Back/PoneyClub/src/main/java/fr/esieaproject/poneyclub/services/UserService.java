@@ -194,6 +194,10 @@ public class UserService {
 	public List<User> getTeachers() {
 		return userRepo.findByRole("Teacher");
 	}
+	
+	public List<User> getAdmin() {
+		return userRepo.findByStatut("Admin");
+	}
 
 	public boolean changeUserToAdmin(long idUser, String adminEmail) throws NoUserFoundException {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
