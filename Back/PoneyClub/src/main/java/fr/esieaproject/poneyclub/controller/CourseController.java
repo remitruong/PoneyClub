@@ -21,6 +21,7 @@ import fr.esieaproject.poneyclub.entity.Course;
 import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
+import fr.esieaproject.poneyclub.exception.courseexception.RecurrenceNotKnownException;
 import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
 import fr.esieaproject.poneyclub.exception.courseexception.UserAlreadyRegisteredException;
 import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
@@ -71,6 +72,16 @@ public class CourseController {
 		try {
 			return new ResponseEntity(courseService.addCourse(course, idTeacher), HttpStatus.OK);
 		} catch (StartShouldBeBeforeEndException | NoUserFoundException e) {
+			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping(value = "/plan/recurrent-course/{recurrence}")
+	public ResponseEntity addRecurrentCourse(@RequestBody Course course, @PathVariable String recurrence)
+			throws NoUserFoundException {
+		try {
+			return new ResponseEntity(courseService.addRecurrentCourse(course, recurrence), HttpStatus.OK);
+		} catch (StartShouldBeBeforeEndException | RecurrenceNotKnownException e) {
 			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
