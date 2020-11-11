@@ -60,6 +60,7 @@ export class AccountPageComponent  {
       },
       error => {
         console.log("error occured while update user" + error);
+        this.localError = error as IError;
         this.alertService.error(this.localError.error.response);
       }
     )
