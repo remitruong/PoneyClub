@@ -5,7 +5,7 @@
         <nb-card-header>
           <div class="btn-toolbar justify-content-between">
             <div class="btn-group">
-              <button class="mr-2" nbButton (click)="addTeacher()"><nb-icon icon="plus-outline"></nb-icon>Add a teacher</button>
+              <button class="mr-2" nbButton (click)="addAdmin()"><nb-icon icon="plus-outline"></nb-icon>Add an admin</button>
             </div>
             <div class="btn-group">
               <input type="text" name="search" [(ngModel)]="searchText" nbInput placeholder="Search">
@@ -43,12 +43,11 @@
     <div class="col-md-5 justify-content-center" *ngIf="display">
       <nb-card>
         <nb-card-body>
-          <app-user-details
+          <app-admin-details
             [userSelected]="selectedUser"
             (userUpdated)="updateUser($event)"
-            (userAdded)="createTeacher($event)"
-            (userToAdmin)="userToAdmin($event)">
-          </app-user-details>
+            (userAdded)="createAdmin($event)">
+          </app-admin-details>
         </nb-card-body>
       </nb-card>
     </div>
