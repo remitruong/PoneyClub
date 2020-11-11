@@ -98,8 +98,8 @@ public class UserService {
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
 				.sign(HMAC512(JwtProperties.SECRET.getBytes())); 
 		}
-		
-		userRepo.save(user);
+
+		userRepo.updateUserInformations(user.getEmail(), user.getMobile(), user.getLicenceNum(),user.getId());
 		return newToken;
 	}
 	

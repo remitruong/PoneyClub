@@ -277,6 +277,13 @@ export class CourseComponent implements OnInit {
     this.selectedCourse = course;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       (data) => {
+        if(data.length>=3){
+          console.log("Il y a assez de participants");
+          this.alertService.success("enough rider")
+        }else{
+          this.alertService.error("No enough rider")
+          console.log("Il n'y a pas assez de participants");
+        }
         this.selectedCoursePlaces = data;
       },
       (error) => {
