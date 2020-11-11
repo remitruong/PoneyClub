@@ -27,12 +27,9 @@ export class UserService {
     return this.http.post(this.signupUrl, user);
   }
 
-  public updateUser(idUser: number, user: User): Observable<any> {
-
-     let headers = new HttpHeaders();
-      headers.set('Content-Type', 'application/json; charset=utf-8');
-
-
+  public updateUserInformation(idUser: number, user: User): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json; charset=utf-8');
     return this.http.post<any>(this.updateUserUrl + '/' + idUser, user,  {headers: headers, observe: 'response'as 'body'})
     .pipe(map(
       (resp: HttpResponse<any>) => {
@@ -40,6 +37,10 @@ export class UserService {
         this.tokenService.saveToken(resp.headers.get('Authorization'));
       }
     ))
+  }
+
+  public updateUser(idUser: number, user: User): Observable<any> {
+    return this.http.post<any>(this.updateUserUrl + '/' + idUser, user);
   }
 
   public changeToAdmin(idUser: number, adminMail:string): Observable<any> {
