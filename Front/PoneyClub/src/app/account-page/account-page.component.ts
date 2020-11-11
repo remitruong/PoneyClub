@@ -53,7 +53,7 @@ export class AccountPageComponent  {
     this.currentUser.mobile = this.accountForm.get('mobile').value;
     this.currentUser.licenceNum = this.accountForm.get('licenceNum').value;
 
-    this.userService.updateUser(this.currentUser.id, this.currentUser).subscribe(
+    this.userService.updateUserInformation(this.currentUser.id, this.currentUser).subscribe(
       data => {
         this.alertService.success('Update user successful');
         this.alertService.clearAfter(2000);
