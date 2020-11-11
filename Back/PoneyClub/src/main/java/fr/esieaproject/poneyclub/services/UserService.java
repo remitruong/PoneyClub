@@ -86,7 +86,6 @@ public class UserService {
 		if (optionalUserToUpdate.isPresent()) {
 			userToUpdate = optionalUserToUpdate.get();
 		}
-		 
 	
 		JwtAuthenticationFilter authFilter = securityConfiguration.getAuthFilter();
 		if (authFilter.updatePrincipal(userToUpdate, user)) {
@@ -99,8 +98,8 @@ public class UserService {
 				.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
 				.sign(HMAC512(JwtProperties.SECRET.getBytes())); 
 		}
-		
-		userRepo.save(user);
+
+		userRepo.updateUserInformations(user.getEmail(), user.getMobile(), user.getLicenceNum(),user.getId());
 		return newToken;
 	}
 	

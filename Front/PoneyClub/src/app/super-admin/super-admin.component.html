@@ -12,7 +12,6 @@
             </div>
           </div>
 
-
         </nb-card-header>
         <nb-card-body>
           <div class="row justify-content-center">
@@ -26,7 +25,7 @@
                   <th scope="col">Email</th>
                 </tr>
                 </thead>
-                <tbody *ngFor="let user of users | filter:searchText">
+                <tbody *ngFor="let user of admins | filter:searchText">
                 <tr (click)="selectUser(user)">
                   <td>{{user.id}}</td>
                   <td>{{user.firstName}}</td>
@@ -44,9 +43,9 @@
       <nb-card>
         <nb-card-body>
           <app-admin-details
-            [userSelected]="selectedUser"
-            (userUpdated)="updateUser($event)"
-            (userAdded)="createAdmin($event)">
+            [adminSelected]="selectedAdmin"
+            (adminUpdated)="updateUser($event)"
+            (adminAdded)="createAdmin($event)">
           </app-admin-details>
         </nb-card-body>
       </nb-card>

@@ -1,4 +1,5 @@
 export enum Statut {
   User = 'User',
-  Admin = 'Admin'
+  Admin = 'Admin',
+  Root = 'Root'
 }
