@@ -95,7 +95,9 @@
           </div>
           <div class="form-group" *ngIf="bRecurrentCourseAdd">
             <nb-select class="mr-2" placeholder="Select reccurence">
-              <nb-option>Option HERE</nb-option>
+              <nb-option (click)="selectRecurrence('DAILY')">DAILY</nb-option>
+              <nb-option (click)="selectRecurrence('WEEKLY')">WEEKLY</nb-option>
+              <nb-option (click)="selectRecurrence('MONTHLY')">MONTHLY</nb-option>
             </nb-select>
           </div>
           <div class="form-group">

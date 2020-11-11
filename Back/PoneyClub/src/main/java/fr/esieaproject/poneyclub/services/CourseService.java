@@ -1,6 +1,8 @@
 package fr.esieaproject.poneyclub.services;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ import fr.esieaproject.poneyclub.entity.Course;
 import fr.esieaproject.poneyclub.entity.CoursePlace;
 import fr.esieaproject.poneyclub.entity.User;
 import fr.esieaproject.poneyclub.exception.courseexception.CourseNotExistException;
+import fr.esieaproject.poneyclub.exception.courseexception.RecurrenceNotKnownException;
 import fr.esieaproject.poneyclub.exception.courseexception.StartShouldBeBeforeEndException;
 import fr.esieaproject.poneyclub.exception.courseexception.UserAlreadyRegisteredException;
 import fr.esieaproject.poneyclub.exception.courseplaceexceptions.NoPlacesAvailableException;
@@ -78,6 +81,55 @@ public class CourseService {
 		return course1;
 	}
 	
+
+	public List<Course> addRecurrentCourse(Course course, String recurrence) throws RecurrenceNotKnownException, StartShouldBeBeforeEndException {
+		List<Course> courses = new ArrayList<>();
+		
+
+		if (!this.isStartBeforeEnd(course.getStartDateTime(), course.getEndDateTime())) throw new StartShouldBeBeforeEndException("Provided start time should be before end time");
+		
+		int coeff = 0;
+		
+		if (recurrence.equals("DAILY")) {
+			coeff = 7;
+		} else if (recurrence.equals("WEEKLY")) {
+			coeff = 4;
+		}else if (recurrence.equals("MONTHLY")) {
+			coeff = 12;
+		} else {
+			throw new RecurrenceNotKnownException("Recurrence " + recurrence + " is not known");
+		}
+		
+		for (int i = 0; i < coeff ; i++ ) {
+			Instant startTime = Timestamp.valueOf(course.getStartDateTime()).toInstant();
+			Instant endTime = Timestamp.valueOf(course.getEndDateTime()).toInstant();
+			Timestamp newStartTime = Timestamp.from(startTime.plusSeconds(86400*i));
+			Timestamp newEndTime = Timestamp.from(endTime.plusSeconds(86400*i));
+			
+			Optional<User> teacher = userRepo.findByEmail(course.getTeacher().getEmail());
+			
+			Course newCourse = new Course();
+			newCourse.setTeacher(teacher.get());
+			newCourse.setLevelStudying(course.getLevelStudying());
+			newCourse.setMaxStudent(course.getMaxStudent());
+			newCourse.setTitle(course.getTitle() + " number : " + i+1);
+			newCourse.setStartDateTime(newStartTime.toString());
+			newCourse.setEndDateTime(newEndTime.toString());
+			
+			Course savedCourse = courseRepo.save(newCourse);
+			
+			int places = savedCourse.getMaxStudent();
+			for (int nbPlace = 0; nbPlace < places; nbPlace++) {
+				CoursePlace coursePlace = new CoursePlace();
+				coursePlace.setCourse(savedCourse);
+				coursePlaceRepo.save(coursePlace);
+			}
+			courses.add(savedCourse);
+		}
+		
+		return courses;
+	}
+	
 	public CoursePlace registerToCourse(User user, long idCourse) throws CourseNotExistException, NoUserFoundException, NoPlacesAvailableException, UserAlreadyRegisteredException {
 		Optional<Course> course = courseRepo.findById(idCourse);
 		Optional<User> rider = userRepo.findByEmail(user.getEmail());
@@ -121,6 +173,7 @@ public class CourseService {
 	private boolean isAnyPlaceInCourse() {
 		return true;
 	}
+
 	
 	
 
