@@ -107,11 +107,11 @@ public class UserController {
 	public ResponseEntity<?> createTeacher(@RequestBody User teacher, @PathVariable String adminMail) {
 		try {
 			return new ResponseEntity<>(userService.createTeacher(teacher, adminMail), HttpStatus.OK);
-		} catch (NoUserFoundException e) {
+		} catch (NoUserFoundException | MobileNotAvailableException | EmailNotAvailableException | WrongMobileOrEmailFormat e) {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@GetMapping(value ="/get-teachers")
 	public ResponseEntity<?> getTeachers() {
 			return new ResponseEntity<>(userService.getTeachers(), HttpStatus.OK);

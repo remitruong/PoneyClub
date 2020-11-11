@@ -38,6 +38,8 @@ import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {AccountPageComponent} from "./account-page/account-page.component";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {SuperAdminComponent} from "./super-admin/super-admin.component";
+import {AdminDetailsComponent} from "./super-admin/admin-details/admin-details.component";
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
     DateTimePipe,
     CourseManagementComponent,
     AccountPageComponent,
+    SuperAdminComponent,
+    AdminDetailsComponent
   ],
   imports: [
     BrowserModule,

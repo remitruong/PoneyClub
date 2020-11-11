@@ -1,0 +1,61 @@
+<div class="container-fluid justify-content-center">
+  <form [formGroup]="userForm">
+    <div *ngIf="userSelected">
+      <div *ngIf="userSelected.id !=0">
+        <h1>{{userSelected.statut}} : {{userSelected.role}}</h1>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>First Name</label>
+          <input type="text" formControlName="firstName" placeholder="Enter First Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" [(ngModel)]="userSelected.firstName"/>
+          <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">First Name is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label>Last Name</label>
+          <input type="text" formControlName="lastName" class="form-control" placeholder="Enter Last Name" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" [(ngModel)]="userSelected.lastName">
+          <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label>Email</label>
+          <input type="email" formControlName="email" class="form-control" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [(ngModel)]="userSelected.email" [pattern]="emailPattern">
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+            <div *ngIf="f.email.errors.email || f.email.errors.pattern">Email must be a valid email address</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6" *ngIf="userSelected.id == 0">
+          <label>Temp Pasword</label>
+          <input type="password" formControlName="password" class="form-control" placeholder="Password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" [(ngModel)]="userSelected.password">
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label>Mobile</label>
+          <input type="tel" formControlName="mobile" class="form-control" placeholder="Enter phone number" [ngClass]="{ 'is-invalid': submitted && f.mobile.errors }" [(ngModel)]="userSelected.mobile" [pattern]="mobileNumberPattern">
+          <div *ngIf="submitted && f.mobile.errors" class="invalid-feedback">
+            <div *ngIf="f.mobile.errors.required">Mobile is required</div>
+            <div *ngIf="f.mobile.errors.pattern">Mobile number not valid. (example : 0607080901) </div>
+          </div>
+        </div>
+      </div>
+      <section class="button-with-link">
+        <span>
+          <button nbButton class="mr-3 " (click)="updateAdmin()" *ngIf="userSelected.id !=0">Update Admin</button>
+        </span>
+        <span>
+          <button nbButton (click)="addAdmin()" *ngIf="userSelected.id == 0">Add Admin</button>
+        </span>
+      </section>
+    </div>
+  </form>
+</div>

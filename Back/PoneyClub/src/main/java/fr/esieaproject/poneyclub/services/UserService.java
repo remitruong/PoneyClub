@@ -100,7 +100,7 @@ public class UserService {
 				.sign(HMAC512(JwtProperties.SECRET.getBytes())); 
 		}
 		
-		userRepo.updateUserInformations(user.getEmail(), user.getMobile(), user.getLicenceNum(),user.getId());
+		userRepo.save(user);
 		return newToken;
 	}
 	
@@ -168,16 +168,28 @@ public class UserService {
 		return userList;
 	}
 
-	public User createTeacher(User teacher, String adminEmail) throws NoUserFoundException {
+	public User createTeacher(User teacher, String adminEmail) throws NoUserFoundException, MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {
 		Optional<User> admin = userRepo.findByEmail(adminEmail);
 		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
 			throw new NoUserFoundException("admin not found");
 		}
-		teacher.setStatut("User");
-		teacher.setRole("Teacher");
-		teacher.setTrialConnection(0);
-		teacher = userRepo.save(teacher);
-		return teacher;
+		if (emailAvailable(teacher.getEmail())) {
+			if (mobileAvailable(teacher.getMobile())) {
+				if (isEmailValid(teacher.getEmail()) && isMobileValid(teacher.getMobile())) {
+					teacher.setStatut("User");
+					teacher.setRole("Teacher");
+					teacher.setTrialConnection(0);
+					teacher = userRepo.save(teacher);
+					return teacher;
+				} else {
+					throw new WrongMobileOrEmailFormat("Email or Mobile is wrong");
+				}
+			} else {
+				throw new MobileNotAvailableException("This mobile number is already used");
+			}
+		} else {
+			throw new EmailNotAvailableException("This email is already used");
+		}
 	}
 	
 	public List<User> getTeachers() {

@@ -75,7 +75,7 @@ export class UserAdminComponent implements OnInit {
         this.alertService.clearAfter(3000);
       },
       error => {
-        this.localError = error;
+        this.localError = error as IError;
         this.alertService.error(this.localError.error);
       }
 

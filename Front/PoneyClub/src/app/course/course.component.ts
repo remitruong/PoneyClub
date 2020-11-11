@@ -57,6 +57,7 @@ export class CourseComponent implements OnInit {
   public currentUser: User = null;
   public bCourseAdd = false;
   public bRecurrentCourseAdd = false;
+  public createCourseButton = false;
   public submitted = false;
   public startDateTime: string = null;
   public endDateTime: string = null;
@@ -118,7 +119,7 @@ export class CourseComponent implements OnInit {
             (error) => {
               this.localError = error;
               this.alertService.error(this.localError.error);
-            },
+            }
           );
         }
       },
@@ -152,6 +153,7 @@ export class CourseComponent implements OnInit {
   }
 
   addCourse() {
+    this.createCourseButton = true;
     this.bRecurrentCourseAdd = false;
     this.bCourseAdd = true;
     this.newCourse.title = '';
@@ -164,8 +166,17 @@ export class CourseComponent implements OnInit {
     this.endDateTime = '';
   }
   addRecurrentCourse() {
-    this.bCourseAdd = false;
+    this.createCourseButton = false;
+    this.bCourseAdd = true;
     this.bRecurrentCourseAdd = true;
+    this.newCourse.title = '';
+    this.newCourse.startDateTime = '';
+    this.newCourse.endDateTime = '';
+    this.newCourse.levelStudying = '';
+    this.newCourse.maxStudent = null;
+    this.newCourse.teacher = null;
+    this.startDateTime = '';
+    this.endDateTime = '';
   }
 
   createCourse() {
@@ -193,6 +204,10 @@ export class CourseComponent implements OnInit {
     );
     this.bCourseAdd = false;
     this.submitted = false;
+  }
+
+  createRecurrentCourse(){
+
   }
 
   subscribe(course: Icourse) {
