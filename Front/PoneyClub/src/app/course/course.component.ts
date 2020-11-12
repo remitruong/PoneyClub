@@ -52,7 +52,7 @@ export class CourseComponent implements OnInit {
     statut: '',
   };
   public searchTeacher;
-  private selectedCourse: Icourse;
+  public selectedCourse: Icourse;
   public courses: Icourse[] = [];
   public filteredCourse: Icourse[] = [];
   public currentUser: User = null;
@@ -214,7 +214,7 @@ export class CourseComponent implements OnInit {
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error.response);
+        this.alertService.error(this.localError.error);
       },
     );
     this.bCourseAdd = false;
@@ -241,7 +241,7 @@ export class CourseComponent implements OnInit {
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error.response);
+        this.alertService.error(this.localError.error);
       },
     );
   }
