@@ -1,0 +1,19 @@
+<nb-card>
+	<nb-card-header>
+		<h1>Update Course</h1>
+	</nb-card-header>
+	<nb-card-body>
+		<label for="title">Course title</label><br>
+		<input id="title" nbInput [(ngModel)]="selectedCourse.title"/><br>
+		<label for="start">Start date</label><br>
+		<input id="start" type="datetime-local" [(ngModel)]="startDate"/><br>
+		<label for="end">End date</label><br>
+		<input id="end" type="datetime-local" [(ngModel)]="endDate"/><br>
+		<label for="level">Level</label><br>
+		<input id="level" nbInput [(ngModel)]="selectedCourse.levelStudying"/><br>
+		<label for="maxStudent">Max student</label><br>
+		<input id="maxStudent" nbInput [(ngModel)]="selectedCourse.maxStudent"/><br>
+		<button nbButton (click)="sendUpdatedCourse()">Modify</button>
+
+	</nb-card-body>
+</nb-card>

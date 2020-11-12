@@ -10,10 +10,10 @@
             <button class="mr-2" nbButton (click)="addRecurrentCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a recurrent course</button>
           </div>
           <div class="btn-group">
-            <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)='getTeachers()'>
+            <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)="getTeachers()">
               <nb-option *ngFor="let teacher of teachers" value="teacher" (click)="selectTeacher(teacher)">{{teacher.firstName}} {{teacher.lastName}}</nb-option>
             </nb-select>
-            <nb-select  value="level" placeholder="Select level" value="level"(click)='getLevels()'>
+            <nb-select placeholder="Select level" value="level" (click)="getLevels()">
               <nb-option *ngFor="let level of levels" value="level" (click)="selectLevel(level)">{{level}}</nb-option>
             </nb-select>
           </div>
@@ -28,6 +28,7 @@
             <table class="table table-hover table-dark table-responsive">
               <thead>
               <tr>
+                <th></th>
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -39,9 +40,10 @@
               </thead>
               <tbody>
               <tr *ngFor="let course of filteredCourse">
+                <td><button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button></td>
                 <td>{{course.title}}</td>
-                <td>{{course.startDateTime}}</td>
-                <td>{{course.endDateTime}}</td>
+                <td>{{course.startDateTime | datetime}}</td>
+                <td>{{course.endDateTime | datetime}}</td>
                 <td>
                   <div *ngIf="course.levelStudying == '8'">
                     Galop
@@ -57,7 +59,7 @@
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
                   </button>
                   <div *ngIf="course.teacher.id == currentUser.id && course.showManageButton == true">
-                    <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                    <button type="button" nbButton (click)="bManageCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
                       <nb-icon icon="options-2-outline"></nb-icon>Manage
                     </button>
                   </div>
@@ -127,8 +129,11 @@
         <app-user-planning *ngIf="currentUser && currentUser.role == 'Rider'" [coursePlaces] = "coursePlaces" (courseUnsubscribe)="unsubscribe($event)">
         </app-user-planning>
 
-        <app-course-management *ngIf="currentUser && currentUser.role == 'Teacher'" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
+        <app-course-management *ngIf="isBManageCourse" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
         </app-course-management>
+
+        <app-update-course *ngIf="isBUpdateCourse" [selectedCourse]="selectedCourse" (updateCourse) = "updateCourse($event)">
+        </app-update-course>
 
       </div>
     </div>

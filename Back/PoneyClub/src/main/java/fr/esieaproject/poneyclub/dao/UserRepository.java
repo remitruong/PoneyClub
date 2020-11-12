@@ -28,4 +28,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	@Query("Update User u SET u.email = LOWER(:email), u.mobile = :mobile, u.licenceNum = :licenceNum where u.id = :id")
 	void updateUserInformations(@Param("email") String email, @Param("mobile") String mobile, @Param("licenceNum") String licenceNum ,@Param("id") long id);
 	
+	List<User> findByStatut(String string);
+	
 }

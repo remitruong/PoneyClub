@@ -18,7 +18,8 @@ export class UserService {
   private getUserUrl = `${this.BASE_URL}/user/get-user`;
   private createTeachertUrl = `${this.BASE_URL}/user/create-teacher`;
   private createAdminUrl = `${this.BASE_URL}/user/create-admin`;
-  private getTeacherstUrl = `${this.BASE_URL}/user/get-teachers`;
+  private getTeachersUrl = `${this.BASE_URL}/user/get-teachers`;;
+  private getAdminsUrl = `${this.BASE_URL}/user/get-admins`;
   private forgotPasswordUrl = `${this.BASE_URL}/user/forgot-password`;
   private setNewPasswordUrl = `${this.BASE_URL}/user/reset-password`;
 
@@ -53,7 +54,7 @@ export class UserService {
   }
 
   public createAdmin(user: User): Observable<any> {
-    return this.http.post(this.createAdminUrl + '/', user);
+    return this.http.post(this.createAdminUrl, user);
   }
 
   public getUsers(adminMail: string): Observable<User[]> {
@@ -65,7 +66,11 @@ export class UserService {
   }
 
   public getTeachers(): Observable<User[]> {
-    return this.http.get<User[]>(this.getTeacherstUrl);
+    return this.http.get<User[]>(this.getTeachersUrl);
+  }
+
+  public getAdmins(): Observable<User[]> {
+    return this.http.get<User[]>(this.getAdminsUrl);
   }
 
   public forgotPassword(email:string): Observable<any> {

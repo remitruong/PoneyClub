@@ -31,7 +31,7 @@ import { UserDetailsComponent } from './user-admin/user-details/user-details.com
 import { CourseComponent } from './course/course.component';
 import { HorseComponent } from './horse/horse.component';
 import { UserPlanningComponent } from './course/user-planning/user-planning.component';
-import { DateTimePipe } from './share/pipe/date-time.pipe';
+import { DateTimeTostringPipe } from './share/pipe/date-time-tostring.pipe';
 import { CourseManagementComponent } from './course/course-management/course-management.component';
 
 import { httpInterceptorProviders } from './_auth/auth-interceptor.service';
@@ -40,6 +40,8 @@ import {AccountPageComponent} from "./account-page/account-page.component";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {SuperAdminComponent} from "./super-admin/super-admin.component";
 import {AdminDetailsComponent} from "./super-admin/admin-details/admin-details.component";
+import { UpdateCourseComponent } from './course/update-course/update-course.component';
+import { StringToDatetimePipe } from './share/pipe/string-to-datetime.pipe';
 
 @NgModule({
   declarations: [
@@ -56,11 +58,13 @@ import {AdminDetailsComponent} from "./super-admin/admin-details/admin-details.c
     CourseComponent,
     HorseComponent,
     UserPlanningComponent,
-    DateTimePipe,
+    DateTimeTostringPipe,
     CourseManagementComponent,
     AccountPageComponent,
     SuperAdminComponent,
-    AdminDetailsComponent
+    AdminDetailsComponent,
+    UpdateCourseComponent,
+    StringToDatetimePipe
   ],
   imports: [
     BrowserModule,

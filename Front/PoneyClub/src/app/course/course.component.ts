@@ -9,7 +9,7 @@ import { CoursePlaceService } from '../services/api/course-place.service';
 import { CourseService } from '../services/api/course.service';
 import { UserService } from '../services/api/user.service';
 import { AuthenticationService } from '../services/authentification.service';
-import { DateTimePipe } from '../share/pipe/date-time.pipe';
+import { DateTimeTostringPipe } from '../share/pipe/date-time-tostring.pipe';
 
 @Component({
   selector: 'app-course',
@@ -51,8 +51,8 @@ export class CourseComponent implements OnInit {
     role: '',
     statut: '',
   };
-  searchTeacher;
-  private selectedCourse: Icourse;
+  public searchTeacher;
+  public selectedCourse: Icourse;
   public courses: Icourse[] = [];
   public filteredCourse: Icourse[] = [];
   public currentUser: User = null;
@@ -73,12 +73,14 @@ export class CourseComponent implements OnInit {
   private selectedLevel = null;
   public levels = [];
   public level = null;
-  public recurrence : string = null;
+  public recurrence: string = null;
+  public isBUpdateCourse = false;
+  public isBManageCourse = false;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
-    private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder, private alertService: AlertService,
-    private userService: UserService) { }
+              private authenticationService: AuthenticationService,
+              private formBuilder: FormBuilder, private alertService: AlertService,
+              private userService: UserService) { }
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
@@ -102,7 +104,7 @@ export class CourseComponent implements OnInit {
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       });
   }
 
@@ -113,31 +115,31 @@ export class CourseComponent implements OnInit {
         this.filteredCourse = this.courses;
         for (const course of this.courses) {
 
-          var courseDate = new Date(course.startDateTime);
-          var courseDateBefore = new Date(course.startDateTime);
-          courseDateBefore.setHours(courseDate.getHours() - 24)
-          var now = new Date();
+          const courseDate = new Date(course.startDateTime);
+          const courseDateBefore = new Date(course.startDateTime);
+          courseDateBefore.setHours(courseDate.getHours() - 24);
+          const now = new Date();
 
-          if(now<courseDateBefore){
+          if (now > courseDateBefore) {
             course.showManageButton = true;
           }
 
           this.courseService.getAvailablePlaces(course.id).subscribe(
-            data => {
+            (data) => {
               course.availablePlaces = data;
               this.alertService.success('Course refresh successfull');
               this.alertService.clearAfter(1500);
             },
             (error) => {
               this.localError = error;
-              this.alertService.error(this.localError.error);
-            }
+              this.alertService.error(this.localError.error.response);
+            },
           );
         }
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       },
     );
   }
@@ -146,13 +148,13 @@ export class CourseComponent implements OnInit {
     const teachersTemp = this.teachers;
     this.teachers = [];
     const idList = [];
-    this.teachers.push(this.allTeachers)
+    this.teachers.push(this.allTeachers);
     this.courses.forEach((x) => {
       if (!idList.includes(x.teacher.id)) {
         idList.push(x.teacher.id);
         this.teachers.push(x.teacher);
       }
-    })
+    });
   }
 
   getLevels() {
@@ -192,8 +194,8 @@ export class CourseComponent implements OnInit {
   }
 
   createCourse() {
-    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
-    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.startDateTime = new DateTimeTostringPipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimeTostringPipe().transform(this.endDateTime);
     this.newCourse.teacher = this.authenticationService.currentUserValue;
 
     this.submitted = true;
@@ -219,9 +221,9 @@ export class CourseComponent implements OnInit {
     this.submitted = false;
   }
 
-  createRecurrentCourse(){
-    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
-    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+  createRecurrentCourse() {
+    this.newCourse.startDateTime = new DateTimeTostringPipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimeTostringPipe().transform(this.endDateTime);
     this.newCourse.teacher = this.authenticationService.currentUserValue;
 
     this.submitted = true;
@@ -233,15 +235,15 @@ export class CourseComponent implements OnInit {
     this.courseService.addRecurrentCourse(this.newCourse, this.recurrence).subscribe(
       (data) => {
         const recurrentCourses: Icourse[] = data;
-        for (let recurrentCourse of recurrentCourses) {
+        for (const recurrentCourse of recurrentCourses) {
           this.courses.push(recurrentCourse);
         }
       },
       (error) => {
         this.localError = error;
         this.alertService.error(this.localError.error);
-      }
-    )
+      },
+    );
   }
 
   subscribe(course: Icourse) {
@@ -253,7 +255,7 @@ export class CourseComponent implements OnInit {
       },
       (err) => {
         this.localError = err;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       },
     );
   }
@@ -268,7 +270,7 @@ export class CourseComponent implements OnInit {
       },
       (err) => {
         this.localError = err;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       },
     );
   }
@@ -277,18 +279,16 @@ export class CourseComponent implements OnInit {
     this.selectedCourse = course;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       (data) => {
-        if(data.length>=3){
-          console.log("Il y a assez de participants");
-          this.alertService.success("enough rider")
-        }else{
-          this.alertService.error("No enough rider")
-          console.log("Il n'y a pas assez de participants");
+        if (data.length >= 3) {
+          this.alertService.success('enough rider');
+        } else {
+          this.alertService.error('No enough rider');
         }
         this.selectedCoursePlaces = data;
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       },
     );
   }
@@ -311,7 +311,7 @@ export class CourseComponent implements OnInit {
       },
       (error) => {
         this.localError = error;
-        this.alertService.error(this.localError.error);
+        this.alertService.error(this.localError.error.response);
       },
     );
   }
@@ -328,7 +328,7 @@ export class CourseComponent implements OnInit {
           if ( x.teacher.id === this.selectedTeacher.id) {
           this.filteredCourse.push(x);
           }
-        })
+        });
       } else {
         this.filteredCourse = this.courses;
       }
@@ -341,7 +341,7 @@ export class CourseComponent implements OnInit {
           if (x.levelStudying === this.selectedLevel) {
             this.filteredCourse.push(x);
           }
-        })
+        });
       } else {
         this.filteredCourse = this.courses;
       }
@@ -354,8 +354,33 @@ export class CourseComponent implements OnInit {
         if ( x.teacher.id ===  this.selectedTeacher.id && this.selectedLevel === x.levelStudying) {
           this.filteredCourse.push(x);
         }
-      })
+      });
     }
+  }
+
+  bManageCourse(course: Icourse) {
+    this.selectedCourse = course;
+    this.isBUpdateCourse = false;
+    this.isBManageCourse = true;
+  }
+
+  bUpdateCourse(course: Icourse) {
+    this.isBManageCourse = false;
+    this.selectedCourse = course;
+    this.isBUpdateCourse = true;
+  }
+
+  updateCourse(course: Icourse) {
+    this.courseService.updateCourse(course.id, course).subscribe(
+      (data) => {
+        course = data;
+      },
+      (error) => {
+        this.localError = error;
+        this.alertService.error(this.localError.error.response);
+      },
+    );
+    this.isBUpdateCourse = false;
   }
 
   get f() { return this.courseForm.controls; }
