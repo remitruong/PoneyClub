@@ -45,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/user/forgot-password/*").permitAll()
 				.antMatchers("/user/reset-password").permitAll()
 				.antMatchers("/user/create-admin*").hasAnyRole("Root", "Admin")
+				.antMatchers("/user/delete-user/*").hasRole("Root")
 				.antMatchers("/user/create-teacher/*").hasRole("Admin")
 				.antMatchers("/horse/*").hasAnyRole("Admin", "Teacher")
 				.antMatchers("/place/addHorse/*").hasRole("Teacher")

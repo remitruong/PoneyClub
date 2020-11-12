@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -143,10 +144,20 @@ public class UserController {
 	@PostMapping(value ="/create-admin")
 	public ResponseEntity<?> create_admin(@RequestBody User user) {
 		try {
-			return new ResponseEntity<>(userService.createAdmin(user), HttpStatus.OK);
+			return new ResponseEntity<User>(userService.createAdmin(user), HttpStatus.OK);
 		} catch (WrongMobileOrEmailFormat | MobileNotAvailableException | EmailNotAvailableException e) {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@DeleteMapping(value ="/delete-user/{idUser}")
+	public ResponseEntity<?> create_admin(@PathVariable long idUser) {
+		try {
+			return new ResponseEntity<>(userService.deleteUser(idUser), HttpStatus.OK);
+		} catch (NoUserFoundException e) {
+			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+		}
+
 	}
 	
 }

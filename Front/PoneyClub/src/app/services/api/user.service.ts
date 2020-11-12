@@ -22,6 +22,7 @@ export class UserService {
   private getAdminsUrl = `${this.BASE_URL}/user/get-admins`;
   private forgotPasswordUrl = `${this.BASE_URL}/user/forgot-password`;
   private setNewPasswordUrl = `${this.BASE_URL}/user/reset-password`;
+  private deleteUserdUrl = `${this.BASE_URL}/user/delete-user`;
 
   constructor(private http: HttpClient, private tokenService: TokenStorageService) { }
 
@@ -78,6 +79,10 @@ export class UserService {
 
   public setNewPassword(token: string, password: string): Observable<any> {
     return this.http.post(this.setNewPasswordUrl + '?token=' + token, password);
+  }
+
+  public deleteUser(idUser: number): Observable<any> {
+    return this.http.delete<any>(this.deleteUserdUrl + '/' + idUser);
   }
 
 }

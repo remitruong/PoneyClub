@@ -27,13 +27,13 @@
                 </tr>
                 </thead>
                 <tbody *ngFor="let user of admins | filter:searchText">
-                <tr (click)="selectUser(user)">
-                  <td>{{user.id}}</td>
-                  <td>{{user.firstName}}</td>
-                  <td>{{user.lastName}}</td>
-                  <td>{{user.email}}</td>
+                <tr>
+                  <td (click)="selectUser(user)">{{user.id}}</td>
+                  <td (click)="selectUser(user)">{{user.firstName}}</td>
+                  <td (click)="selectUser(user)">{{user.lastName}}</td>
+                  <td (click)="selectUser(user)">{{user.email}}</td>
                   <td>
-                    <button class="mr-2" nbButton (click)="deleteAdmin()"><nb-icon icon="close-square-outline"></nb-icon></button>
+                    <button class="mr-2" nbButton (click)="deleteAdmin(user)"><nb-icon icon="close-square-outline"></nb-icon></button>
                   </td>
                 </tr>
                 </tbody>
