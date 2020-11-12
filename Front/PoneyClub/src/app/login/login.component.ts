@@ -9,6 +9,8 @@ import { LoginModel } from '../_classes/loginmodel';
 import { AlertService } from '../services/alert.service';
 import { UserService } from '../services/api/user.service';
 import {AuthenticationService} from "../services/authentification.service";
+import {Role} from "../_classes/role";
+import {Statut} from "../_classes/statut";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,6 @@ export class LoginComponent  {
 
   @Output() public userConnected: EventEmitter<User> = new EventEmitter<User>();
 
-  public user: User;
   public loginModel: LoginModel = {
     username: '',
     password: '',
@@ -27,14 +28,22 @@ export class LoginComponent  {
   public localError: IError;
   public submitted = false;
   public connectForm: FormGroup;
+  userTemp: User;
 
   constructor(private userService: UserService, private authenticationService: AuthenticationService,
               private alertService: AlertService, private router: Router, private formBuilder: FormBuilder) {
 
-    // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/home']);
+    if(this.authenticationService.currentUserValue){
+      if(this.authenticationService.currentUserValue.statut==Statut.Admin){
+        this.router.navigate(['/user-admin']);
+      } else if(this.authenticationService.currentUserValue.statut==Statut.Root){
+        this.router.navigate(['/super-admin']);
+      }else{
+        this.router.navigate(['/home']);
+      }
     }
+
+
   }
 
   ngOnInit(): void {
@@ -59,16 +68,14 @@ export class LoginComponent  {
     this.authenticationService.login(this.loginModel)
       .pipe(first())
       .subscribe(
-        (data: HttpResponse<any>) => {
+        user => {
           this.alertService.success('You are connected', true);
-          this.router.navigate(['/home']);
           this.alertService.clearAfter(1500);
         },
         (error) => {
           this.localError = error;
           this.alertService.error(this.localError.error.response);
         });
-
   }
 
 }
