@@ -15,8 +15,6 @@ export class CoursePlaceService {
   mapHorseToCourseUrl: string = `${this.BASE_URL}/addhorse`;
   unsubscribeCourseUrl: string = `${this.BASE_URL}/user-planning/unsubscribe`;
 
-
-
   constructor(private http: HttpClient) { }
 
   public getUserPlanning(mailOrNumber: string): Observable<ICoursePlace[]> {

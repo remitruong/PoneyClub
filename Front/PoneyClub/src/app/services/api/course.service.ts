@@ -18,7 +18,7 @@ export class CourseService {
   availablePlacesUrl: string =  `${this.BASE_URL}/available-places`;
   findCourseByTeacherUrl: string =  `${this.BASE_URL}/find-course-by-teacher`;
   updateCourseUrl: string =  `${this.BASE_URL}/update-course`;
-
+  cancelCourseUrl: string = `${this.BASE_URL}/cancel-course`;
 
   constructor(private http: HttpClient) { }
 
@@ -48,6 +48,9 @@ export class CourseService {
 
   public updateCourse(idCourse: number, course: Icourse): Observable<any> {
     return this.http.post(this.updateCourseUrl + '/' + idCourse, course);
+  }
+  public cancelCourse(idCourse: number, course: Icourse): Observable<any> {
+    return this.http.post(this.cancelCourseUrl + '/' + idCourse, course);
   }
 
 }

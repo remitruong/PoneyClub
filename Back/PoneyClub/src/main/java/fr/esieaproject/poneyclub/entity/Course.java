@@ -27,6 +27,8 @@ public class Course {
     @Min(value=1) @Max(value=8)
     private int levelStudying;
     private int maxStudent = 4;
+
+	private boolean status = true;
     
     @ManyToOne @JoinColumn(name ="idUser")
     private User teacher;
@@ -78,6 +80,14 @@ public class Course {
 	
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public void setTitle(String title) {
