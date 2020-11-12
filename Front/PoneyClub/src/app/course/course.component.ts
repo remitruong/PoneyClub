@@ -51,7 +51,7 @@ export class CourseComponent implements OnInit {
     role: '',
     statut: '',
   };
-  searchTeacher;
+  public searchTeacher;
   private selectedCourse: Icourse;
   public courses: Icourse[] = [];
   public filteredCourse: Icourse[] = [];
@@ -117,10 +117,10 @@ export class CourseComponent implements OnInit {
 
           const courseDate = new Date(course.startDateTime);
           const courseDateBefore = new Date(course.startDateTime);
-          courseDateBefore.setHours(courseDate.getHours() - 24)
+          courseDateBefore.setHours(courseDate.getHours() - 24);
           const now = new Date();
 
-          if (now < courseDateBefore){
+          if (now > courseDateBefore) {
             course.showManageButton = true;
           }
 
@@ -133,7 +133,7 @@ export class CourseComponent implements OnInit {
             (error) => {
               this.localError = error;
               this.alertService.error(this.localError.error);
-            }
+            },
           );
         }
       },
@@ -148,13 +148,13 @@ export class CourseComponent implements OnInit {
     const teachersTemp = this.teachers;
     this.teachers = [];
     const idList = [];
-    this.teachers.push(this.allTeachers)
+    this.teachers.push(this.allTeachers);
     this.courses.forEach((x) => {
       if (!idList.includes(x.teacher.id)) {
         idList.push(x.teacher.id);
         this.teachers.push(x.teacher);
       }
-    })
+    });
   }
 
   getLevels() {
@@ -221,7 +221,7 @@ export class CourseComponent implements OnInit {
     this.submitted = false;
   }
 
-  createRecurrentCourse(){
+  createRecurrentCourse() {
     this.newCourse.startDateTime = new DateTimeTostringPipe().transform(this.startDateTime);
     this.newCourse.endDateTime = new DateTimeTostringPipe().transform(this.endDateTime);
     this.newCourse.teacher = this.authenticationService.currentUserValue;
@@ -235,15 +235,15 @@ export class CourseComponent implements OnInit {
     this.courseService.addRecurrentCourse(this.newCourse, this.recurrence).subscribe(
       (data) => {
         const recurrentCourses: Icourse[] = data;
-        for (let recurrentCourse of recurrentCourses) {
+        for (const recurrentCourse of recurrentCourses) {
           this.courses.push(recurrentCourse);
         }
       },
       (error) => {
         this.localError = error;
         this.alertService.error(this.localError.error);
-      }
-    )
+      },
+    );
   }
 
   subscribe(course: Icourse) {
@@ -279,12 +279,10 @@ export class CourseComponent implements OnInit {
     this.selectedCourse = course;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       (data) => {
-        if(data.length>=3){
-          console.log("Il y a assez de participants");
-          this.alertService.success("enough rider")
-        }else{
-          this.alertService.error("No enough rider")
-          console.log("Il n'y a pas assez de participants");
+        if (data.length >= 3) {
+          this.alertService.success('enough rider');
+        } else {
+          this.alertService.error('No enough rider');
         }
         this.selectedCoursePlaces = data;
       },
@@ -330,7 +328,7 @@ export class CourseComponent implements OnInit {
           if ( x.teacher.id === this.selectedTeacher.id) {
           this.filteredCourse.push(x);
           }
-        })
+        });
       } else {
         this.filteredCourse = this.courses;
       }
@@ -343,7 +341,7 @@ export class CourseComponent implements OnInit {
           if (x.levelStudying === this.selectedLevel) {
             this.filteredCourse.push(x);
           }
-        })
+        });
       } else {
         this.filteredCourse = this.courses;
       }
@@ -356,7 +354,7 @@ export class CourseComponent implements OnInit {
         if ( x.teacher.id ===  this.selectedTeacher.id && this.selectedLevel === x.levelStudying) {
           this.filteredCourse.push(x);
         }
-      })
+      });
     }
   }
 
@@ -380,8 +378,8 @@ export class CourseComponent implements OnInit {
       (error) => {
         this.localError = error;
         this.alertService.error(this.localError.error.response);
-      }
-    )
+      },
+    );
     this.isBUpdateCourse = false;
   }
 

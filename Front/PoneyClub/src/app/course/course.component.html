@@ -28,6 +28,7 @@
             <table class="table table-hover table-dark table-responsive">
               <thead>
               <tr>
+                <th></th>
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -39,7 +40,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let course of filteredCourse">
-                <button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button>
+                <td><button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button></td>
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime | datetime}}</td>
                 <td>{{course.endDateTime | datetime}}</td>
