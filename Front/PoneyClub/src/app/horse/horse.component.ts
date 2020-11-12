@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AlertComponent} from "../_alert/alert.component";
+import {AlertComponent} from '../_alert/alert.component';
 import { User } from '../_classes';
 import { IHorse } from '../_classes/ihorse';
-import {AlertService} from "../services/alert.service";
+import {AlertService} from '../services/alert.service';
 import { HorseService } from '../services/api/horse.service';
 import { AuthenticationService } from '../services/authentification.service';
+import { IError } from '../_classes/ierror';
 
 @Component({
   selector: 'app-horse',
@@ -28,8 +29,10 @@ export class HorseComponent implements OnInit {
   public submitted = false;
   public horseFormCreation: FormGroup;
   public horseFormUpdate: FormGroup;
+  private localError: IError;
 
-  constructor(private horseService: HorseService, private authenticationService: AuthenticationService, private alertService: AlertService, private formBuilder: FormBuilder) { }
+  constructor(private horseService: HorseService, private authenticationService: AuthenticationService,
+              private alertService: AlertService, private formBuilder: FormBuilder) { }
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
@@ -47,7 +50,8 @@ export class HorseComponent implements OnInit {
         this.alertService.clearAfter(1500);
       },
       (error) => {
-        console.log('An error occured while retrieving horses');
+        this.localError = error;
+        this.alertService.error(this.localError.error.response)
       },
     );
   }
@@ -75,7 +79,8 @@ export class HorseComponent implements OnInit {
         this.alertService.clearAfter( 2000);
       },
       (error) => {
-        console.log('An error has occured while creating horse');
+        this.localError = error;
+        this.alertService.error(this.localError.error.response)
       },
     );
     this.submitted = false;
@@ -90,7 +95,8 @@ export class HorseComponent implements OnInit {
         this.alertService.clearAfter(1500);
       },
       (error) => {
-        console.log('error while deleting horse');
+        this.localError = error;
+        this.alertService.error(this.localError.error.response)
       },
     );
   }
@@ -106,7 +112,8 @@ export class HorseComponent implements OnInit {
           this.alertService.clearAfter(3000);
         },
         (error) => {
-          console.log('Error occured while updating horse name');
+        this.localError = error;
+        this.alertService.error(this.localError.error.response)
         },
       );
     }

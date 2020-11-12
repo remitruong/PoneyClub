@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../services/api/user.service';
 import {User} from '../_classes';
 import {IError} from '../_classes/ierror';
 import {AlertService} from '../services/alert.service';
+import {UserService} from '../services/api/user.service';
 import {AuthenticationService} from '../services/authentification.service';
 
 @Component({
   selector: 'app-user-admin',
   templateUrl: './user-admin.component.html',
-  styleUrls: ['./user-admin.component.css']
+  styleUrls: ['./user-admin.component.css'],
 })
 export class UserAdminComponent implements OnInit {
 
-  newUser: User = {
+  public newUser: User = {
     id: 0,
     firstName: '',
     lastName:  '',
@@ -20,100 +20,97 @@ export class UserAdminComponent implements OnInit {
     password: '',
     mobile: '',
     licenceNum: '',
-    role:'',
-    statut:'',
+    role: '',
+    statut: '',
   };
-  users: User[] = [];
-  localError : IError;
-  selectedUser: User;
-  searchText;
-  display = false;
+  public users: User[] = [];
+  public localError: IError;
+  public selectedUser: User;
+  public searchText;
+  public display = false;
 
+  constructor(private userService: UserService, private alertService: AlertService, 
+              private authenticationService: AuthenticationService) { }
 
-  constructor(private userService : UserService, private alertService : AlertService, private authenticationService: AuthenticationService) { }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getAllUsers();
   }
 
-
   getAllUsers() {
     this.userService.getUsers(this.authenticationService.currentUserValue.email).subscribe(
-      data => {
+      (data) => {
         console.log(data);
         this.users = data;
         this.alertService.success('All user refreshed');
         this.alertService.clearAfter(1500);
 
       },
-      error => {
+      (error) => {
         this.localError = error;
-        this.alertService = this.localError.error.response;
-      }
+        this.alertService.error(this.localError.error.response);
+      },
     );
   }
 
   updateUser(user: User) {
     this.userService.updateUser(user.id, user).subscribe(
-      data => {
+      (data) => {
         this.alertService.success('Update user successful');
         this.alertService.clearAfter(3000);
       },
-      error => {
-        console.log("error occured while update user" + error);
+      (error) => {
+        console.log('error occured while update user' + error);
         this.alertService.error(this.localError.error.response);
-      }
-    )
+      },
+    );
   }
 
   createTeacher(user: User) {
     this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
-      data => {
+      (data) => {
         this.selectedUser = data;
         this.users.push(this.selectedUser);
         this.alertService.success('Teacher created successful');
         this.alertService.clearAfter(3000);
       },
-      error => {
+      (error) => {
         this.localError = error as IError;
-        this.alertService.error(this.localError.error);
-      }
+        this.alertService.error(this.localError.error.response);
+      },
 
-    )
+    );
   }
 
   userToAdmin(user: User) {
     this.userService.changeToAdmin(user.id, this.authenticationService.currentUserValue.email).subscribe(
-      data => {
-        this.selectedUser.statut='Admin';
-        console.log("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
-        this.alertService.success("User " + this.selectedUser.firstName + " " + this.selectedUser.lastName + " is now an administrator !");
+      (data) => {
+        this.selectedUser.statut = 'Admin';
+        this.alertService.success('User ' + this.selectedUser.firstName + ' ' + this.selectedUser.lastName + ' is now an administrator !');
         this.alertService.clearAfter(3000);
 
       },
-      error => {
-        console.log("Error while setting selected user to admin");
+      (error) => {
         this.alertService.error(this.localError.error.response);
-      }
-    )
+      },
+    );
   }
 
   selectUser(user: User) {
    this.selectedUser = user;
-    this.display = true;
+   this.display = true;
   }
 
   addTeacher() {
-    this.display = !this.display; //si on veut afficher/cacher sur le click
-    //this.display = true;
-    this.newUser.email='';
-    this.newUser.firstName='';
-    this.newUser.lastName='';
-    this.newUser.mobile='';
-    this.newUser.password='';
-    this.newUser.role='';
-    this.newUser.statut='';
-    this.selectedUser=this.newUser;
+    this.display = !this.display;
+    // this.display = true;
+    this.newUser.email = '';
+    this.newUser.firstName = '';
+    this.newUser.lastName = '';
+    this.newUser.mobile = '';
+    this.newUser.password = '';
+    this.newUser.role = '';
+    this.newUser.statut = '';
+    this.selectedUser = this.newUser;
   }
 
 }

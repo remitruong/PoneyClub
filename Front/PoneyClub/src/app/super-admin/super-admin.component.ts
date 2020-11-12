@@ -59,7 +59,6 @@ export class SuperAdminComponent implements OnInit {
         this.alertService.clearAfter(3000);
       },
       error => {
-        console.log("error occured while update user" + error);
         this.alertService.error(this.localError.error.response);
       }
     )
@@ -89,7 +88,7 @@ export class SuperAdminComponent implements OnInit {
   }
 
   addAdmin() {
-    this.display = !this.display; //si on veut afficher/cacher sur le click
+    this.display = !this.display; 
     this.newAdmin.email='';
     this.newAdmin.firstName='';
     this.newAdmin.lastName='';
