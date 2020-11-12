@@ -162,6 +162,18 @@ public class CourseService {
 		Course updatedCourse = courseRepo.save(course);
 		return updatedCourse;
 	}
+
+	public Course cancelCourse(Course course, long idCourse) throws  CourseNotExistException {
+		Optional<Course> existingCourse = courseRepo.findById(idCourse);
+
+		if(existingCourse.isEmpty()) throw new CourseNotExistException("Course does not exist, try later");
+
+		existingCourse.get().setStatus(false);
+		System.out.println(existingCourse.get().isStatus());
+		Course updatedCourse = courseRepo.save(existingCourse.get());
+		return updatedCourse;
+	}
+
 	
 	public Integer availablePlaces(long idCourse) throws CourseNotExistException {
 		Optional<Course> isCourse = courseRepo.findById(idCourse);

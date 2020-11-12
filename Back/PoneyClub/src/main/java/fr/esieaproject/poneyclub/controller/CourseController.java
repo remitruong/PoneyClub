@@ -113,4 +113,12 @@ public class CourseController {
 		}
 	}
 
+	@PostMapping(value = "/cancel-course/{idCourse}")
+	public ResponseEntity<?> cancel_course(@RequestBody Course course, @PathVariable long idCourse) {
+		try {
+			return new ResponseEntity<Course>(courseService.cancelCourse(course, idCourse), HttpStatus.OK);
+		} catch (CourseNotExistException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
 }

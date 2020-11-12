@@ -42,7 +42,9 @@
               </thead>
               <tbody>
               <tr *ngFor="let course of filteredCourse">
-                <td *ngIf="currentUser.role== 'Teacher' "><button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button></td>
+                <td *ngIf="currentUser.role== 'Teacher' ">
+                    <button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button>
+                </td>
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime | datetime}}</td>
                 <td>{{course.endDateTime | datetime}}</td>
@@ -64,9 +66,8 @@
                     Cancel
                   </div>
                 </td>
-<!--                <td *ngIf="course.status">-->
                 <td>
-                  <div>
+                  <div *ngIf="course.status==true">
                     <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
                       <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
                     </button>
@@ -77,11 +78,12 @@
                     </div>
                   </div>
                 </td>
-<!--                <td *ngIf="course.status">-->
                 <td>
+                  <div *ngIf="course.status==true">
                     <button type="button" nbButton (click)="cancelCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
                       <nb-icon icon="close-circle-outline"></nb-icon>Cancel
                     </button>
+                  </div>
                 </td>
               </tr>
               </tbody>

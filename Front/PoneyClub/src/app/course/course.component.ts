@@ -122,7 +122,6 @@ export class CourseComponent implements OnInit {
           courseDateBefore.setHours(courseDate.getHours() - 24);
           const now = new Date();
 
-          console.log(this.courses)
           if (now > courseDateBefore) {
             course.showManageButton = true;
           }
@@ -387,7 +386,18 @@ export class CourseComponent implements OnInit {
   }
 
   cancelCourse(course: Icourse){
-
+    this.courseService.cancelCourse(course.id, course).subscribe(
+      (data) => {
+        course = data;
+        this.alertService.success('Course well cancelled');
+        this.alertService.clearAfter(1500);
+        this.getCourses();
+      },
+      (error) => {
+        this.localError = error;
+        this.alertService.error(this.localError.error.response);
+      },
+    );
   }
 
   get f() { return this.courseForm.controls; }
