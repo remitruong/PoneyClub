@@ -144,7 +144,7 @@ public class UserController {
 	@PostMapping(value ="/create-admin")
 	public ResponseEntity<?> create_admin(@RequestBody User user) {
 		try {
-			return new ResponseEntity<>(userService.createAdmin(user), HttpStatus.OK);
+			return new ResponseEntity<User>(userService.createAdmin(user), HttpStatus.OK);
 		} catch (WrongMobileOrEmailFormat | MobileNotAvailableException | EmailNotAvailableException e) {
 			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}

@@ -42,8 +42,7 @@ export class UserAdminComponent implements OnInit {
       (data) => {
         this.users = data;
         this.alertService.success('All user refreshed');
-        this.alertService.clearAfter(1500);
-
+        this.alertService.clearAfter(5000);
       },
       (error) => {
         this.localError = error;
@@ -56,10 +55,10 @@ export class UserAdminComponent implements OnInit {
     this.userService.updateUser(user.id, user).subscribe(
       (data) => {
         this.alertService.success('Update user successful');
-        this.alertService.clearAfter(3000);
+        this.alertService.clearAfter(5000);
       },
       (error) => {
-        console.log('error occured while update user' + error);
+        this.localError = error;
         this.alertService.error(this.localError.error.response);
       },
     );
@@ -86,7 +85,9 @@ export class UserAdminComponent implements OnInit {
         (data) => {
           this.display = false;
           this.selectedUser = data;
+          console.log(this.users);
           this.users.push(this.selectedUser);
+          console.log(this.users);
           this.alertService.success('Admin created successful');
           this.alertService.clearAfter(3000);
         },
@@ -101,9 +102,9 @@ export class UserAdminComponent implements OnInit {
 
   selectUser(user: User) {
     this.selectedUser = user;
-    if(this.selectedUser.statut == Role.Admin){
+    if ( this.selectedUser.statut === Role.Admin) {
       this.display = false;
-    }else{
+    } else {
       this.display = true;
     }
   }

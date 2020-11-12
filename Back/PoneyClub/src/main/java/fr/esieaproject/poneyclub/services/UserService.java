@@ -195,14 +195,14 @@ public class UserService {
 		return userRepo.findByStatut("Admin");
 	}
 
-	public boolean createAdmin(User user) throws WrongMobileOrEmailFormat, MobileNotAvailableException, EmailNotAvailableException {
+	public User createAdmin(User user) throws WrongMobileOrEmailFormat, MobileNotAvailableException, EmailNotAvailableException {
 		if (emailAvailable(user.getEmail())) {
 			if (mobileAvailable(user.getMobile())) {
 				if (isEmailValid(user.getEmail()) && isMobileValid(user.getMobile())) {
 					user.setRole("Admin");
 					user.setStatut("Admin");
-					userRepo.save(user);
-					return true;
+					User newAdmin = userRepo.save(user);
+					return newAdmin;
 				} else {
 					throw new WrongMobileOrEmailFormat("Email or Mobile is wrong");
 				}
