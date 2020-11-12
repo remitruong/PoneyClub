@@ -151,6 +151,18 @@ public class CourseService {
 		return newCoursePlace;
 	}
 	
+	public Course updateCourse(Course course, long idCourse) throws CourseNotExistException {
+		Optional<Course> existingCourse = courseRepo.findById(idCourse);
+		Optional<User> teacher = userRepo.findByEmail(course.getTeacher().getEmail());
+		
+		if(existingCourse.isEmpty()) throw new CourseNotExistException("Course does not exist, try later");
+		
+		course.setId(idCourse);
+		course.setTeacher(teacher.get());
+		Course updatedCourse = courseRepo.save(course);
+		return updatedCourse;
+	}
+	
 	public Integer availablePlaces(long idCourse) throws CourseNotExistException {
 		Optional<Course> isCourse = courseRepo.findById(idCourse);
 		
@@ -173,6 +185,8 @@ public class CourseService {
 	private boolean isAnyPlaceInCourse() {
 		return true;
 	}
+
+
 
 	
 	

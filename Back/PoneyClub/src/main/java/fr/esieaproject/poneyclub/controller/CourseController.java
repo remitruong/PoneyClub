@@ -1,9 +1,6 @@
 package fr.esieaproject.poneyclub.controller;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +37,7 @@ public class CourseController {
 	private CourseService courseService;
 
 	@GetMapping(value = "/get-courses")
-	public ResponseEntity findAll() {
+	public ResponseEntity<?> findAll() {
 		try {
 			return new ResponseEntity<Iterable<Course>>(courseService.findAll(), HttpStatus.OK);
 		} catch (Exception e) {
@@ -49,59 +46,70 @@ public class CourseController {
 	}
 
 	@GetMapping(value = "/{startDateTime}/{endDateTime}")
-	public ResponseEntity findByDateTime(@PathVariable String startDateTime, @PathVariable String endDateTime) {
+	public ResponseEntity<?> findByDateTime(@PathVariable String startDateTime, @PathVariable String endDateTime) {
 		try {
-			return new ResponseEntity(courseService.findByDateTime(startDateTime, endDateTime), HttpStatus.OK);
+			return new ResponseEntity<List<Course>>(courseService.findByDateTime(startDateTime, endDateTime),
+					HttpStatus.OK);
 		} catch (StartShouldBeBeforeEndException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@GetMapping(value="/find-course-by-teacher/{idTeacher}")
-	public ResponseEntity findByTeacher(@PathVariable long idTeacher) {
+
+	@GetMapping(value = "/find-course-by-teacher/{idTeacher}")
+	public ResponseEntity<?> findByTeacher(@PathVariable long idTeacher) {
 		try {
-			return new ResponseEntity(courseService.findByTeacher(idTeacher), HttpStatus.OK);
+			return new ResponseEntity<List<Course>>(courseService.findByTeacher(idTeacher), HttpStatus.OK);
 		} catch (NoUserFoundException | UnauthorizeAccessException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping(value = "/plan/{idTeacher}")
-	public ResponseEntity addCourse(@RequestBody Course course, @PathVariable long idTeacher)
+	public ResponseEntity<?> addCourse(@RequestBody Course course, @PathVariable long idTeacher)
 			throws NoUserFoundException {
 		try {
-			return new ResponseEntity(courseService.addCourse(course, idTeacher), HttpStatus.OK);
+			return new ResponseEntity<Course>(courseService.addCourse(course, idTeacher), HttpStatus.OK);
 		} catch (StartShouldBeBeforeEndException | NoUserFoundException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@PostMapping(value = "/plan/recurrent-course/{recurrence}")
-	public ResponseEntity addRecurrentCourse(@RequestBody Course course, @PathVariable String recurrence)
+	public ResponseEntity<?> addRecurrentCourse(@RequestBody Course course, @PathVariable String recurrence)
 			throws NoUserFoundException {
 		try {
-			return new ResponseEntity(courseService.addRecurrentCourse(course, recurrence), HttpStatus.OK);
+			return new ResponseEntity<List<Course>>(courseService.addRecurrentCourse(course, recurrence),
+					HttpStatus.OK);
 		} catch (StartShouldBeBeforeEndException | RecurrenceNotKnownException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping(value = "/register/{idCourse}")
-	public ResponseEntity register(@RequestBody User user, @PathVariable long idCourse) {
+	public ResponseEntity<?> register(@RequestBody User user, @PathVariable long idCourse) {
 		try {
 			return new ResponseEntity<CoursePlace>(courseService.registerToCourse(user, idCourse), HttpStatus.OK);
 		} catch (CourseNotExistException | NoUserFoundException | NoPlacesAvailableException
 				| UserAlreadyRegisteredException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@GetMapping(value = "/available-places/{idCourse}")
-	public ResponseEntity getAvailablePlaces(@PathVariable long idCourse) {
+	public ResponseEntity<?> getAvailablePlaces(@PathVariable long idCourse) {
 		try {
-			return new ResponseEntity(courseService.availablePlaces(idCourse), HttpStatus.OK);
+			return new ResponseEntity<Integer>(courseService.availablePlaces(idCourse), HttpStatus.OK);
 		} catch (CourseNotExistException e) {
-			return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping(value = "/update-course/{idCourse}")
+	public ResponseEntity<?> update_course(@RequestBody Course course, @PathVariable long idCourse) {
+		try {
+			return new ResponseEntity<Course>(courseService.updateCourse(course, idCourse), HttpStatus.OK);
+		} catch (CourseNotExistException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
 

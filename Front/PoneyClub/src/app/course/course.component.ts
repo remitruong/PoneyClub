@@ -9,7 +9,7 @@ import { CoursePlaceService } from '../services/api/course-place.service';
 import { CourseService } from '../services/api/course.service';
 import { UserService } from '../services/api/user.service';
 import { AuthenticationService } from '../services/authentification.service';
-import { DateTimePipe } from '../share/pipe/date-time.pipe';
+import { DateTimeTostringPipe } from '../share/pipe/date-time-tostring.pipe';
 
 @Component({
   selector: 'app-course',
@@ -73,12 +73,13 @@ export class CourseComponent implements OnInit {
   private selectedLevel = null;
   public levels = [];
   public level = null;
-  public recurrence : string = null;
+  public recurrence: string = null;
+  public isBUpdateCourse = false;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
-    private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder, private alertService: AlertService,
-    private userService: UserService) { }
+              private authenticationService: AuthenticationService,
+              private formBuilder: FormBuilder, private alertService: AlertService,
+              private userService: UserService) { }
 
   public ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
@@ -113,17 +114,17 @@ export class CourseComponent implements OnInit {
         this.filteredCourse = this.courses;
         for (const course of this.courses) {
 
-          var courseDate = new Date(course.startDateTime);
-          var courseDateBefore = new Date(course.startDateTime);
+          const courseDate = new Date(course.startDateTime);
+          const courseDateBefore = new Date(course.startDateTime);
           courseDateBefore.setHours(courseDate.getHours() - 24)
-          var now = new Date();
+          const now = new Date();
 
-          if(now<courseDateBefore){
+          if (now < courseDateBefore){
             course.showManageButton = true;
           }
 
           this.courseService.getAvailablePlaces(course.id).subscribe(
-            data => {
+            (data) => {
               course.availablePlaces = data;
               this.alertService.success('Course refresh successfull');
               this.alertService.clearAfter(1500);
@@ -192,8 +193,8 @@ export class CourseComponent implements OnInit {
   }
 
   createCourse() {
-    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
-    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.startDateTime = new DateTimeTostringPipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimeTostringPipe().transform(this.endDateTime);
     this.newCourse.teacher = this.authenticationService.currentUserValue;
 
     this.submitted = true;
@@ -220,8 +221,8 @@ export class CourseComponent implements OnInit {
   }
 
   createRecurrentCourse(){
-    this.newCourse.startDateTime = new DateTimePipe().transform(this.startDateTime);
-    this.newCourse.endDateTime = new DateTimePipe().transform(this.endDateTime);
+    this.newCourse.startDateTime = new DateTimeTostringPipe().transform(this.startDateTime);
+    this.newCourse.endDateTime = new DateTimeTostringPipe().transform(this.endDateTime);
     this.newCourse.teacher = this.authenticationService.currentUserValue;
 
     this.submitted = true;
@@ -356,6 +357,25 @@ export class CourseComponent implements OnInit {
         }
       })
     }
+  }
+
+  bUpdateCourse(course: Icourse) {
+    this.isBUpdateCourse = false;
+    this.selectedCourse = course;
+    this.isBUpdateCourse = true;
+  }
+
+  updateCourse(course: Icourse) {
+    this.courseService.updateCourse(course.id, course).subscribe(
+      (data) => {
+        course = data;
+      },
+      (error) => {
+        this.localError = error;
+        this.alertService.error(this.localError.error.response);
+      }
+    )
+    this.isBUpdateCourse = false;
   }
 
   get f() { return this.courseForm.controls; }
