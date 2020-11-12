@@ -1,13 +1,18 @@
 <div class="container-fluid">
   <div class="row">
     <nb-card>
-      <nb-card-header *ngIf="currentUser && currentUser.role == 'Teacher'" >
+      <nb-card-header>
+
         <div class="btn-toolbar justify-content-between">
-          <div class="btn-group">
-            <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
-          </div>
-          <div class="btn-group">
-            <button class="mr-2" nbButton (click)="addRecurrentCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a recurrent course</button>
+          <h1 *ngIf="currentUser && currentUser.role != 'Teacher'">Available Courses</h1>
+
+          <div *ngIf="currentUser && currentUser.role == 'Teacher'">
+            <div class="btn-group">
+              <button class="mr-2" nbButton (click)="addCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a course</button>
+            </div>
+            <div class="btn-group">
+              <button class="mr-2" nbButton (click)="addRecurrentCourse()"><nb-icon icon="plus-outline"></nb-icon>Add a recurrent course</button>
+            </div>
           </div>
           <div class="btn-group">
             <nb-select class="mr-2" placeholder="Select teacher" value="teacher" (click)="getTeachers()">
@@ -18,9 +23,6 @@
             </nb-select>
           </div>
         </div>
-      </nb-card-header>
-      <nb-card-header *ngIf="currentUser && currentUser.role != 'Teacher'">
-        <h1>Available Courses</h1>
       </nb-card-header>
       <nb-card-body>
         <div class="row justify-content-center">
@@ -42,8 +44,8 @@
               </thead>
               <tbody>
               <tr *ngFor="let course of filteredCourse">
-                <td *ngIf="currentUser.role== 'Teacher' ">
-                    <button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button>
+                <td *ngIf="currentUser.role== 'Teacher'">
+                    <button *ngIf="course.status==true" class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button>
                 </td>
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime | datetime}}</td>

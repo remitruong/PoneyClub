@@ -35,7 +35,6 @@ export class UserService {
     return this.http.post<any>(this.updateUserUrl + '/' + idUser, user,  {headers: headers, observe: 'response'as 'body'})
     .pipe(map(
       (resp: HttpResponse<any>) => {
-        console.log(resp);
         this.tokenService.saveToken(resp.headers.get('Authorization'));
       }
     ))

@@ -15,11 +15,7 @@ export class ForgotPasswordComponent implements OnInit {
   public localError: IError;
   public forgotPasswordForm: FormGroup;
   public submitted = false;
-  public emailPattern = '(?:[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*' +
-  '|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")' +
-  '@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]' +
-  '|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*' +
-  '[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])';
+  emailPattern ="([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))";
 
   constructor(private userService: UserService, private router: Router, private alertService: AlertService,
               private formBuilder: FormBuilder) {
@@ -27,7 +23,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   public ngOnInit(): void {
     this.forgotPasswordForm = this.formBuilder.group({
-      email : ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -35,14 +31,12 @@ export class ForgotPasswordComponent implements OnInit {
 
   public onSubmit(): void {
     this.submitted = true;
-
     if (this.forgotPasswordForm.invalid) {
       return;
     }
-
     this.userService.forgotPassword(this.forgotPasswordForm.get('email').value).subscribe(
       (data) => {
-        this.alertService.success(data);
+        this.alertService.success("Check your email to change your password");
       },
       (error) => {
         this.localError = error;

@@ -38,6 +38,8 @@ export class LoginComponent  {
         this.router.navigate(['/user-admin']);
       } else if(this.authenticationService.currentUserValue.statut==Statut.Root){
         this.router.navigate(['/super-admin']);
+      } else if(this.authenticationService.currentUserValue.role==Role.Teacher){
+        this.router.navigate(['/course']);
       }else{
         this.router.navigate(['/home']);
       }
@@ -69,10 +71,6 @@ export class LoginComponent  {
         user => {
           this.alertService.success('You are connected', true);
           this.alertService.clearAfter(1500);
-        },
-        (error) => {
-          this.localError = error;
-          this.alertService.error(this.localError.error.response);
         });
   }
 

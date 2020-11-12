@@ -55,6 +55,7 @@ export class SuperAdminComponent implements OnInit {
   updateUser(user: User) {
     this.userService.updateUser(user.id, user).subscribe(
       data => {
+        this.display = false;
         this.alertService.success('Update user successful');
         this.alertService.clearAfter(3000);
       },
@@ -67,9 +68,9 @@ export class SuperAdminComponent implements OnInit {
   createAdmin(user: User) {
     this.userService.createAdmin(user).subscribe(
       data => {
+        this.display = false;
         this.selectedAdmin = data;
         this.admins.push(this.selectedAdmin);
-        this.display = false;
         this.getAdmins();
         this.alertService.success('Admin created successful');
         this.alertService.clearAfter(3000);
