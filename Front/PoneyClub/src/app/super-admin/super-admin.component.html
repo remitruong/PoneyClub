@@ -23,6 +23,7 @@
                   <th scope="col">First Name</th>
                   <th scope="col">Last Name</th>
                   <th scope="col">Email</th>
+                  <th></th>
                 </tr>
                 </thead>
                 <tbody *ngFor="let user of admins | filter:searchText">
@@ -31,6 +32,9 @@
                   <td>{{user.firstName}}</td>
                   <td>{{user.lastName}}</td>
                   <td>{{user.email}}</td>
+                  <td>
+                    <button class="mr-2" nbButton (click)="deleteAdmin()"><nb-icon icon="close-square-outline"></nb-icon></button>
+                  </td>
                 </tr>
                 </tbody>
               </table>

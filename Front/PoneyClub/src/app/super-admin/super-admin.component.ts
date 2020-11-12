@@ -81,6 +81,9 @@ export class SuperAdminComponent implements OnInit {
     )
   }
 
+  deleteAdmin() {
+
+  }
 
   selectUser(user: User) {
     this.selectedAdmin = user;
@@ -88,7 +91,7 @@ export class SuperAdminComponent implements OnInit {
   }
 
   addAdmin() {
-    this.display = !this.display; 
+    this.display = !this.display;
     this.newAdmin.email='';
     this.newAdmin.firstName='';
     this.newAdmin.lastName='';
