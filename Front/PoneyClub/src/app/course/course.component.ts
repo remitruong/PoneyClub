@@ -277,12 +277,14 @@ export class CourseComponent implements OnInit {
 
   selectCourse(course: Icourse) {
     this.selectedCourse = course;
+    this.isBUpdateCourse = false;
+    this.isBManageCourse = true;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       (data) => {
         if (data.length >= 3) {
           this.alertService.success('enough rider');
         } else {
-          this.alertService.error('No enough rider');
+          this.alertService.error('Not enough rider');
         }
         this.selectedCoursePlaces = data;
       },
@@ -356,12 +358,6 @@ export class CourseComponent implements OnInit {
         }
       });
     }
-  }
-
-  bManageCourse(course: Icourse) {
-    this.selectedCourse = course;
-    this.isBUpdateCourse = false;
-    this.isBManageCourse = true;
   }
 
   bUpdateCourse(course: Icourse) {
