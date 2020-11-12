@@ -249,6 +249,7 @@ public class UserService {
 		
 		User user = passwordResetToken.get().getUser();
 		user.setPassword(password);
+		user.setTrialConnection(0);
 		this.userRepo.save(user);
 		return true;
 
