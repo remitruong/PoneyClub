@@ -365,6 +365,8 @@ export class CourseComponent implements OnInit {
   }
 
   bUpdateCourse(course: Icourse) {
+    this.bRecurrentCourseAdd = false;
+    this.bCourseAdd = false;
     this.isBManageCourse = false;
     this.selectedCourse = course;
     this.isBUpdateCourse = true;
@@ -374,6 +376,8 @@ export class CourseComponent implements OnInit {
     this.courseService.updateCourse(course.id, course).subscribe(
       (data) => {
         course = data;
+        this.alertService.success('Course update well');
+        this.alertService.clearAfter(1500);
       },
       (error) => {
         this.localError = error;
@@ -382,6 +386,7 @@ export class CourseComponent implements OnInit {
     );
     this.isBUpdateCourse = false;
   }
+
 
   get f() { return this.courseForm.controls; }
 

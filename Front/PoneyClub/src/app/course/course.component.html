@@ -40,7 +40,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let course of filteredCourse">
-                <td><button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button></td>
+                <td *ngIf="currentUser.role== 'Teacher' "><button class="mr-2" nbButton (click)="bUpdateCourse(course)"><nb-icon *ngIf="course.teacher.id == currentUser.id" icon="edit-outline"></nb-icon></button></td>
                 <td>{{course.title}}</td>
                 <td>{{course.startDateTime | datetime}}</td>
                 <td>{{course.endDateTime | datetime}}</td>
@@ -121,7 +121,8 @@
         </form>
       </nb-card-body>
     </nb-card>
-
+    <app-update-course *ngIf="isBUpdateCourse && currentUser && currentUser.role == 'Teacher'" [selectedCourse]="selectedCourse" (updateCourse) = "updateCourse($event)">
+    </app-update-course>
 
     <div class="container-fluid">
       <div class="row">
@@ -131,9 +132,6 @@
 
         <app-course-management *ngIf="isBManageCourse" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
         </app-course-management>
-
-        <app-update-course *ngIf="isBUpdateCourse" [selectedCourse]="selectedCourse" (updateCourse) = "updateCourse($event)">
-        </app-update-course>
 
       </div>
     </div>
