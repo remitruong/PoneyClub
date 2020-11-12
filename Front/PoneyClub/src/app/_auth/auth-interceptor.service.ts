@@ -31,11 +31,17 @@ export class AuthInterceptorService implements HttpInterceptor{
       console.log(err.headers);
       if ( err.headers.get('MaxTrialConnection') === 'true') {
         this.router.navigateByUrl('/forgot-password');
+        this.alertService.error("You provided wrong password 3 times, please retrieve an other one");
+        return;
       } else {
           this.authentificationService.logout();
           localStorage.clear();
           this.router.navigateByUrl('/login');
-          this.alertService.error("You have been disconnected after an 403/401 error")
+          if (err.status === 403) {
+            this.alertService.error("You have been disconnected, please try login again");
+          } else if (err.status === 401) {
+            this.alertService.error("Wrong credentials, try again");
+          }
           return of(err.message);
       }
      
