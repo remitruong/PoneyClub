@@ -75,7 +75,7 @@ export class CourseComponent implements OnInit {
   private selectedLevel = null;
   public levels = [];
   public level = null;
-  public recurrence: string = null;
+  public recurrence: string = '';
   public isBUpdateCourse = false;
   public isBManageCourse = false;
 
@@ -358,11 +358,11 @@ export class CourseComponent implements OnInit {
   }
 
   bUpdateCourse(course: Icourse) {
+    this.isBUpdateCourse = !this.isBUpdateCourse;
     this.bRecurrentCourseAdd = false;
     this.bCourseAdd = false;
     this.isBManageCourse = false;
     this.selectedCourse = course;
-    this.isBUpdateCourse = true;
   }
 
   updateCourse(course: Icourse) {

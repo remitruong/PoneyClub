@@ -120,10 +120,16 @@
           </div>
           <div class="form-group" *ngIf="bRecurrentCourseAdd">
             <nb-select class="mr-2" placeholder="Select reccurence">
-              <nb-option (click)="selectRecurrence('DAILY')">DAILY</nb-option>
-              <nb-option (click)="selectRecurrence('WEEKLY')">WEEKLY</nb-option>
-              <nb-option (click)="selectRecurrence('MONTHLY')">MONTHLY</nb-option>
-            </nb-select>
+              <nb-option value="DAILY" (click)="selectRecurrence('DAILY')">DAILY</nb-option>
+              <nb-option value="WEEKLY" (click)="selectRecurrence('WEEKLY')">WEEKLY</nb-option>
+              <nb-option value="MONTH" (click)="selectRecurrence('MONTHLY')">MONTHLY</nb-option>
+            </nb-select><br>
+           <div [ngSwitch]="recurrence">
+             <p *ngSwitchCase="'DAILY'">Add a course on the same start and end time each day for a week</p>
+             <p *ngSwitchCase="'WEEKLY'">Add a course on the same start and end time each week for a month</p>
+             <p *ngSwitchCase="'MONTHLY'">Add a course on the same start and end time each month for a year</p>
+             <p *ngSwitchDefault></p>
+           </div>
           </div>
           <div class="form-group">
             <input type="number" min="1" max="8" formControlName="level" class="form-control"[ngClass]="{ 'is-invalid': submitted && f.level.errors }" [(ngModel)]="newCourse.levelStudying" placeholder="Level"/>
