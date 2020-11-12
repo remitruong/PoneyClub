@@ -48,11 +48,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		
-		HttpServletRequest cloneRequest = request;
 
 		LoginViewModel credentials = null;
 		try {
-			credentials = new ObjectMapper().readValue(cloneRequest.getInputStream(), LoginViewModel.class);
+			credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
 			this.authenticationFailureHandler.setUsername(credentials.getUsername());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,34 +61,33 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		if (isUserExist.isEmpty())
 			isUserExist = userRepository.findByMobile(credentials.getUsername());
 		int trialConnections = 0;
-		if (isUserExist.isPresent())
+		if (isUserExist.isPresent()) {
 			trialConnections = isUserExist.get().getTrialConnection();
+		} else {
+			response.setStatus(401);
+			return null;
+		}
+			
 
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 				credentials.getUsername(), credentials.getPassword(), new ArrayList<>());
 
 		Authentication auth = null;
 
-		if (trialConnections >=  3) {
+		if (trialConnections <  3) {
 			auth = authenticationManager.authenticate(authenticationToken);
+			if (isUserExist.isPresent()) {
+				trialConnections = isUserExist.get().getTrialConnection();
+				trialConnections = 0;
+				isUserExist.get().setTrialConnection(trialConnections);
+				userRepository.save(isUserExist.get());
+			}
 		} else {
 			response.addHeader("access-control-expose-headers", "MaxTrialConnection");
 			response.addHeader("MaxTrialConnection", "true");
-			try {
-				response.sendError(401);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			response.setStatus(401);
 		}
-		
 
-
-		if (isUserExist.isPresent()) {
-			trialConnections = isUserExist.get().getTrialConnection();
-			trialConnections = 0;
-			isUserExist.get().setTrialConnection(trialConnections);
-			userRepository.save(isUserExist.get());
-		}
 		return auth;
 	}
 
