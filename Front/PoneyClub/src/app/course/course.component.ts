@@ -75,6 +75,7 @@ export class CourseComponent implements OnInit {
   public level = null;
   public recurrence: string = null;
   public isBUpdateCourse = false;
+  public isBManageCourse = false;
 
   constructor(private courseService: CourseService, private coursePlaceService: CoursePlaceService,
               private authenticationService: AuthenticationService,
@@ -359,8 +360,14 @@ export class CourseComponent implements OnInit {
     }
   }
 
-  bUpdateCourse(course: Icourse) {
+  bManageCourse(course: Icourse) {
+    this.selectedCourse = course;
     this.isBUpdateCourse = false;
+    this.isBManageCourse = true;
+  }
+
+  bUpdateCourse(course: Icourse) {
+    this.isBManageCourse = false;
     this.selectedCourse = course;
     this.isBUpdateCourse = true;
   }

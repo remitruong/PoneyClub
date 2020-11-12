@@ -58,7 +58,7 @@
                     <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
                   </button>
                   <div *ngIf="course.teacher.id == currentUser.id && course.showManageButton == true">
-                    <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                    <button type="button" nbButton (click)="bManageCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
                       <nb-icon icon="options-2-outline"></nb-icon>Manage
                     </button>
                   </div>
@@ -128,7 +128,7 @@
         <app-user-planning *ngIf="currentUser && currentUser.role == 'Rider'" [coursePlaces] = "coursePlaces" (courseUnsubscribe)="unsubscribe($event)">
         </app-user-planning>
 
-        <app-course-management *ngIf="currentUser && currentUser.role == 'Teacher'" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
+        <app-course-management *ngIf="isBManageCourse" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
         </app-course-management>
 
         <app-update-course *ngIf="isBUpdateCourse" [selectedCourse]="selectedCourse" (updateCourse)=updateCourse($event)>
