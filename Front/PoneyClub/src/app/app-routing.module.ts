@@ -16,7 +16,6 @@ import {AccountPageComponent} from "./account-page/account-page.component";
 import {SuperAdminComponent} from "./super-admin/super-admin.component";
 
 const routes: Routes = [
-
   {path: '', component: LoginComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
