@@ -88,7 +88,7 @@ export class CourseComponent implements OnInit {
     this.currentUser = this.authenticationService.currentUserValue;
     this.submitted = false;
     this.courseForm = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: [''],
       startDateTime: ['', Validators.required],
       endDateTime: ['', Validators.required],
       level: ['', [Validators.required, Validators.min(1), , Validators.max(8)]],
@@ -283,11 +283,6 @@ export class CourseComponent implements OnInit {
     this.isBManageCourse = true;
     this.coursePlaceService.getTeacherCoursePlaces(this.selectedCourse.teacher.id, this.selectedCourse.id).subscribe(
       (data) => {
-        if (data.length >= 3) {
-          this.alertService.success('enough rider');
-        } else {
-          this.alertService.error('Not enough rider');
-        }
         this.selectedCoursePlaces = data;
       },
       (error) => {

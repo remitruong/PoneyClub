@@ -59,8 +59,4 @@ export class UserDetailsComponent implements OnInit {
     this.userAdded.emit(this.userSelected);
   }
 
-  changetoAdmin() {
-    this.userToAdmin.emit(this.userSelected);
-  }
-
 }

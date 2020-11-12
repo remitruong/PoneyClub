@@ -28,7 +28,6 @@ export class HorseComponent implements OnInit {
   public newHorsePanel = false;
   public submitted = false;
   public horseFormCreation: FormGroup;
-  public horseFormUpdate: FormGroup;
   private localError: IError;
 
   constructor(private horseService: HorseService, private authenticationService: AuthenticationService,
@@ -39,9 +38,6 @@ export class HorseComponent implements OnInit {
     this.submitted = false;
     this.horseFormCreation = this.formBuilder.group({
       horseNameCreation: ['', Validators.required],
-    });
-    this.horseFormUpdate = this.formBuilder.group({
-      horseNameUpdate: ['', Validators.required],
     });
     this.horseService.getHorses().subscribe(
       (data) => {
@@ -60,7 +56,6 @@ export class HorseComponent implements OnInit {
     this.newHorse.id = 0;
     this.newHorse.name = '';
     this.newHorsePanel = true;
-    // this.submitted = false;
   }
 
   createHorse() {
@@ -102,9 +97,6 @@ export class HorseComponent implements OnInit {
   }
 
   updateHorse(horse: IHorse) {
-    if (this.horseFormUpdate.get('horseNameUpdate')) {
-      return;
-    }
     if (horse.id != 0) {
       this.horseService.updateHorse(horse, this.currentUser.id).subscribe (
         (data) => {

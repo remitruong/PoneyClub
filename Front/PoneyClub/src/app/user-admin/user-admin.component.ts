@@ -4,6 +4,7 @@ import {IError} from '../_classes/ierror';
 import {AlertService} from '../services/alert.service';
 import {UserService} from '../services/api/user.service';
 import {AuthenticationService} from '../services/authentification.service';
+import {Role} from "../_classes/role";
 
 @Component({
   selector: 'app-user-admin',
@@ -29,7 +30,7 @@ export class UserAdminComponent implements OnInit {
   public searchText;
   public display = false;
 
-  constructor(private userService: UserService, private alertService: AlertService, 
+  constructor(private userService: UserService, private alertService: AlertService,
               private authenticationService: AuthenticationService) { }
 
   public ngOnInit(): void {
@@ -39,7 +40,6 @@ export class UserAdminComponent implements OnInit {
   getAllUsers() {
     this.userService.getUsers(this.authenticationService.currentUserValue.email).subscribe(
       (data) => {
-        console.log(data);
         this.users = data;
         this.alertService.success('All user refreshed');
         this.alertService.clearAfter(1500);
@@ -69,6 +69,7 @@ export class UserAdminComponent implements OnInit {
     if (user.statut === 'Teacher') {
       this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
         (data) => {
+          this.display = false;
           this.selectedUser = data;
           this.users.push(this.selectedUser);
           this.alertService.success('Teacher created successful');
@@ -83,8 +84,10 @@ export class UserAdminComponent implements OnInit {
     } else if (user.statut === 'Admin') {
       this.userService.createAdmin(user).subscribe(
         (data) => {
+          this.display = false;
           this.selectedUser = data;
-          this.users.push(this.selectedUser);this.alertService.success('Admin created successful');
+          this.users.push(this.selectedUser);
+          this.alertService.success('Admin created successful');
           this.alertService.clearAfter(3000);
         },
         (error) => {
@@ -97,13 +100,16 @@ export class UserAdminComponent implements OnInit {
   }
 
   selectUser(user: User) {
-   this.selectedUser = user;
-   this.display = true;
+    this.selectedUser = user;
+    if(this.selectedUser.statut == Role.Admin){
+      this.display = false;
+    }else{
+      this.display = true;
+    }
   }
 
   addUser(statut: string) {
-    this.display = !this.display;
-    // this.display = true;
+    this.display = true;
     this.newUser.email = '';
     this.newUser.firstName = '';
     this.newUser.lastName = '';
