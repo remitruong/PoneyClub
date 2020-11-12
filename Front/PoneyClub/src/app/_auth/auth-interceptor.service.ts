@@ -14,7 +14,8 @@ const TOKEN_HEADER_KEY = 'Authorization';
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor{
 
-    constructor(private token: TokenStorageService,private authentificationService: AuthenticationService, private router: Router, private alertService: AlertService) { }
+    constructor(private token: TokenStorageService,private authentificationService: AuthenticationService, 
+                private router: Router, private alertService: AlertService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         let authReq = req;
@@ -27,11 +28,17 @@ export class AuthInterceptorService implements HttpInterceptor{
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     if (err.status === 401 || err.status === 403) {
-      this.authentificationService.logout();
-      localStorage.clear();
-      this.router.navigateByUrl('/login');
-      this.alertService.error("You have been disconnected after an 403/401 error")
-      return of(err.message);
+      console.log(err.headers);
+      if ( err.headers.get('MaxTrialConnection') === 'true') {
+        this.router.navigateByUrl('/forgot-password');
+      } else {
+          this.authentificationService.logout();
+          localStorage.clear();
+          this.router.navigateByUrl('/login');
+          this.alertService.error("You have been disconnected after an 403/401 error")
+          return of(err.message);
+      }
+     
     }
     return throwError(err);
   }
