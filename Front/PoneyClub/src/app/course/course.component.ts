@@ -28,6 +28,7 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
     showManageButton: false,
+    status: true,
   };
   private newCourse: Icourse = {
     id: 0,
@@ -39,6 +40,7 @@ export class CourseComponent implements OnInit {
     availablePlaces: 0,
     teacher: null,
     showManageButton: false,
+    status: true,
   };
   private allTeachers: User = {
     id: 0,
@@ -120,6 +122,7 @@ export class CourseComponent implements OnInit {
           courseDateBefore.setHours(courseDate.getHours() - 24);
           const now = new Date();
 
+          console.log(this.courses)
           if (now > courseDateBefore) {
             course.showManageButton = true;
           }
@@ -383,6 +386,9 @@ export class CourseComponent implements OnInit {
     this.isBUpdateCourse = false;
   }
 
+  cancelCourse(course: Icourse){
+
+  }
 
   get f() { return this.courseForm.controls; }
 

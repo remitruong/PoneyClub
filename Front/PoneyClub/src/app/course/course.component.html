@@ -28,13 +28,15 @@
             <table class="table table-hover table-dark table-responsive">
               <thead>
               <tr>
-                <th></th>
+                <th *ngIf="currentUser.role== 'Teacher'">Update</th>
                 <th>Title</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Level</th>
                 <th>Available Places</th>
                 <th>Teacher</th>
+                <th>Statut</th>
+                <th></th>
                 <th></th>
               </tr>
               </thead>
@@ -55,14 +57,31 @@
                 <td>{{course.availablePlaces}}</td>
                 <td>{{course.teacher.firstName}} {{course.teacher.lastName}}</td>
                 <td>
-                  <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
-                    <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
-                  </button>
-                  <div *ngIf="course.teacher.id == currentUser.id && course.showManageButton == true">
-                    <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
-                      <nb-icon icon="options-2-outline"></nb-icon>Manage
-                    </button>
+                  <div *ngIf="course.status==true">
+                    Valide
                   </div>
+                  <div *ngIf="course.status==false">
+                    Cancel
+                  </div>
+                </td>
+<!--                <td *ngIf="course.status">-->
+                <td>
+                  <div>
+                    <button type="button" nbButton (click)="subscribe(course)" *ngIf="currentUser && currentUser.role == 'Rider'">
+                      <nb-icon icon="checkmark-square-outline"></nb-icon>Subscribe
+                    </button>
+                    <div *ngIf="course.teacher.id == currentUser.id && course.showManageButton == true">
+                      <button type="button" nbButton (click)="selectCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                        <nb-icon icon="options-2-outline"></nb-icon>Manage
+                      </button>
+                    </div>
+                  </div>
+                </td>
+<!--                <td *ngIf="course.status">-->
+                <td>
+                    <button type="button" nbButton (click)="cancelCourse(course)" *ngIf="currentUser && currentUser.role == 'Teacher'">
+                      <nb-icon icon="close-circle-outline"></nb-icon>Cancel
+                    </button>
                 </td>
               </tr>
               </tbody>
