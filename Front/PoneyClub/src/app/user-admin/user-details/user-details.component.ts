@@ -1,29 +1,29 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { User } from 'src/app/_classes';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { User } from 'src/app/_classes';
 import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css']
+  styleUrls: ['./user-details.component.css'],
 })
 export class UserDetailsComponent implements OnInit {
-  userForm: FormGroup;
-  submitted = false;
-  mobileNumberPattern = "^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$";
-  emailPattern ="([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))";
+  public userForm: FormGroup;
+  public submitted = false;
+  public mobileNumberPattern = '^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$';
+  public emailPattern ='([a-zA-Z0-9_.]{1,})((@[a-zA-Z]{2,})[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))';
 
-  @Input() userSelected:User;
-  @Output() userUpdated: EventEmitter<User> = new EventEmitter<User>();
-  @Output() userDeleted: EventEmitter<User> = new EventEmitter<User>();
-  @Output() userAdded: EventEmitter<User> = new EventEmitter<User>();
-  @Output() userToAdmin: EventEmitter<User> = new EventEmitter<User>();
+  @Input() public userSelected: User;
+  @Output() public userUpdated: EventEmitter<User> = new EventEmitter<User>();
+  @Output() public userDeleted: EventEmitter<User> = new EventEmitter<User>();
+  @Output() public userAdded: EventEmitter<User> = new EventEmitter<User>();
+  @Output() public userToAdmin: EventEmitter<User> = new EventEmitter<User>();
 
   constructor(private formBuilder: FormBuilder, private alertService: AlertService) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.submitted = false;
     this.userForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -31,7 +31,7 @@ export class UserDetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       mobile: ['', Validators.required],
-      licenceNum: ['']
+      licenceNum: [''],
     });
   }
 
@@ -39,7 +39,7 @@ export class UserDetailsComponent implements OnInit {
 
   updateUser() {
     this.submitted = true;
-    //disable the control on password
+    // disable the control on password
     this.userForm.get('password').disable();
     if (this.userForm.invalid) {
       return;

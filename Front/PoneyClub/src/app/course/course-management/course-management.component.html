@@ -19,7 +19,8 @@
         <th></th>
       </tr>
       </thead>
-      <tbody *ngIf="horses.length>=1">
+<!--      <tbody *ngIf="horses.length>=1">-->
+      <tbody>
       <tr *ngFor="let coursePlace of selectedCoursePlaces">
           <td>{{coursePlace.course.title}}</td>
           <td>{{coursePlace.course.startDateTime}}</td>

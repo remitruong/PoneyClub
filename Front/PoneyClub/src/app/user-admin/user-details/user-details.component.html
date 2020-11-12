@@ -59,11 +59,6 @@
         <span>
           <button nbButton (click)="addUser()" *ngIf="userSelected.id == 0">Add User</button>
         </span>
-        <span>
-          <button nbButton (click)="changetoAdmin()" *ngIf="userSelected.statut == 'User' && userSelected.role == 'Teacher'">
-            <nb-icon icon="chevron-right-outline"></nb-icon>Convert to administrator
-          </button>
-        </span>
       </section>
     </div>
   </form>

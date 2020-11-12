@@ -116,15 +116,11 @@ public class UserController {
 	public ResponseEntity<?> getTeachers() {
 			return new ResponseEntity<>(userService.getTeachers(), HttpStatus.OK);
 	}	
-
-	@PostMapping(value ="/convert-to-admin/{idUser}/{adminMail}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> convertToAdmin(@PathVariable long idUser, @PathVariable String adminMail) {
-		try {
-			return new ResponseEntity<>(userService.changeUserToAdmin(idUser, adminMail), HttpStatus.OK);
-		} catch (NoUserFoundException e) {
-			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
-		}
-	}
+	
+	@GetMapping(value ="/get-admins")
+	public ResponseEntity<?> getAdmins() {
+			return new ResponseEntity<>(userService.getAdmin(), HttpStatus.OK);
+	}	
 	
 	@PostMapping(value ="/forgot-password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> forgot_password(@PathVariable String email) {
@@ -145,7 +141,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value ="/create-admin")
-	public ResponseEntity<?> reset_password(@RequestBody User user) {
+	public ResponseEntity<?> create_admin(@RequestBody User user) {
 		try {
 			return new ResponseEntity<>(userService.createAdmin(user), HttpStatus.OK);
 		} catch (WrongMobileOrEmailFormat | MobileNotAvailableException | EmailNotAvailableException e) {

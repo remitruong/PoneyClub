@@ -2,8 +2,10 @@ package fr.esieaproject.poneyclub.services;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -155,23 +157,17 @@ public class UserService {
 	}
 
 	public Iterable<User> getUsers(String adminEmail) throws NoUserFoundException {
-		Optional<User> admin = userRepo.findByEmail(adminEmail);
-		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
-			throw new NoUserFoundException("admin not found");
-		}
 		Iterable<User> userList = userRepo.findAll();
-		for (User user : userList) {
-//			user.setPassword("");
-			logger.info("user list :" + user.toString());
+		Iterator<User> users = userList.iterator();
+		
+		while(users.hasNext()) {
+			User user = users.next();
+			if (user.getRole().equals("Root")) users.remove();
 		}
 		return userList;
 	}
 
 	public User createTeacher(User teacher, String adminEmail) throws NoUserFoundException, MobileNotAvailableException, EmailNotAvailableException, WrongMobileOrEmailFormat {
-		Optional<User> admin = userRepo.findByEmail(adminEmail);
-		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
-			throw new NoUserFoundException("admin not found");
-		}
 		if (emailAvailable(teacher.getEmail())) {
 			if (mobileAvailable(teacher.getMobile())) {
 				if (isEmailValid(teacher.getEmail()) && isMobileValid(teacher.getMobile())) {
@@ -194,22 +190,11 @@ public class UserService {
 	public List<User> getTeachers() {
 		return userRepo.findByRole("Teacher");
 	}
-
-	public boolean changeUserToAdmin(long idUser, String adminEmail) throws NoUserFoundException {
-		Optional<User> admin = userRepo.findByEmail(adminEmail);
-		if (admin.isEmpty() || admin.get().getStatut().equals("User")) {
-			throw new NoUserFoundException("admin not found");
-		}
-		Optional<User> user = userRepo.findById(idUser);
-		if (user.isEmpty() || user.get().getStatut().equals("Admin")) {
-			throw new NoUserFoundException("admin not found");
-		}
-		user.get().setStatut("Admin");
-//		user.get().setRole("Admin");
-		userRepo.save(user.get());
-		return true;
-	}
 	
+	public List<User> getAdmin() {
+		return userRepo.findByStatut("Admin");
+	}
+
 	public boolean createAdmin(User user) throws WrongMobileOrEmailFormat, MobileNotAvailableException, EmailNotAvailableException {
 		if (emailAvailable(user.getEmail())) {
 			if (mobileAvailable(user.getMobile())) {

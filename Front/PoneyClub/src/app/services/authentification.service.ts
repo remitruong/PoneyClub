@@ -3,10 +3,11 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {User} from "../_classes";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {UserService} from "./api/user.service";
 import { LoginModel } from '../_classes/loginmodel';
 import { TokenStorageService } from '../_auth/token-storage.service';
+import {Statut} from "../_classes/statut";
 
 let users = JSON.parse(localStorage.getItem('users')) || [];
 
