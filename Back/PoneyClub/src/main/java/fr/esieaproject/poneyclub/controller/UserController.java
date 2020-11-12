@@ -121,15 +121,6 @@ public class UserController {
 	public ResponseEntity<?> getAdmins() {
 			return new ResponseEntity<>(userService.getAdmin(), HttpStatus.OK);
 	}	
-
-	@PostMapping(value ="/convert-to-admin/{idUser}/{adminMail}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> convertToAdmin(@PathVariable long idUser, @PathVariable String adminMail) {
-		try {
-			return new ResponseEntity<>(userService.changeUserToAdmin(idUser, adminMail), HttpStatus.OK);
-		} catch (NoUserFoundException e) {
-			return new ResponseEntity<>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
-		}
-	}
 	
 	@PostMapping(value ="/forgot-password/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> forgot_password(@PathVariable String email) {

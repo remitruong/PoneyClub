@@ -132,7 +132,7 @@
         <app-course-management *ngIf="isBManageCourse" [selectedCoursePlaces] = "selectedCoursePlaces" (addHorseToCoursePlace)="mapHorseToCourse($event)">
         </app-course-management>
 
-        <app-update-course *ngIf="isBUpdateCourse" [selectedCourse]="selectedCourse" (updateCourse)=updateCourse($event)>
+        <app-update-course *ngIf="isBUpdateCourse" [selectedCourse]="selectedCourse" (updateCourse) = "updateCourse($event)">
         </app-update-course>
 
       </div>

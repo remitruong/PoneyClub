@@ -65,34 +65,35 @@ export class UserAdminComponent implements OnInit {
     );
   }
 
-  createTeacher(user: User) {
-    this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
-      (data) => {
-        this.selectedUser = data;
-        this.users.push(this.selectedUser);
-        this.alertService.success('Teacher created successful');
-        this.alertService.clearAfter(3000);
-      },
-      (error) => {
-        this.localError = error as IError;
-        this.alertService.error(this.localError.error.response);
-      },
+  createUser(user: User) {
+    if (user.statut === 'Teacher') {
+      this.userService.createTeacher(user, this.authenticationService.currentUserValue.email).subscribe(
+        (data) => {
+          this.selectedUser = data;
+          this.users.push(this.selectedUser);
+          this.alertService.success('Teacher created successful');
+          this.alertService.clearAfter(3000);
+        },
+        (error) => {
+          this.localError = error as IError;
+          this.alertService.error(this.localError.error.response);
+        },
 
-    );
-  }
+      );
+    } else if (user.statut === 'Admin') {
+      this.userService.createAdmin(user).subscribe(
+        (data) => {
+          this.selectedUser = data;
+          this.users.push(this.selectedUser);this.alertService.success('Admin created successful');
+          this.alertService.clearAfter(3000);
+        },
+        (error) => {
+          this.localError = error as IError;
+          this.alertService.error(this.localError.error.response);
+        },
 
-  userToAdmin(user: User) {
-    this.userService.changeToAdmin(user.id, this.authenticationService.currentUserValue.email).subscribe(
-      (data) => {
-        this.selectedUser.statut = 'Admin';
-        this.alertService.success('User ' + this.selectedUser.firstName + ' ' + this.selectedUser.lastName + ' is now an administrator !');
-        this.alertService.clearAfter(3000);
-
-      },
-      (error) => {
-        this.alertService.error(this.localError.error.response);
-      },
-    );
+      );
+    }
   }
 
   selectUser(user: User) {
@@ -100,7 +101,7 @@ export class UserAdminComponent implements OnInit {
    this.display = true;
   }
 
-  addTeacher() {
+  addUser(statut: string) {
     this.display = !this.display;
     // this.display = true;
     this.newUser.email = '';
@@ -109,7 +110,7 @@ export class UserAdminComponent implements OnInit {
     this.newUser.mobile = '';
     this.newUser.password = '';
     this.newUser.role = '';
-    this.newUser.statut = '';
+    this.newUser.statut = statut;
     this.selectedUser = this.newUser;
   }
 
