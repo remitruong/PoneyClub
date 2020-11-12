@@ -10,4 +10,5 @@ export interface Icourse {
 	availablePlaces: number;
 	teacher: User;
 	showManageButton: boolean;
+	status: boolean;
 }
