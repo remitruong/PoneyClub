@@ -240,6 +240,15 @@ public class UserService {
 		return true;
 	}	
 	
+	public boolean deleteUser(long idUser) throws NoUserFoundException {
+		Optional<User> existingUser = this.userRepo.findById(idUser);
+		
+		if (existingUser.isEmpty()) throw new NoUserFoundException("User not found");
+		
+		this.userRepo.delete(existingUser.get());
+		return true;
+	}
+	
 	public boolean setNewPassword(String token, String password) throws InvalidTokenException, ExpiredTokenException {
 		
 		Optional<PasswordResetToken> passwordResetToken = this.passwordTokenRepository.findByToken(token);

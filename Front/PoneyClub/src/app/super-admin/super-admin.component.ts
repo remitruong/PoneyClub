@@ -73,7 +73,7 @@ export class SuperAdminComponent implements OnInit {
         this.admins.push(this.selectedAdmin);
         this.getAdmins();
         this.alertService.success('Admin created successful');
-        this.alertService.clearAfter(3000);
+        this.alertService.clearAfter(5000);
       },
       error => {
         this.localError = error as IError;
@@ -82,7 +82,21 @@ export class SuperAdminComponent implements OnInit {
     )
   }
 
-  deleteAdmin() {
+  deleteAdmin( user: User) {
+    this.display = false;
+    this.userService.deleteUser(user.id).subscribe(
+      (data) => {
+        const adminIndex = this.admins.indexOf(user);
+        this.admins.splice(adminIndex, 1);
+        this.alertService.success( 'Admin well deleted' );
+        this.alertService.clearAfter(5000);
+      },
+      (error) => {
+        this.localError = error;
+        this.alertService.error(this.localError.error);
+        this.alertService.clearAfter(5000);
+      }
+    )
 
   }
 
