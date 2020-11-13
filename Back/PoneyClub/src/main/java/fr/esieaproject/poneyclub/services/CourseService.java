@@ -88,23 +88,27 @@ public class CourseService {
 
 		if (!this.isStartBeforeEnd(course.getStartDateTime(), course.getEndDateTime())) throw new StartShouldBeBeforeEndException("Provided start time should be before end time");
 		
+		int nbRecurrence = 0;
 		int coeff = 0;
 		
 		if (recurrence.equals("DAILY")) {
-			coeff = 7;
+			coeff = 86400;
+			nbRecurrence = 7;
 		} else if (recurrence.equals("WEEKLY")) {
-			coeff = 4;
+			coeff = 86400 * 7;
+			nbRecurrence = 4;
 		}else if (recurrence.equals("MONTHLY")) {
-			coeff = 12;
+			coeff = 86400 * 30;
+			nbRecurrence = 12;
 		} else {
 			throw new RecurrenceNotKnownException("Recurrence " + recurrence + " is not known");
 		}
 		
-		for (int i = 0; i < coeff ; i++ ) {
+		for (int i = 0; i < nbRecurrence ; i++ ) {
 			Instant startTime = Timestamp.valueOf(course.getStartDateTime()).toInstant();
 			Instant endTime = Timestamp.valueOf(course.getEndDateTime()).toInstant();
-			Timestamp newStartTime = Timestamp.from(startTime.plusSeconds(86400*i));
-			Timestamp newEndTime = Timestamp.from(endTime.plusSeconds(86400*i));
+			Timestamp newStartTime = Timestamp.from(startTime.plusSeconds(coeff*i));
+			Timestamp newEndTime = Timestamp.from(endTime.plusSeconds(coeff*i));
 			
 			Optional<User> teacher = userRepo.findByEmail(course.getTeacher().getEmail());
 			
@@ -112,7 +116,7 @@ public class CourseService {
 			newCourse.setTeacher(teacher.get());
 			newCourse.setLevelStudying(course.getLevelStudying());
 			newCourse.setMaxStudent(course.getMaxStudent());
-			newCourse.setTitle(course.getTitle() + " number : " + i+1);
+			newCourse.setTitle(course.getTitle() + " number : " + i + 1);
 			newCourse.setStartDateTime(newStartTime.toString());
 			newCourse.setEndDateTime(newEndTime.toString());
 			
