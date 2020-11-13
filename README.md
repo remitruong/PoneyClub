@@ -12,14 +12,37 @@ If you are an admin you could use it only if a super-admin create your account.
 
 ## Application account available by default (for testing) :
 
- ______________________________________________
-|ROLE          |   USERNAME        |   PASSWORD|
-|______________________________________________| 
-|Super-admin   | root@gmail.com    | changeit  |  
-|Admin         | admin@gmail.com   | changeit  |
-|Monitor       | teacher@gmail.com | changeit  |
-|Rider         | rider@gmail.com   | changeit  |
-|______________________________________________|
+<table>
+  <thead>
+   <tr>
+    <th>ROLE</th>
+    <th>USERNAME</th>
+    <th>PASSWORD</th>
+   </tr>
+  </thead>
+  <tbody>
+   <tr>
+    <td>Super-admin</td>
+    <td>root@gmail.com </td>
+    <td>changeit</td>
+   </tr>
+   <tr>
+    <td>Admin</td>
+    <td>admin@gmail.com</td>
+    <td>changeit</td>
+   </tr>
+   <tr>
+    <td>Monitor</td>
+    <td>teacher@gmail.com</td>
+    <td>changeit</td>
+   </tr>
+   <tr>
+    <td>Rider</td>
+    <td>rider@gmail.com</td>
+    <td>changeit</td>
+   </tr>
+ </tbody>
+ </table>
 
 ## *Authors*
 ```
